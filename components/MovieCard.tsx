@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
@@ -6,6 +7,7 @@ import { PlayIcon } from '@heroicons/react/24/solid';
 import { MovieInterface } from '@/types';
 import FavoriteButton from '@/components/FavoriteButton';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
+import Image from 'next/image';
 
 interface MovieCardProps {
   data: MovieInterface;
@@ -18,7 +20,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
   const redirectToWatch = useCallback(() => router.push(`/watch/${data.id}`), [router, data.id]);
 
   return (
-    <div className="group bg-zinc-900 col-span relative h-[12vw]">
+    <div className="group bg-zinc-900 col-span relative h-[12vw] mt-10">
       <img
         onClick={redirectToWatch}
         src={data.thumbnailUrl}
@@ -112,6 +114,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
           </div>
         </div>
       </div>
+      <p className="text-white py-4">{data.title}</p>
     </div>
   );
 };

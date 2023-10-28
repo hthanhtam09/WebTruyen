@@ -61,11 +61,20 @@ model VerificationToken {
 }
 
 model Movie {
-  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   description  String
   videoUrl     String
   thumbnailUrl String
   genre        String
   duration     String
+  album        MovieAlbum @relation(fields: [albumId], references: [id])
+  albumId      String     @db.ObjectId
+}
+
+model MovieAlbum {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  title        String
+  thumbnailUrl String
+  movies       Movie[]
 }

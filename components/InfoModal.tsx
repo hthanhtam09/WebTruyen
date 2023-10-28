@@ -40,7 +40,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
             isVisible ? 'scale-100' : 'scale-0'
           } transform duration-300 relative flex-auto bg-zinc-900 drop-shadow-md`}
         >
-          <div className="relative h-96 w-[40vw]">
+          <div className="relative h-96 w-full">
             {data != null && data.videoUrl ? (
               <iframe
                 src={`${data.videoUrl}?autoplay=1&mute=1&controls=0&loop=1`}
