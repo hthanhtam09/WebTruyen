@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import useMovieAlbum from '@/hooks/useMovieAlbum';
 import useTrans from '@/hooks/useTrans';
+import { capitalizeFirstLetter } from '@/utils/utils';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
@@ -21,7 +22,7 @@ const MovieAlbum = () => {
   return (
     <div className="px-4 md:px-16 py-20">
       <p className="text-white text-md md:text-xl lg:text-4xl font-semibold mb-4">
-        {trans.home.Trending}
+        {capitalizeFirstLetter(trans.home.trending)}
       </p>
       <div className="flex gap-10 mt-10">
         {Object.values(movieAlbum).map((movie: any) => (

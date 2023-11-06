@@ -14,7 +14,7 @@ const TOP_OFFSET = 66;
 const Navbar = () => {
   const trans = useTrans();
 
-  const navbarItemListData = [trans.home.Home, trans.home.Genre];
+  const navbarItemListData = [trans.home.home, trans.home.genre];
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   // const [showAccountMenu, setShowAccountMenu] = useState(false);

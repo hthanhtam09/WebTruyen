@@ -4,16 +4,21 @@ import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import PlayButton from '@/components/PlayButton';
 import useBillboard from '@/hooks/useBillboard';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
+import Loading from '@/pages/loading';
 
 const Billboard: React.FC = () => {
   const { openModal } = useInfoModalStore();
-  const { data } = useBillboard();
+  const { data, isLoading } = useBillboard();
 
   const handleOpenModal = useCallback(() => {
     openModal(data?.id);
   }, [openModal, data?.id]);
 
-  return data != null && data.videoUrl ? (
+  return isLoading ? (
+    <div className="relative h-[56.25vw]">
+      <Loading />
+    </div>
+  ) : data != null && data.videoUrl ? (
     <div className="relative h-[56.25vw]">
       <iframe
         src={`${data.videoUrl}?autoplay=1&mute=1&controls=0&loop=1`}

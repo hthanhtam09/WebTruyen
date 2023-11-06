@@ -5,6 +5,7 @@ import PlayButton from '@/components/PlayButton';
 import FavoriteButton from '@/components/FavoriteButton';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
 import useMovie from '@/hooks/useMovie';
+import Loading from '@/pages/loading';
 
 interface InfoModalProps {
   visible?: boolean;
@@ -15,7 +16,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
   const [isVisible, setIsVisible] = useState<boolean>(!!visible);
 
   const { movieId } = useInfoModalStore();
-  const { data = {} } = useMovie(movieId);
+  const { data = {}, isLoading } = useMovie(movieId);
 
   useEffect(() => {
     setIsVisible(!!visible);
@@ -32,7 +33,9 @@ const InfoModal: React.FC<InfoModalProps> = ({ visible, onClose }) => {
     return null;
   }
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <div className="z-50 transition duration-300 bg-black bg-opacity-80 flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0">
       <div className="relative w-auto mx-auto max-w-3xl rounded-md overflow-hidden">
         <div

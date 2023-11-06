@@ -2,10 +2,7 @@ import React from 'react';
 import { Metadata, NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
 
-import Navbar from '@/components/Navbar';
 import Billboard from '@/components/Billboard';
-import InfoModal from '@/components/InfoModal';
-import useInfoModalStore from '@/hooks/useInfoModalStore';
 import MovieAlbum from '@/components/MovieAlbum';
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -31,12 +28,8 @@ export const metadata: Metadata = {
 };
 
 const Home = () => {
-  const { isOpen, closeModal } = useInfoModalStore();
-
   return (
     <>
-      <InfoModal visible={isOpen} onClose={closeModal} />
-      <Navbar />
       <Billboard />
       <div className="pb-40">
         <MovieAlbum />
