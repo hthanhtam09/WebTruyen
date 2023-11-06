@@ -73,8 +73,11 @@ model Movie {
 }
 
 model MovieAlbum {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   title        String
   thumbnailUrl String
+  description  String
+  director     String
+  cast         String[]
   movies       Movie[]
 }

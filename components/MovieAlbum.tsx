@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
 import useMovieAlbum from '@/hooks/useMovieAlbum';
+import useTrans from '@/hooks/useTrans';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 const MovieAlbum = () => {
   const { data: movieAlbum = [] } = useMovieAlbum();
-
   const router = useRouter();
+  const trans = useTrans();
 
   const redirectToAlbum = useCallback(
     (movie: string) =>
@@ -19,7 +20,9 @@ const MovieAlbum = () => {
 
   return (
     <div className="px-4 md:px-16 py-20">
-      <p className="text-white text-md md:text-xl lg:text-4xl font-semibold mb-4">Trending</p>
+      <p className="text-white text-md md:text-xl lg:text-4xl font-semibold mb-4">
+        {trans.home.Trending}
+      </p>
       <div className="flex gap-10 mt-10">
         {Object.values(movieAlbum).map((movie: any) => (
           <div key={movie.id}>
@@ -42,7 +45,7 @@ const MovieAlbum = () => {
                 h-[20vw]
             "
             />
-            <p className="text-white ">{movie.title}</p>
+            <p className="text-white pt-2">{movie.title}</p>
           </div>
         ))}
       </div>
