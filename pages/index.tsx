@@ -5,22 +5,22 @@ import { getSession } from 'next-auth/react';
 import Billboard from '@/components/Billboard';
 import MovieAlbum from '@/components/MovieAlbum';
 
-// export async function getServerSideProps(context: NextPageContext) {
-//   const session = await getSession(context);
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
 
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: '/auth',
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: {},
-//   };
-// }
+  return {
+    props: {},
+  };
+}
 
 export const metadata: Metadata = {
   title: 'CineShin',

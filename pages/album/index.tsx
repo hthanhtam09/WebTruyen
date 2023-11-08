@@ -30,7 +30,7 @@ const MovieAlbumScreen = () => {
         </p>
         {movies.length ? <PlayButton movieId={(Object.values(movies)[0] as any).id} /> : null}
         <div className="w-full h-[1px] bg-gray-300 mt-10" />
-        <MovieList title="Episodes 1-16" data={movieData} style="mt-10" />
+        <MovieList title="Episodes" data={movieData} style="mt-10" />
         <div className="w-full h-[1px] bg-gray-300 my-20" />
         <MovieList title="My List" data={favorites} />
       </div>

@@ -5,13 +5,10 @@ import Navbar from '@/components/Navbar';
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    // <SessionProvider session={session}>
-    <>
+    <SessionProvider session={session}>
       <Navbar />
       <Component {...pageProps} />
-    </>
-
-    // </SessionProvider>
+    </SessionProvider>
   );
 }
 

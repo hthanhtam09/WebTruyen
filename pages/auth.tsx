@@ -3,7 +3,6 @@ import Input from '../components/Input';
 import { useCallback, useState } from 'react';
 import { AUTHENTICATION } from '../constants/enum';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
