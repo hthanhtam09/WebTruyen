@@ -28,7 +28,7 @@ const MovieAlbumScreen = () => {
           <span className="text-gray-400">Description: </span>
           {router.query.description}
         </p>
-        {movies.length ? <PlayButton movieId={(Object.values(movies)[0] as any).id} /> : null}
+        {movies.length ? <PlayButton movieId={(Object.values(movieData)[0] as any).id} /> : null}
         <div className="w-full h-[1px] bg-gray-300 mt-10" />
         <MovieList title="Episodes" data={movieData} style="mt-10" />
         <div className="w-full h-[1px] bg-gray-300 my-20" />

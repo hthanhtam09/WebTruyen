@@ -21,7 +21,7 @@ const Billboard: React.FC = () => {
   ) : data != null && data.videoUrl ? (
     <div className="relative h-[56.25vw]">
       <iframe
-        src={`${data.videoUrl}?autoplay=1&mute=1&controls=0&loop=1`}
+        src={`${data.videoUrl}&autoplay=1&mute=1&controls=0&loop=1`}
         allowFullScreen
         className="pointer-events-none w-full h-[56.25vw] object-cover brightness-[60%] transition duration-500"
       />
