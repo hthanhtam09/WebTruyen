@@ -79,5 +79,6 @@ model MovieAlbum {
   description  String
   director     String
   cast         String[]
+  genre        String
   movies       Movie[]
 }
