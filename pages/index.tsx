@@ -1,11 +1,11 @@
 import React from 'react';
 import { NextPageContext } from 'next';
 import { getSession } from 'next-auth/react';
+import Head from 'next/head';
 
 import Billboard from '@/components/Billboard';
 import MovieAlbum from '@/components/MovieAlbum';
 import useTrans from '@/hooks/useTrans';
-import Head from 'next/head';
 
 export async function getServerSideProps(context: NextPageContext) {
   const session = await getSession(context);
