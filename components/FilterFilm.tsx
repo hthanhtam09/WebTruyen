@@ -24,7 +24,7 @@ const FilterFilm: React.FC<FilterFilmProps> = ({
   };
 
   return (
-    <div className="flex items-center space-x-4 px-4 md:px-16 py-6 flex-row transition duration-500 bg-black bg-opacity-90">
+    <div className="flex items-center space-x-4 px-4 md:px-16 py-6 flex-row transition duration-500">
       <label htmlFor="sort" className="text-white">
         Sắp xếp:
       </label>
