@@ -28,28 +28,32 @@ const Auth = () => {
     //eslint-disable-next-line
   }, [variant]);
 
-  const login = useCallback(async () => {
-    try {
-      const { email, password } = input;
-      await signIn('credentials', {
-        email,
-        password,
-        callbackUrl: '/profiles',
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [input]);
+  const login = useCallback(
+    async (e: any) => {
+      try {
+        const { email, password } = input;
+        e.preventDefault();
+        await signIn('credentials', {
+          email,
+          password,
+          callbackUrl: '/profiles',
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [input],
+  );
 
   const register = useCallback(async () => {
     try {
       await axios.post('/api/register', input);
 
-      login();
+      // login();
     } catch (error) {
       console.log(error);
     }
-  }, [input, login]);
+  }, [input]);
 
   const loginOAuth = useCallback((url: string) => {
     signIn(url, { callbackUrl: '/profiles' });
@@ -92,7 +96,7 @@ const Auth = () => {
               />
             </div>
             <button
-              onClick={variant === AUTHENTICATION.LOGIN ? login : register}
+              onClick={variant === AUTHENTICATION.LOGIN ? (e) => login(e) : register}
               className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
             >
               {variant === AUTHENTICATION.LOGIN ? 'Login' : 'Sign up'}
