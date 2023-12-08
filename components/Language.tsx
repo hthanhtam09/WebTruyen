@@ -1,9 +1,6 @@
-import { useOnClickOutside } from '@/hooks/useOnClickOutside';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { RouteMatcher } from 'next/dist/server/future/route-matchers/route-matcher';
 
 export enum LANGUAGE_TYPE {
   VI = 'vi',
@@ -20,8 +17,6 @@ const Language = () => {
   };
 
   const ref = useRef(null);
-
-  useOnClickOutside<number>(ref, () => setIsOpen(false));
 
   const changeLanguage = async (lng: string) => {
     await router.push(router.pathname === '/' ? lng : `${router.pathname}/${lng}`, undefined, {

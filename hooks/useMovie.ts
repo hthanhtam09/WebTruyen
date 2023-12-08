@@ -1,8 +1,8 @@
 import useSwr from 'swr'
-import fetcher from '@/lib/fetcher';
+import fetchAPI from '@/lib/fetchAPI';
 
-const useMovie = (id?: string) => {
-  const { data, error, isLoading } = useSwr(id ? `/api/movies/${id}` : null, fetcher, {
+const useMovie = (slug: string) => {
+  const { data, error, isLoading } = useSwr(`phim/${slug}`, fetchAPI, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

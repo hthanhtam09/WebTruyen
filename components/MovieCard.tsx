@@ -5,7 +5,6 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { PlayIcon } from '@heroicons/react/24/solid';
 
 import { MovieInterface } from '@/types';
-import FavoriteButton from '@/components/FavoriteButton';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
 import Image from 'next/image';
 
@@ -95,7 +94,6 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
             >
               <PlayIcon className="text-black w-4 lg:w-6" />
             </div>
-            <FavoriteButton movieId={data.id} />
             <div
               onClick={() => openModal(data?.id)}
               className="cursor-pointer ml-auto group/item w-6 h-6 lg:w-10 lg:h-10 border-white border-2 rounded-full flex justify-center items-center transition hover:border-neutral-300"

@@ -2,16 +2,17 @@ import React from 'react';
 import { PlayIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/router';
 
-interface PlayButtonProps {
-  movieId: string;
+interface WatchButtonProps {
+  path: string;
+  text: string;
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ movieId }) => {
+const WatchButton: React.FC<WatchButtonProps> = ({ path, text }) => {
   const router = useRouter();
 
   return (
     <button
-      onClick={() => router.push(`/watch/${movieId}`)}
+      onClick={() => router.push(`${path}`)}
       className="
         bg-white 
         rounded-md 
@@ -28,9 +29,9 @@ const PlayButton: React.FC<PlayButtonProps> = ({ movieId }) => {
         "
     >
       <PlayIcon className="w-4 md:w-7 text-black mr-1" />
-      Play
+      {text}
     </button>
   );
 };
 
-export default PlayButton;
+export default WatchButton;
