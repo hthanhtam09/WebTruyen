@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import prismadb from '@/lib/prismadb';
-import serverAuth from "@/lib/serverAuth";
+// import serverAuth from "@/lib/serverAuth";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end();
     }
 
-    await serverAuth(req, res);
+    // await serverAuth(req, res);
 
     const { movieId } = req.query;
 
