@@ -4,7 +4,7 @@ import useMovieList from '@/hooks/useMovieList';
 import React, { useState } from 'react';
 import Loading from '../loading';
 import { useRouter } from 'next/router';
-import PlayButton from '@/components/PlayButton';
+// import PlayButton from '@/components/PlayButton';
 import MovieList from '@/components/MovieList';
 import InfoModal from '@/components/InfoModal';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
