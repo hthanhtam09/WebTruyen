@@ -14,7 +14,10 @@ const TOP_OFFSET = 66;
 const Navbar = () => {
   const trans = useTrans();
 
-  const navbarItemListData = [trans.home.home, trans.home.genre];
+  const navbarItemListData = [
+    trans.home.home, 
+    // trans.home.genre
+  ];
 
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
@@ -79,7 +82,7 @@ const Navbar = () => {
           <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
             <BsBell />
           </div>
-          <div
+          {/* <div
             className="flex flex-row items-center gap-2 cursor-pointer relative"
             onClick={toggleAccountMenu}
           >
@@ -90,7 +93,7 @@ const Navbar = () => {
               className={`text-white transition ${showAccountMenu ? 'rotate-180' : 'rotate-0'}`}
             />
             <AccountMenu visible={showAccountMenu} />
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>

@@ -1,30 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import { NextPageContext } from "next"
-import { getSession } from "next-auth/react"
-import useCurrentUser from "@/hooks/useCurrentUser";
 import { useRouter } from "next/router";
 
 
-export async function getServerSideProps(context: NextPageContext) {
-    const session = await getSession(context);
-
-    if (!session) {
-        return {
-          redirect: {
-            destination: '/auth',
-            permanent: false,
-          }
-        }
-      }
-    
-      return {
-        props: {}
-      }
-}
-
 const Profiles = () => {
   const router = useRouter();
-  const { data: user } = useCurrentUser();
 
     return (
         <div className="flex items-center h-full justify-center">
@@ -37,7 +17,7 @@ const Profiles = () => {
                     <img src="/images/default-blue.png" alt="Profile" />
                   </div>
 
-                  <div className="mt-4 text-gray-400 text-2xl text-center group-hover:text-white">{user?.name}</div>
+                  {/* <div className="mt-4 text-gray-400 text-2xl text-center group-hover:text-white">{user?.name}</div> */}
                 </div>
               </div>
             </div>

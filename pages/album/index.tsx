@@ -14,7 +14,7 @@ const MovieAlbumScreen = () => {
   );
 
   const { isOpen, closeModal } = useInfoModalStore();
-
+  
   return isLoading ? (
     <Loading />
   ) : (
@@ -24,8 +24,9 @@ const MovieAlbumScreen = () => {
           style={{
             backgroundImage: `url(${movie?.movie.poster_url})`,
           }}
-          className="absolute z-9 w-[45%] h-[80%] top-30 right-0 bg-cover bg-center shadow-[inset_-10px_-10px_10px_20px_#18181b]"
-        />
+          className="absolute z-9 w-[45%] h-[80%] top-30 right-0 bg-cover bg-center shadow-[inset_-2px_-2px_15px_20px_#18181b] object-contain max-w-full max-h-full pointer-events-none"
+       />
+       
 
         <p className="text-white font-bold text-4xl z-10">
           {movie ? movie.movie.name : 'Đang cập nhật'}

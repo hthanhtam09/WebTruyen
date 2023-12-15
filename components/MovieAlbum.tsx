@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import useMovieAlbum from '@/hooks/useMovieAlbum';
+import useMovieList from '@/hooks/useMovieList';
 import { capitalizeFirstLetter } from '@/utils/utils';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
@@ -9,7 +9,7 @@ interface MovieAlbumProps {
 }
 
 const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
-  const { data: movieAlbum = [] } = useMovieAlbum();
+  const { data: movieList = [] } = useMovieList();
   const router = useRouter();
 
   const redirectToAlbum = useCallback(
@@ -27,7 +27,7 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
         {capitalizeFirstLetter(title)}
       </p>
       <div className="flex gap-10 mt-10 flex-wrap">
-        {movieAlbum.items != null ? movieAlbum.items.map((movie: any) => {
+        {movieList.items != null ? movieList.items.map((movie: any) => {
           return (
             <div key={movie._id}>
               <img

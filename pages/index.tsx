@@ -14,8 +14,8 @@ const Home = () => {
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <title>CineShin</title>
       </Head>
-      <Billboard />
-      <div className="pb-40">
+      {/* <Billboard /> */}
+      <div className="pb-40 pt-10">
         <MovieAlbum title={trans.home.trending} />
         {/* <MovieAlbum title={trans.home.series_movie} /> */}
       </div>

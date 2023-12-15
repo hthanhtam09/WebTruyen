@@ -1,41 +1,43 @@
 import React, { useCallback } from 'react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-
 // import PlayButton from '@/components/PlayButton';
-import useBillboard from '@/hooks/useBillboard';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
 import Loading from '@/pages/loading';
+import useMovieList from '@/hooks/useMovieList';
+import useMovie from '@/hooks/useMovie';
+import CitiesSlider from '@/components/CitiesSlider';
 
 const Billboard: React.FC = () => {
   const { openModal } = useInfoModalStore();
-  const { data, isLoading } = useBillboard();
+  const { data: movieList = [], isLoading } = useMovieList();
+  const movieCount = movieList?.items?.length || 0;
+  const randomIndex = Math.floor(Math.random() * movieCount);
 
-  const handleOpenModal = useCallback(() => {
-    openModal(data?.id);
-  }, [openModal, data?.id]);
+  const { data: movie } = useMovie(
+    movieList?.items != null ? movieList?.items[randomIndex].slug : 'nguoi-doi-nhi',
+  );
+
+  // const handleOpenModal = useCallback(() => {
+  //   openModal(data?.id);
+  // }, [openModal, data?.id]);
 
   return isLoading ? (
     <div className="relative h-[56.25vw]">
       <Loading />
     </div>
-  ) : data != null && data.videoUrl ? (
-    <div className="relative h-[56.25vw]">
-      <iframe
-        src={`${data.videoUrl}&autoplay=1&mute=1&controls=0&loop=1`}
-        allowFullScreen
-        className="pointer-events-none w-full h-[56.25vw] object-cover brightness-[60%] transition duration-500"
-      />
-      <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
+  ) : (
+    <div className="h-[56.25vw]">
+      <CitiesSlider  />;
+      {/* <div className="absolute top-[30%] md:top-[40%] ml-4 md:ml-16">
         <p className="text-white text-1xl md:text-5xl h-full w-[50%] lg:text-6xl font-bold drop-shadow-xl">
-          {data.title || ''}
+          {movie?.movie.name || ''}
         </p>
-        <p className="text-white text-[8px] md:text-lg mt-3 md:mt-8 w-[90%] md:w-[80%] lg:w-[50%] drop-shadow-xl">
-          {data.description || ''}
+        <p className="text-white text-[8px] md:text-lg mt-3 md:mt-8 w-[90%] md:w-[80%] lg:w-[50%] drop-shadow-xl line-clamp-5">
+          {movie?.movie.content || ''}
         </p>
         <div className="flex flex-row items-center mt-3 md:mt-4 gap-3">
-          {/* <PlayButton movieId={data.id} /> */}
           <button
-            onClick={handleOpenModal}
+            // onClick={handleOpenModal}
             className="
             bg-white
             text-white
@@ -57,8 +59,9 @@ const Billboard: React.FC = () => {
             More Info
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
-  ) : null;
+  );
 };
+
 export default Billboard;
