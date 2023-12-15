@@ -40,8 +40,8 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
         {capitalizeFirstLetter(title)}
       </p>
       {isLoading ? (
-       <div className='h-[100vh]'>
-         <Loading />
+        <div className="h-[100vh]">
+          <Loading />
         </div>
       ) : (
         <div className="flex gap-10 mt-10 flex-wrap">
@@ -55,18 +55,18 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
                       alt="Movie"
                       draggable={false}
                       className="
-                  cursor-pointer
-                  object-cover
-                  transition
-                  duration
-                  shadow-xl
-                  rounded-md
-                  group-hover:opacity-90
-                  sm:group-hover:opacity-0
-                  delay-300
-                  w-[15vw]
-                  h-[20vw]
-              "
+                        cursor-pointer
+                        object-cover
+                        transition
+                        duration
+                        shadow-xl
+                        rounded-md
+                        group-hover:opacity-90
+                        sm:group-hover:opacity-0
+                        delay-300
+                        w-[15vw]
+                        h-[20vw]
+                    "
                     />
                     <p className="text-white pt-2  w-[15vw]">{movie.name}</p>
                   </div>

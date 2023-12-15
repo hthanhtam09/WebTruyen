@@ -20,8 +20,8 @@ const Home = () => {
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4979943891567316"
         crossOrigin="anonymous"
       />
-      {/* <Billboard /> */}
-      <div className="pt-10">
+      <Billboard />
+      <div className="pt-14">
         <MovieAlbum title={trans.home.trending} />
         {/* <MovieAlbum title={trans.home.series_movie} /> */}
       </div>
