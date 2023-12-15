@@ -16,7 +16,7 @@ const Content = styled.div`
   box-shadow: 0 0.5px 0 1px rgba(255, 255, 255, 0.23) inset,
     0 1px 0 0 rgba(255, 255, 255, 0.66) inset, 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 10;
-  padding: 32px
+  padding: 32px;
 `;
 
 const Billboard: React.FC = () => {
@@ -25,19 +25,16 @@ const Billboard: React.FC = () => {
   const { data: movieList = [], isLoading } = useMovieList();
   const movieCount = movieList?.items?.length || 0;
   const randomIndex = Math.floor(Math.random() * movieCount);
-  const displayElementRef = useRef(false);
+
   const { data } = useMovie(
     movieList?.items != null ? movieList?.items[randomIndex].slug : 'nguoi-doi-nhi',
   );
-
 
   // const handleOpenModal = useCallback(() => {
   //   openModal(data?.id);
   // }, [openModal, data?.id]);
 
-  console.log('data?.movie', data?.movie);
-
-  function processLongString(
+  function handleStringOverLine(
     inputString: string,
     maxCharsPerLine: number = 80,
     maxLines: number = 3,
@@ -58,7 +55,6 @@ const Billboard: React.FC = () => {
 
       if (lines.length >= maxLines && !isEndOfSentence(word)) {
         lines.push('...');
-        displayElementRef.current = true;
         break;
       }
     }
@@ -92,23 +88,24 @@ const Billboard: React.FC = () => {
         ></div>
       </div>
       <div className="absolute left-[5%] top-[55%] w-[50%]">
-        <Content>
-          <h1 className="text-[52px] font-bold text-white">{data?.movie.name}</h1>
-          <p className="text-xl mb-1 font-thin text-white mt-2">
-            {processLongString(handleRemoveTagHtml(data?.movie.content))}
-            {displayElementRef.current === true && (
-              <div className="relative inline-flex">
-                <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
-                <Button
-                  className="relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold transition-all duration-200 bg-gray-900 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                  onClick={() => navigateAlbumScreen(data?.movie)}
-                >
-                  <span className="text-white capitalize">Xem thêm</span>
-                </Button>
+        {data ? (
+          <Content>
+            <h1 className="text-[52px] font-bold text-white">{data.movie.name}</h1>
+            <p className="text-xl mb-1 font-thin text-white mt-2">
+              {handleStringOverLine(handleRemoveTagHtml(data.movie.content))}
+            </p>
+            <div className="relative inline-flex mt-4 w-full cursor-pointer" onClick={() => navigateAlbumScreen(data.movie)} >
+              <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
+              <div
+                className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10"
+              >
+                <span className="text-white capitalize">Xem thêm</span>
               </div>
-            )}
-          </p>
-        </Content>
+            </div>
+          </Content>
+        ) : (
+          <div className="h-[182px]" />
+        )}
       </div>
     </>
   );
