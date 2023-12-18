@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useCallback, useRef, useState } from 'react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
 // import PlayButton from '@/components/PlayButton';
@@ -20,7 +22,7 @@ const Content = styled.div`
 `;
 
 const Billboard: React.FC = () => {
-  const { openModal } = useInfoModalStore();
+  // const { openModal } = useInfoModalStore();
   const router = useRouter();
   const { data: movieList = [], isLoading } = useMovieList();
   const movieCount = movieList?.items?.length || 0;

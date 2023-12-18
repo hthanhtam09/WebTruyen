@@ -16,7 +16,7 @@ const GenreScreen = () => {
 
   const { data: movies = [], isLoading } = useMovieList();
   const router = useRouter();
-  const { isOpen, closeModal } = useInfoModalStore();
+  // const { isOpen, closeModal } = useInfoModalStore();
 
   const handleSortChange = (value: string) => {
     setSortValue(value);
@@ -49,7 +49,7 @@ const GenreScreen = () => {
             <div className="flex-col px-4 md:px-16 py-6 flex items-start transition duration-500 bg-zinc-900 bg-opacity-90">
               <MovieList title="" data={movies} style="mt-10" />
             </div>
-            <InfoModal visible={isOpen} onClose={closeModal} />
+            {/* <InfoModal visible={isOpen} onClose={closeModal} /> */}
           </>
         )}
       </div>

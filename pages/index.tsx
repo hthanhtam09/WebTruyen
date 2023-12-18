@@ -15,11 +15,7 @@ const Home = () => {
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <title>CineShin</title>
       </Head>
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4979943891567316"
-        crossOrigin="anonymous"
-      />
+     
       <Billboard />
       <div className="pt-14">
         <MovieAlbum title={trans.home.trending} />

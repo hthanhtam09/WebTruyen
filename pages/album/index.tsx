@@ -6,6 +6,7 @@ import Loading from '../loading';
 import InfoModal from '@/components/InfoModal';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
 import useMovie from '@/hooks/useMovie';
+import { handleRemoveTagHtml } from '@/utils/utils';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
@@ -13,7 +14,7 @@ const MovieAlbumScreen = () => {
     router.query.slug ? (router.query.slug as string) : '',
   );
 
-  const { isOpen, closeModal } = useInfoModalStore();
+  // const { isOpen, closeModal } = useInfoModalStore();
 
   return isLoading ? (
     <div className="h-[100vh]">
@@ -43,7 +44,7 @@ const MovieAlbumScreen = () => {
           </p>
           <p className="text-white font-normal text-lg py-2">
             <span className="text-gray-400">Mô tả: </span>
-            {movie ? movie.movie.content : 'Đang cập nhật'}
+            {movie ? handleRemoveTagHtml(movie.movie.content) : 'Đang cập nhật'}
           </p>
           <p className="text-white font-normal text-lg py-2">
             <span className="text-gray-400">Đạo diễn: </span>
@@ -133,7 +134,7 @@ const MovieAlbumScreen = () => {
           );
         })}
       </div>
-      <InfoModal visible={isOpen} onClose={closeModal} />
+      {/* <InfoModal visible={isOpen} onClose={closeModal} /> */}
     </>
   );
 };
