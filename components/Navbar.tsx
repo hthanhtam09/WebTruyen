@@ -43,7 +43,15 @@ const Navbar: React.FC = () => {
         }`}
       >
         <Link href={'/'}>
-          <Image className="bg-cover" src="/images/logo.png" alt="Logo" width={100} height={100} />
+          <Image
+            className="bg-cover"
+            style={{ width: 'auto', height: 'auto' }}
+            src="/images/logo.png"
+            alt="Logo"
+            width={100}
+            height={100}
+            priority={true}
+          />
         </Link>
         <div className="flex-row ml-8 gap-7 hidden lg:flex">
           {navbarItemListData.map((item) => (

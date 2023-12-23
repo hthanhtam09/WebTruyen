@@ -25,12 +25,11 @@ const Billboard: React.FC = () => {
   // const { openModal } = useInfoModalStore();
   const router = useRouter();
   const { data: movieList = [], isLoading } = useMovieList();
-  const movieCount = movieList?.items?.length || 0;
+  const movieData = movieList != null && movieList.items != null && movieList.items.length > 0;
+  const movieCount = (movieData && movieList.items.length) || 0;
   const randomIndex = Math.floor(Math.random() * movieCount);
 
-  const { data } = useMovie(
-    movieList?.items != null ? movieList?.items[randomIndex].slug : 'nguoi-doi-nhi',
-  );
+  const { data } = useMovie(movieData ? movieList?.items[randomIndex].slug : 'nguoi-doi-nhi');
 
   // const handleOpenModal = useCallback(() => {
   //   openModal(data?.id);
