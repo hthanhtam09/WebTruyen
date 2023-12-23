@@ -4,13 +4,15 @@ import connectDB from "@/lib/db";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method !== 'GET') {
-      return res.status(405).end();
-    }
+    console.log('req', req)
+    console.log('res', res)
+    // if (req.method !== 'POST') {
+    //   return res.status(405).end(); 
+    // }
 
     await connectDB();
 
-    const movieName = req.query.name;
+    const movieName = req.query.keyword;
     console.log('movieName', movieName);
 
     if (!movieName || !Array.isArray(movieName)) {
