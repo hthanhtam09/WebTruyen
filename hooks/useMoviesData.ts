@@ -1,9 +1,9 @@
 
 import useSWR from "swr";
-import poster from "@/lib/poster";
+import fetcher from "@/lib/fetcher";
 
-const useSearch = (searchValue: string) => {
-    const {data, error, isLoading} = useSWR('/api/moviesSearch', () => poster(searchValue), {
+const useMoviesData = () => {
+    const {data, error, isLoading} = useSWR('/api/movies', fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false
@@ -16,4 +16,4 @@ const useSearch = (searchValue: string) => {
     }
 }
 
-export default useSearch
+export default useMoviesData

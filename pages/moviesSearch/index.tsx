@@ -1,16 +1,19 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import useMovie from '@/hooks/useMovie';
 import Loading from '../loading';
+import useMoviesData from '@/hooks/useMoviesData';
+import useSearch from '@/hooks/useSearch';
 
-const Watch = () => {
+const MoviesSearch = () => {
   const router = useRouter();
-  const { movieId } = router.query;
+  const { data: moviesData, isLoading } = useMoviesData();
+  const { data } = useSearch(router.query.keyword as string);
+  
 
-  // const { data, isLoading } = useMovie(movieId as string);
 
   return (
     <div className="h-screen w-screen bg-black">
+      <p>{router.query.keyword}</p>
       {/* <nav className="fixed w-full p-4 z-10 flex flex-row items-center gap-8 bg-black bg-opacity-70">
         <p className="text-white text-1xl md:text-3xl font-bold">
           <span className="font-light">Watching:</span> {data?.title}
@@ -29,4 +32,4 @@ const Watch = () => {
   );
 };
 
-export default Watch;
+export default MoviesSearch;

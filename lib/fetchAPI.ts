@@ -7,11 +7,10 @@ import axios from 'axios';
 // https://ophim9.cc/_next/data/s4OlXy8jONoHVWAT5vg7b/tim-kiem.json?keyword=tet-o-lang
 
 const BASE_URL = 'https://ophim1.com';
-const BASE_URL2 = 'https://ophim9.cc';
 
-const fetcher = (path: string | undefined, isBaseUrl2: boolean = false) =>
+const fetcher = (path: string) =>
   axios
-    .get(`${isBaseUrl2 ? BASE_URL2 : BASE_URL}/${path}`, {
+    .get(`${BASE_URL}/${path}`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
     .then((res) => res.data)

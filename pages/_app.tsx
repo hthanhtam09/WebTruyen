@@ -5,7 +5,7 @@ import Footer from '@/components/Footer';
 import ClientOnly from './ClientOnly';
 import Script from 'next/script';
 
-function App({ Component, pageProps: { ...pageProps } }: AppProps) {
+function App({ Component, pageProps: { ...pageProps } }: AppProps) {  
   return (
     <ClientOnly>
       <Script

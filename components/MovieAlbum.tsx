@@ -16,7 +16,6 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
   const { data: movieList = [], isLoading } = useMovieList(page);
   const router = useRouter();
   const classes = useStyles();
-
   const redirectToAlbum = useCallback(
     (movie: string) =>
       router.push({

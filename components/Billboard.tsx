@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
@@ -96,11 +96,12 @@ const Billboard: React.FC = () => {
             <p className="text-xl mb-1 font-thin text-white mt-2">
               {handleStringOverLine(handleRemoveTagHtml(data.movie.content))}
             </p>
-            <div className="relative inline-flex mt-4 w-full cursor-pointer" onClick={() => navigateAlbumScreen(data.movie)} >
+            <div
+              className="relative inline-flex mt-4 w-full cursor-pointer"
+              onClick={() => navigateAlbumScreen(data.movie)}
+            >
               <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
-              <div
-                className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10"
-              >
+              <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
                 <span className="text-white capitalize">Xem thêm</span>
               </div>
             </div>

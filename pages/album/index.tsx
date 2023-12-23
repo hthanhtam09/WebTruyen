@@ -52,7 +52,7 @@ const MovieAlbumScreen = () => {
               ? movie.movie.director.map((item: any, index: number) => (
                   <span key={index}>
                     {item}
-                    {index !== movie.movie.director.length - 1 && ', '}
+                    {index !== movie.movie.actor.length - 1 ? ', ' : '. '}
                   </span>
                 ))
               : 'Đang cập nhật'}
@@ -63,7 +63,7 @@ const MovieAlbumScreen = () => {
               ? movie.movie.actor.map((item: any, index: number) => (
                   <span key={index}>
                     {item}
-                    {index !== movie.movie.actor.length - 1 && ', '}
+                    {index !== movie.movie.actor.length - 1 ? ', ' : '. '}
                   </span>
                 ))
               : 'Đang cập nhật'}

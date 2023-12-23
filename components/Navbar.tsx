@@ -1,20 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import MobileMenu from './MobileMenu';
 import NavbarItem from './NavbarItem';
 import { BsChevronDown, BsSearch, BsBell } from 'react-icons/bs';
-import AccountMenu from './AccountMenu';
 import Image from 'next/image';
 import Language from './Language';
 import useTrans from '@/hooks/useTrans';
 import Link from 'next/link';
-import useSearch from '@/hooks/useSearch';
-import { Button } from '@material-ui/core';
+import Search from './Search';
+import { useRouter } from 'next/router';
 
-
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const trans = useTrans();
-
+  const router = useRouter();
   const navbarItemListData = [
     trans.home.home,
     // trans.home.genre
@@ -24,11 +22,6 @@ const Navbar = () => {
   const [showAccountMenu, setShowAccountMenu] = useState<boolean>(false);
   const [showbBackground, setShowBackground] = useState<boolean>(false);
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-
-  // const { data: movieListSearch = [], mutate } = useSearch(searchKeyword);
-
 
   const toggleMobileMenu = useCallback(() => {
     setShowMobileMenu((prev) => !prev);
@@ -38,25 +31,9 @@ const Navbar = () => {
     setShowAccountMenu((prev) => !prev);
   }, []);
 
-  const handleShowSearch = useCallback(() => {
+  const isOpenSearch = useCallback(() => {
     setIsShowSearch((prev) => !prev);
   }, []);
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchKeyword(event.target.value);
-  };
-  
-  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleSubmitSearch();
-    }
-  }
-
-  const handleSubmitSearch = () => {
-    console.log('Submit Search')
-    // mutate(searchKeyword)
-  }
 
   return (
     <nav className="w-full fixed z-40">
@@ -89,7 +66,7 @@ const Navbar = () => {
           </div>
           <div
             className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
-            onClick={handleShowSearch}
+            onClick={isOpenSearch}
           >
             <BsSearch />
           </div>
@@ -110,27 +87,7 @@ const Navbar = () => {
           </div> */}
         </div>
       </div>
-      {isShowSearch && (
-        <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
-          <div className="max-w-md w-[50vw] h-[6vh] mx-auto z-10">
-            <div className="relative w-full h-full rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
-              <input
-                className="h-full w-full outline-none text-sm text-gray-700 px-4"
-                type="text"
-                id="search"
-                placeholder="Tìm kiếm phim.."
-                value={searchKeyword}
-                onChange={handleChange}
-                onKeyDown={onKeyDown}
-              />
-            </div>
-          </div>
-          <div
-            className="absolute top-0 left-0 right-0 bottom-0 w-full h-full"
-            onClick={handleShowSearch}
-          />
-        </div>
-      )}
+      {isShowSearch && <Search isOpenSearch={isOpenSearch} />}
     </nav>
   );
 };
