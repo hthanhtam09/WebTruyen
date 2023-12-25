@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { capitalizeFirstLetter } from '@/utils/utils';
 import useMovieList from '@/hooks/useMovieList';
 import Loading from '@/pages/loading';
+import MovieList from './MovieList';
 
 interface MovieAlbumProps {
   title: string;
@@ -16,14 +17,6 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
   const { data: movieList = [], isLoading } = useMovieList(page);
   const router = useRouter();
   const classes = useStyles();
-  const redirectToAlbum = useCallback(
-    (movie: string) =>
-      router.push({
-        pathname: `/album`,
-        query: movie,
-      }),
-    [router],
-  );
 
   const handlePaginationChange = useCallback(
     (_: any, value: number) => {
@@ -43,36 +36,18 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
           <Loading />
         </div>
       ) : (
-        <div className="flex gap-10 mt-10 flex-wrap">
-          {movieList.items != null
-            ? movieList.items.map((movie: any) => {
-                return (
-                  <div key={movie._id}>
-                    <img
-                      onClick={() => redirectToAlbum(movie)}
-                      src={`https://img.ophim9.cc/uploads/movies/${movie.thumb_url}`}
-                      alt="Movie"
-                      draggable={false}
-                      className="
-                        cursor-pointer
-                        object-cover
-                        transition
-                        duration
-                        shadow-xl
-                        rounded-md
-                        group-hover:opacity-90
-                        sm:group-hover:opacity-0
-                        delay-300
-                        w-[15vw]
-                        h-[20vw]
-                    "
-                    />
-                    <p className="text-white pt-2  w-[15vw]">{movie.name}</p>
-                  </div>
-                );
-              })
-            : null}
-        </div>
+        <>
+          {movieList.items != null ? (
+            <div className="flex py-6 transition duration-500 bg-zinc-900 bg-opacity-90">
+              <MovieList
+                data={movieList.items}
+                style="mt-10 mb-20"
+              />
+            </div>
+          ) : (
+            <Loading />
+          )}
+        </>
       )}
 
       <div className="w-full mt-10 flex justify-center">

@@ -7,7 +7,6 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({ isOpenSearch }) => {
-  const { isLoading } = useMoviesData();
   const router = useRouter();
   const [searchValue, setSearchValue] = useState<string>('');
 
@@ -16,14 +15,12 @@ const Search: React.FC<SearchProps> = ({ isOpenSearch }) => {
   }, []);
 
   const handleSubmitSearch = useCallback(() => {
-    if (!isLoading) {
       router.push({
         pathname: '/moviesSearch',
         query: { keyword: searchValue },
       });
       isOpenSearch()
-    }
-  }, [isLoading, isOpenSearch, router, searchValue]);
+  }, [isOpenSearch, router, searchValue]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {

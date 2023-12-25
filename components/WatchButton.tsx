@@ -4,16 +4,17 @@ import { useRouter } from 'next/router';
 
 interface WatchButtonProps {
   path: string;
-  text: string;
+  text?: string;
+  query?: string;
   style?: string;
 }
 
-const WatchButton: React.FC<WatchButtonProps> = ({ path, text, style }) => {
+const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) => {
   const router = useRouter();
 
   return (
     <button
-      onClick={() => router.push(`${path}`)}
+      onClick={() => router.push({ pathname: `${path}`, query })}
       className={` bg-white 
       rounded-md 
       py-1 md:py-2 
@@ -29,7 +30,7 @@ const WatchButton: React.FC<WatchButtonProps> = ({ path, text, style }) => {
       `}
     >
       <PlayIcon className="w-4 md:w-7 text-black mr-1" />
-      {text}
+      {text ? text : null}
     </button>
   );
 };

@@ -1,9 +1,12 @@
 export interface MovieInterface {
-    id: string;
-    title: string;
-    description: string;
-    thumbnailUrl: string;
-    videoUrl: string;
-    duration: string;
-    genre: string;
-  }
+  modified: {
+    time: string;
+  };
+  _id: string;
+  slug: string;
+  name: string;
+  origin_name: string;
+  thumb_url: string;
+  poster_url: string;
+  year: number;
+}
