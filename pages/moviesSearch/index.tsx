@@ -4,11 +4,14 @@ import Loading from '../loading';
 import useMoviesData from '@/hooks/useMoviesData';
 import slugify from 'slugify';
 import MovieList from '@/components/MovieList';
+import moviesJson from '@/movies.json';
+import ReactPlayer from 'react-player';
 
 const MoviesSearch = () => {
   const router = useRouter();
   const { data: moviesData = [], isLoading } = useMoviesData();
   const [moviesFilter, setMoviesFilter] = useState([]);
+  const randomMoviesIndex = Math.floor(Math.random() * moviesJson.length);
 
   useEffect(() => {
     (async () => {
@@ -27,24 +30,35 @@ const MoviesSearch = () => {
   }, [moviesData, router.query.keyword]);
 
   return (
-    <div className="h-screen w-screen bg-black">
-      <div className="pt-32 px-16">
-        {!isLoading ? (
-          moviesFilter.length > 0 ? (
-            <div className="flex-col px-4 md:px-16 py-6 flex items-start transition duration-500 bg-zinc-900 bg-opacity-90">
-              <MovieList title={`Kết quả tìm kiếm: ${router.query.keyword}`} data={moviesFilter} style="mt-10 mb-20" />
-            </div>
-          ) : (
-            <div className="bg-white">
-              <p>Không có kết quả</p>
-            </div>
-          )
-        ) : (
-          <div className="h-[100vh]">
-            <Loading />
+    <div className="relative h-screen w-screen bg-black">
+      <ReactPlayer
+        className="absolute top-0 bottom-0 left-0 right-0 pointer-events-none w-full brightness-[60%] object-cover h-full"
+        url={`${moviesJson[randomMoviesIndex].videoUrl}`}
+        width="100%"
+        height="100%"
+        playing
+        controls={false}
+        muted
+      />
+      {!isLoading ? (
+        moviesFilter.length > 0 ? (
+          <div className="absolute top-32 px-4 md:px-16">
+            <MovieList
+              title={`Kết quả tìm kiếm: ${router.query.keyword}`}
+              data={moviesFilter.slice(0, 12)}
+              style="mt-10 mb-20"
+            />
           </div>
-        )}
-      </div>
+        ) : (
+          <div className="bg-white">
+            <p>Không có kết quả</p>
+          </div>
+        )
+      ) : (
+        <div className="h-[100vh]">
+          <Loading />
+        </div>
+      )}
     </div>
   );
 };
