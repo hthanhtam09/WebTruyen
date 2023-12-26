@@ -1,13 +1,9 @@
 'use client';
 
-import React, { useCallback, useRef, useState } from 'react';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
-// import PlayButton from '@/components/PlayButton';
-import useInfoModalStore from '@/hooks/useInfoModalStore';
+import React, { useCallback} from 'react';
 import Loading from '@/pages/loading';
 import useMovieList from '@/hooks/useMovieList';
 import useMovie from '@/hooks/useMovie';
-import Button from '@material-ui/core/Button';
 import { handleRemoveTagHtml, isEndOfSentence } from '@/utils/utils';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';

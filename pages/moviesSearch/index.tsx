@@ -8,17 +8,31 @@ import moviesJson from '@/movies.json';
 import ReactPlayer from 'react-player';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
+import Image from 'next/image';
+import Search from '@/components/Search';
+import styled from 'styled-components';
 
 const itemsPerPage = 12;
 
+const Content = styled.div`
+  backdrop-filter: blur(2px);
+  border-radius: 20px;
+  box-shadow: 0 0.5px 0 1px rgba(255, 255, 255, 0.23) inset,
+    0 1px 0 0 rgba(255, 255, 255, 0.66) inset, 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+  padding: 32px;
+  width: 30vw;
+`;
+
 const MoviesSearch = () => {
   const router = useRouter();
+  const classes = useStyles();
   const { data: moviesData = [], isLoading } = useMoviesData();
   const [moviesFilter, setMoviesFilter] = useState([]);
   const [currentMovie, setCurrentMovie] = useState([]);
   const [itemOffset, setItemOffset] = useState(0);
   const [page, setPage] = useState(1);
-  const classes = useStyles();
+  const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
 
   const randomMoviesIndex = Math.floor(Math.random() * moviesJson.length);
   const pageCount = Math.ceil(moviesFilter.length / itemsPerPage);
@@ -60,17 +74,27 @@ const MoviesSearch = () => {
   }, [moviesData, router.query.keyword]);
 
   const VideoBackground = useMemo(() => {
-    return <ReactPlayer
-    className="absolute top-0 bottom-0 left-0 right-0 pointer-events-none w-full brightness-[60%] object-cover h-full"
-    url={`${moviesJson[randomMoviesIndex].videoUrl}`}
-    width="100%"
-    height="100%"
-    playing
-    controls={false}
-    muted
-  />
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    return (
+      <ReactPlayer
+        className="absolute top-0 bottom-0 left-0 right-0 pointer-events-none w-full brightness-[60%] object-cover h-full"
+        url={`${moviesJson[randomMoviesIndex].videoUrl}`}
+        width="100%"
+        height="100%"
+        playing
+        controls={false}
+        muted
+      />
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isOpenSearch = useCallback(() => {
+    setIsShowSearch((prev) => !prev);
+  }, []);
+
+  const navigateHomeScreen = useCallback(() => {
+    router.push('/');
+  }, [router]);
 
   return (
     <div className="relative h-screen w-screen bg-black">
@@ -98,8 +122,45 @@ const MoviesSearch = () => {
             ) : null}
           </div>
         ) : (
-          <div className="bg-white">
-            <p>Không có kết quả</p>
+          <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+            <Content>
+              <>
+                <p className="text-white text-2xl font-bold">
+                  Oops!! Không có kết quả: {router.query.keyword}
+                </p>
+                <p className="text-white text-xl mt-2">
+                  Vui lòng trở về trang chủ hoặc tìm kiếm phim khác.
+                </p>
+              </>
+              <Image
+                src={'/images/gif/not-found.gif'}
+                alt="GIF"
+                width={200}
+                height={200}
+                style={{ width: 'auto', height: 'auto', display: 'block', margin: '0 auto' }}
+                priority={true}
+              />
+              <div className="flex justify-between items-center my-5">
+                <div
+                  className="relative inline-flex mt-4 cursor-pointer w-30"
+                  onClick={navigateHomeScreen}
+                >
+                  <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
+                  <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
+                    <span className="text-white capitalize">Trang chủ</span>
+                  </div>
+                </div>
+                <div
+                  className="relative inline-flex mt-4 cursor-pointer w-30"
+                  onClick={isOpenSearch}
+                >
+                  <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
+                  <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
+                    <span className="text-white capitalize">Tìm kiếm</span>
+                  </div>
+                </div>
+              </div>
+            </Content>
           </div>
         )
       ) : (
@@ -107,6 +168,8 @@ const MoviesSearch = () => {
           <Loading />
         </div>
       )}
+
+      {isShowSearch && <Search isOpenSearch={isOpenSearch} />}
     </div>
   );
 };
