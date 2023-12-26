@@ -125,11 +125,14 @@ const MoviesSearch = () => {
           <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
             <Content>
               <>
-                <p className="text-white text-2xl font-bold">
+                <p className="text-white text-2xl font-bold text-center">
                   Oops!! Không có kết quả: {router.query.keyword}
                 </p>
-                <p className="text-white text-xl mt-2">
+                <p className="text-white text-xl mt-2 text-center">
                   Vui lòng trở về trang chủ hoặc tìm kiếm phim khác.
+                </p>
+                <p className="text-white text-xl mt-2 text-center">
+                 Cảm ơn!!!
                 </p>
               </>
               <Image
@@ -140,7 +143,7 @@ const MoviesSearch = () => {
                 style={{ width: 'auto', height: 'auto', display: 'block', margin: '0 auto' }}
                 priority={true}
               />
-              <div className="flex justify-between items-center my-5">
+              <div className="flex justify-between items-center">
                 <div
                   className="relative inline-flex mt-4 cursor-pointer w-30"
                   onClick={navigateHomeScreen}
