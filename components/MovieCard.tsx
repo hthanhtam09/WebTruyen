@@ -5,13 +5,13 @@ import { MovieInterface } from '@/types';
 
 interface MovieCardProps {
   data: MovieInterface;
+  isMovieDetail?: boolean;
+  posterDetailUrl?: string;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetailUrl }) => {
   const router = useRouter();
   // const { openModal } = useInfoModalStore();
-
-  // const redirectToWatch = useCallback(() => router.push(`/watch/${data._id}`), [router, data.id]);
 
   const redirectToAlbum = useCallback(
     (movie: string) =>
@@ -22,11 +22,15 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
     [router],
   );
 
+  const redirectWatchMovie = useCallback((movie: any) => router.push(movie.link_embed), [router]);
+
   return (
     <div className="bg-zinc-900 col-span relative h-[12vw] mt-10">
       <img
-        onClick={() => redirectToAlbum(data as any)}
-        src={`https://img.ophim9.cc/uploads/movies/${data.thumb_url}`}
+        onClick={() => (isMovieDetail ? redirectWatchMovie(data) : redirectToAlbum(data as any))}
+        src={
+          isMovieDetail ? posterDetailUrl : `https://img.ophim9.cc/uploads/movies/${data.thumb_url}`
+        }
         alt="Movie"
         draggable={false}
         className="
@@ -41,7 +45,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data }) => {
         hover:opacity-30
       "
       />
-      <p className="text-white py-4">{data.name}</p>
+      <p className="text-white py-4">{isMovieDetail ? (data as any).filename : data.name}</p>
     </div>
   );
 };

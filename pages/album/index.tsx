@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useRouter } from 'next/router';
 import WatchButton from '@/components/WatchButton';
 import Loading from '../loading';
@@ -7,13 +5,13 @@ import InfoModal from '@/components/InfoModal';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
 import useMovie from '@/hooks/useMovie';
 import { handleRemoveTagHtml } from '@/utils/utils';
+import MovieList from '@/components/MovieList';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
   const { data: movie, isLoading } = useMovie(
     router.query.slug ? (router.query.slug as string) : '',
   );
-
   // const { isOpen, closeModal } = useInfoModalStore();
 
   return isLoading ? (
@@ -106,33 +104,20 @@ const MovieAlbumScreen = () => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-gray-300 mt-16" />
-      <p className="text-white font-bold text-xl px-16 pt-16">Các tập phim: </p>
       <div className="w-full flex flex-wrap mt-10 gap-16 px-16 pb-10">
-        {movie?.episodes[0].server_data.map((link: any, index: number) => {
-          return (
-            <div key={index}>
-              <img
-                onClick={() => router.push(link.link_embed)}
-                src={movie?.movie.poster_url}
-                className="
-                    cursor-pointer
-                    object-cover
-                    transition
-                    duration
-                    shadow-xl
-                    rounded-md
-                    group-hover:opacity-90
-                    sm:group-hover:opacity-0
-                    w-[15vw]
-                    h-[20vw]
-                    hover:opacity-70
-                  "
-                alt=""
-              />
-              <p className="text-white w-[15vw] pt-2">{link.filename}</p>
-            </div>
-          );
-        })}
+        {movie ? (
+          <MovieList
+            title="Các tập phim: "
+            data={movie?.episodes[0].server_data}
+            posterDetailUrl={movie?.movie.poster_url}
+            style="mt-10 mb-20"
+            isMovieDetail
+          />
+        ) : (
+          <div className="h-screen">
+            <Loading />
+          </div>
+        )}
       </div>
       {/* <InfoModal visible={isOpen} onClose={closeModal} /> */}
     </>
