@@ -16,7 +16,7 @@ const Home = () => {
       </Head>
 
       <Billboard />
-      <div className="pt-14 h-[180vh]" id="moveTrending">
+      <div className="pt-14 h-[165vh]" id="moveTrending">
         <MovieAlbum title={trans.home.trending} />
         {/* <MovieAlbum title={trans.home.series_movie} /> */}
       </div>
