@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
-import Loading from '../loading';
-import useMoviesData from '@/hooks/useMoviesData';
 import slugify from 'slugify';
-import MovieList from '@/components/MovieList';
-import moviesJson from '@/movies.json';
 import ReactPlayer from 'react-player';
 import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import Image from 'next/image';
-import Search from '@/components/Search';
 import styled from 'styled-components';
+
+import useMoviesData from '@/hooks/useMoviesData';
+import MovieList from '@/components/MovieList';
+import Search from '@/components/Search';
+import moviesJson from '@/movies.json';
+import Loading from '../loading';
 
 const itemsPerPage = 12;
 

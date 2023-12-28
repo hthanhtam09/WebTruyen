@@ -12,6 +12,7 @@ body {
 
 html {
   @apply h-full;
+  scroll-behavior: smooth;
 }
 
 :root {
@@ -22,6 +23,8 @@ html {
   --sz: 5vmin;
   --spd: 2.05s;
 }
+
+/* Loader */
 
 @property --deg {
   syntax: '<angle>';

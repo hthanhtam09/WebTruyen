@@ -1,21 +1,22 @@
 /* eslint-disable @next/next/no-img-element */
 import { useCallback, useState } from 'react';
-import MobileMenu from './MobileMenu';
-import NavbarItem from './NavbarItem';
-import { BsChevronDown, BsSearch, BsBell } from 'react-icons/bs';
+import { BsSearch, BsFacebook } from 'react-icons/bs';
+import { TfiEmail } from 'react-icons/tfi';
 import Image from 'next/image';
-import Language from './Language';
-import useTrans from '@/hooks/useTrans';
 import Link from 'next/link';
+
 import Search from './Search';
-import { useRouter } from 'next/router';
+import NavbarItem from './NavbarItem';
 
 const Navbar: React.FC = () => {
-  const trans = useTrans();
-  const router = useRouter();
+  // const trans = useTrans();
+  // const router = useRouter();
   const navbarItemListData = [
-    trans.home.home,
-    // trans.home.genre
+    // trans.home.home,
+    // trans.home.genre,
+    'Trang chủ',
+    'Thể loại',
+    'Chiếu rạp',
   ];
 
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);
@@ -35,10 +36,19 @@ const Navbar: React.FC = () => {
     setIsShowSearch((prev) => !prev);
   }, []);
 
+  const isOpenFacebook = useCallback(() => {
+    window.location.href = 'https://www.facebook.com/hth9199';
+  }, []);
+
+  const isOpenEmail = useCallback(() => {
+    window.location.href =
+      'mailto:hthanhtam0901@gmail.com';
+  }, []);
+
   return (
     <nav className="w-full fixed z-40">
       <div
-        className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 bg-zinc-900 bg-opacity-90 ${
+        className={`px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 bg-zinc-800 bg-opacity-90 ${
           showbBackground ? 'bg-zinc-900 bg-opacity-90' : ''
         }`}
       >
@@ -53,46 +63,35 @@ const Navbar: React.FC = () => {
             priority={true}
           />
         </Link>
-        <div className="flex-row ml-8 gap-7 hidden lg:flex">
-          {navbarItemListData.map((item) => (
-            <NavbarItem label={item} key={item} />
-          ))}
-        </div>
-        <div
-          onClick={toggleMobileMenu}
-          className="lg:hidden flex flex-row items-center gap-2 ml-8 cursor-pointer relative"
-        >
-          <p className="text-white text-sm">Browse</p>
-          <BsChevronDown
-            className={`text-white transition ${showMobileMenu ? 'rotate-180' : 'rotate-0'}`}
-          />
-          <MobileMenu visibile={showMobileMenu} />
-        </div>
-        <div className="flex flex-row ml-auto gap-7 items-center">
+        <div className="flex flex-row ml-auto gap-7 items-center justify-between w-[50%]">
           {/* <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
             <Language />
           </div> */}
-          <div
-            className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
-            onClick={isOpenSearch}
-          >
-            <BsSearch />
+          <div className="flex-row ml-8 gap-12 hidden lg:flex">
+            {navbarItemListData.map((item) => (
+              <NavbarItem label={item} key={item} />
+            ))}
           </div>
-          {/* <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
-            <BsBell />
-          </div> */}
-          {/* <div
-            className="flex flex-row items-center gap-2 cursor-pointer relative"
-            onClick={toggleAccountMenu}
-          >
-            <div className="w-6 h-6 lg:w-10 lg:h-10 rounded-md overflow-hidden">
-              <img src="/images/default-blue.png" alt="" />
+          <div className="flex-row ml-8 gap-8 hidden lg:flex">
+            <div
+              className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+              onClick={isOpenFacebook}
+            >
+              <BsFacebook />
             </div>
-            <BsChevronDown
-              className={`text-white transition ${showAccountMenu ? 'rotate-180' : 'rotate-0'}`}
-            />
-            <AccountMenu visible={showAccountMenu} />
-          </div> */}
+            <div
+              className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+              onClick={isOpenEmail}
+            >
+              <TfiEmail />
+            </div>
+            <div
+              className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
+              onClick={isOpenSearch}
+            >
+              <BsSearch />
+            </div>
+          </div>
         </div>
       </div>
       {isShowSearch && <Search isOpenSearch={isOpenSearch} />}
