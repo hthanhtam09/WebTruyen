@@ -44,17 +44,15 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
   }, [endOffset, itemOffset, moviesData, setCurrentMovie]);
 
   return (
-    <div className="px-4 md:px-16 py-20">
+    <div className="h-full relative px-4 md:px-16 py-20">
       <p className="text-white text-md md:text-xl lg:text-4xl font-semibold mb-4">
         {capitalizeFirstLetter(title)}
       </p>
-      {!isLoading && moviesData.length > 0 ? (
-        <>
-          <MovieList
-            data={currentMovie}
-            style="mt-10 mb-20"
-          />
-          {moviesData.length > itemsPerPage ? (
+
+      {!isLoading ? (
+        currentMovie.length > 0 ? (
+           <>
+            <MovieList data={currentMovie} style="mt-10 mb-20" />
             <div className="w-full pt-14 flex justify-center">
               <Pagination
                 count={pageCount}
@@ -66,12 +64,10 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
                 className={classes.paginationItem}
               />
             </div>
-          ) : null}
-        </>
+           </>
+        ) : null
       ) : (
-        <div className="h-[100vh]">
-          <Loading />
-        </div>
+         <Loading />
       )}
     </div>
   );
