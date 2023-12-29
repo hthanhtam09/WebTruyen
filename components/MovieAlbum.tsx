@@ -15,7 +15,6 @@ interface MovieAlbumProps {
 
 const MovieAlbum: React.FC<MovieAlbumProps> = ({ title }) => {
   const { data: moviesData = [], isLoading } = useMoviesData();
-
   const [page, setPage] = useState(1);
   const [itemOffset, setItemOffset] = useState(0);
   const [currentMovie, setCurrentMovie] = useState([]);

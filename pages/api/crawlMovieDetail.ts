@@ -11,9 +11,9 @@ let processedMovieCount = 0;
 async function crawlMovieDetail(movie: any) {
   try {
     const response = await axios.get(`https://ophim1.com/phim/${movie.slug}`);
-
     const movieData = response.data;
     const movieDetail = new MovieDetail(movieData);
+
     await movieDetail.save();
     console.log('Save: ', movie._id)
     processedMovieCount++;

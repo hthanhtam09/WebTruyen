@@ -8,9 +8,9 @@ import useMoviesDetail from '@/hooks/useMovieDetail';
 const MovieAlbumScreen = () => {
   const router = useRouter();
   const { data: movie, isLoading } = useMoviesDetail(
-    router.query._id as string,
+    router.query.slug as string,
   );
-  
+
   return isLoading ? (
     <div className="h-[100vh]">
       <Loading />
