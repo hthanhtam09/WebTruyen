@@ -1,19 +1,16 @@
 import { useRouter } from 'next/router';
 import WatchButton from '@/components/WatchButton';
 import Loading from '../loading';
-import InfoModal from '@/components/InfoModal';
-import useInfoModalStore from '@/hooks/useInfoModalStore';
-import useMovie from '@/hooks/useMovie';
 import { handleRemoveTagHtml } from '@/utils/utils';
 import MovieList from '@/components/MovieList';
+import useMoviesDetail from '@/hooks/useMovieDetail';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
-  const { data: movie, isLoading } = useMovie(
-    router.query.slug ? (router.query.slug as string) : '',
+  const { data: movie, isLoading } = useMoviesDetail(
+    router.query._id as string,
   );
-  // const { isOpen, closeModal } = useInfoModalStore();
-
+  
   return isLoading ? (
     <div className="h-[100vh]">
       <Loading />

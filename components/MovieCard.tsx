@@ -12,19 +12,19 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetailUrl }) => {
   const router = useRouter();
   // const { openModal } = useInfoModalStore();
-
+  
   const redirectToAlbum = useCallback(
-    (movie: string) =>
+    (data: string) =>
       router.push({
         pathname: `/album`,
-        query: movie,
+        query: data,
       }),
     [router],
   );
 
   const redirectWatchMovie = useCallback((movie: any) => router.push(movie.link_embed), [router]);
 
-  return (
+  return data ? (
     <div className="bg-zinc-900 col-span relative h-[12vw] mt-10">
       <img
         onClick={() => (isMovieDetail ? redirectWatchMovie(data) : redirectToAlbum(data as any))}
@@ -34,20 +34,20 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
         alt="Movie"
         draggable={false}
         className="
-        cursor-pointer
-        object-cover
-        transition
-        duration
-        shadow-xl
-        rounded-md
-        w-full
-        h-[12vw]
-        hover:opacity-30
-      "
+          cursor-pointer
+          object-cover
+          transition
+          duration
+          shadow-xl
+          rounded-md
+          w-full
+          h-[12vw]
+          hover:opacity-30
+        "
       />
       <p className="text-white py-4">{isMovieDetail ? (data as any).filename : data.name}</p>
     </div>
-  );
+  ) : null;
 };
 
 export default MovieCard;

@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ClientOnly from './ClientOnly';
 import Script from 'next/script';
-import { useEffect } from 'react';
 
 function App({ Component, pageProps: { ...pageProps } }: AppProps) {
 

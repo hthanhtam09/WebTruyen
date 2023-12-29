@@ -3,7 +3,6 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 
 // import PlayButton from '@/components/PlayButton';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
-import useMovie from '@/hooks/useMovie';
 import Loading from '@/pages/loading';
 
 interface InfoModalProps {
