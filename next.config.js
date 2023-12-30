@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
-// const { i18n } = require('./next-i18next.config') 
 
 const nextConfig = {
-    images: {
-        unoptimized: true,
-    },
-}
+  reactStrictMode: true,
+  images: {
+    unoptimized: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
