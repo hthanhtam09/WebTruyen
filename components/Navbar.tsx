@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
         <Link href={'/'}>
           <Image
             className="bg-cover"
-            style={{ width: 'auto', height: 'auto' }}
+            // style={{ width: 'auto', height: 'auto' }}
             src="/images/logo.png"
             alt="Logo"
             width={100}

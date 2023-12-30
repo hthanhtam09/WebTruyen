@@ -18,7 +18,7 @@ const Footer = () => {
           <div className="m-auto">
             <Image
               src="/images/logo.png"
-              style={{ width: 'auto', height: 'auto' }}
+              // style={{ width: 'auto', height: 'auto' }}
               alt="logo"
               width={200}
               height={200}
