@@ -3,13 +3,24 @@ import '../styles/globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ClientOnly from './ClientOnly';
-import Script from 'next/script';
+import { useEffect } from 'react';
 
 function App({ Component, pageProps: { ...pageProps } }: AppProps) {
 
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+  }, []);
+
   return (
     <ClientOnly>
-      <Script src='../sw.js' />
       <Navbar />
       <Component {...pageProps} />
       <Footer />
