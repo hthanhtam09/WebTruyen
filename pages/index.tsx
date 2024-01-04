@@ -17,8 +17,7 @@ const Home = () => {
 
       <Billboard />
       <div className="pt-14 h-[165vh]" id="moveTrending">
-        <MovieAlbum title={trans.home.trending} />
-        {/* <MovieAlbum title={trans.home.series_movie} /> */}
+        <MovieAlbum title={trans.home.trending} isPagination/>
       </div>
     </>
   );

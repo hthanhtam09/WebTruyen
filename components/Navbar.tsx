@@ -6,16 +6,14 @@ import Link from 'next/link';
 
 import Search from './Search';
 import NavbarItem from './NavbarItem';
+import useTrans from '@/hooks/useTrans';
 
 const Navbar: React.FC = () => {
-  // const trans = useTrans();
+  const trans = useTrans();
   // const router = useRouter();
   const navbarItemListData = [
-    // trans.home.home,
-    // trans.home.genre,
-    'Trang chủ',
-    'Thể loại',
-    'Chiếu rạp',
+    trans.home.home,
+    trans.home.genre,
   ];
 
   const [showMobileMenu, setShowMobileMenu] = useState<boolean>(false);

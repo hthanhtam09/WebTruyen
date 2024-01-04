@@ -1,4 +1,3 @@
-import FilterFilm from '@/components/FilterFilm';
 import LayoutHeader from '@/components/LayoutHeader';
 import React, { useState } from 'react';
 import Loading from '../loading';
@@ -7,40 +6,23 @@ import { useRouter } from 'next/router';
 import MovieList from '@/components/MovieList';
 import InfoModal from '@/components/InfoModal';
 import useInfoModalStore from '@/hooks/useInfoModalStore';
+import MovieAlbum from '@/components/MovieAlbum';
+import useTrans from '@/hooks/useTrans';
+import Line from '@/components/Line';
 
 const GenreScreen = () => {
-  const [sortValue, setSortValue] = useState('newest');
-  const [genreValue, setGenreValue] = useState('action');
-  const [countryValue, setCountryValue] = useState('us');
+  const trans = useTrans();
 
-  const router = useRouter();
-  // const { isOpen, closeModal } = useInfoModalStore();
-
-  const handleSortChange = (value: string) => {
-    setSortValue(value);
-    // Xử lý khi giá trị sắp xếp thay đổi
-  };
-
-  const handleGenreChange = (value: string) => {
-    setGenreValue(value);
-    // Xử lý khi giá trị thể loại thay đổi
-  };
-
-  const handleCountryChange = (value: string) => {
-    setCountryValue(value);
-    // Xử lý khi giá trị quốc gia thay đổi
-  };
   return (
-    <div className="pt-[93px]">
-      <LayoutHeader />
+    <div className="pt-[93px] h-screen">
+      {/* <LayoutHeader /> */}
       <div className="pb-40">
-        <FilterFilm
-          onSortChange={handleSortChange}
-          onGenreChange={handleGenreChange}
-          onCountryChange={handleCountryChange}
-        />
-
-        
+        <MovieAlbum title={trans.home.trending} itemsPerPage={12} isNavigate />
+        <Line />
+        <MovieAlbum title={trans.home.series_movie} itemsPerPage={12} isNavigate />
+        <Line />
+        <MovieAlbum title={trans.home.horror_movie} itemsPerPage={12} isNavigate />
+        <Line />
       </div>
     </div>
   );
