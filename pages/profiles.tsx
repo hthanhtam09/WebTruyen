@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { NextPageContext } from "next"
 import { useRouter } from "next/router";
 

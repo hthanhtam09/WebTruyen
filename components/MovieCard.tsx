@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { MovieInterface } from '@/types';

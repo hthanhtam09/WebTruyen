@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { useCallback, useState } from 'react';
 import { BsSearch, BsFacebook } from 'react-icons/bs';
 import { TfiEmail } from 'react-icons/tfi';
@@ -41,8 +40,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   const isOpenEmail = useCallback(() => {
-    window.location.href =
-      'mailto:hthanhtam0901@gmail.com';
+    window.location.href = 'mailto:hthanhtam0901@gmail.com';
   }, []);
 
   return (
@@ -53,15 +51,7 @@ const Navbar: React.FC = () => {
         }`}
       >
         <Link href={'/'}>
-          <Image
-            className="bg-cover"
-            // style={{ width: 'auto', height: 'auto' }}
-            src="/images/logo.png"
-            alt="Logo"
-            width={100}
-            height={100}
-            priority={true}
-          />
+          <img className="bg-cover" src="/images/logo.png" alt="Logo" width={100} height={100} />
         </Link>
         <div className="flex flex-row ml-auto gap-7 items-center justify-between w-[50%]">
           {/* <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
