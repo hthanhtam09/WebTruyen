@@ -21,9 +21,8 @@ const GenreScreen = () => {
   );
 
   return (
-    <div className="pt-[93px] h-screen">
+    <div className="pt-[93px] pb-16">
       {/* <LayoutHeader /> */}
-      <div className="pb-40">
         <MovieAlbum
           title={trans.home.series_movie}
           moviesData={filterSeriesData}
@@ -39,8 +38,6 @@ const GenreScreen = () => {
           itemsPerPage={12}
           isNavigate
         />
-        <Line />
-      </div>
     </div>
   );
 };
