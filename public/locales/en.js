@@ -6,5 +6,6 @@ export default {
     trending: 'trending',
     series_movie: 'series movie',
     horror_movie: 'horror movie',
+    single_movie: 'single movie',
   },
 };

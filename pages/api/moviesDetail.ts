@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Movie } from '@/pages/api/Models';
+import { MovieDetail } from '@/pages/api/Models';
 import connectDB from "@/lib/db";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end();
     }
     await connectDB()
-    const movies = await Movie.find({});
+    const movies = await MovieDetail.find({});
 
     return res.status(200).json(movies);
   } catch (error) {

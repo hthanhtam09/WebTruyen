@@ -4,11 +4,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { capitalizeFirstLetter } from '@/utils/utils';
 import Loading from '@/pages/loading';
 import MovieList from './MovieList';
-import useMoviesData from '@/hooks/useMoviesData';
 import { useRouter } from 'next/router';
+import useMovie from '@/hooks/useMovie';
+import { MovieDetailInterface } from '@/types';
 
 interface MovieAlbumProps {
   title: string;
+  moviesData: MovieDetailInterface[];
+  isLoading: boolean;
   itemsPerPage?: number;
   isPagination?: boolean;
   isNavigate?: boolean;
@@ -16,19 +19,21 @@ interface MovieAlbumProps {
 
 const MovieAlbum: React.FC<MovieAlbumProps> = ({
   title,
+  moviesData,
+  isLoading,
   itemsPerPage = 24,
   isPagination = false,
   isNavigate = false,
 }) => {
-  const { data: moviesData = [], isLoading } = useMoviesData();
   const router = useRouter();
   const classes = useStyles();
 
   const [page, setPage] = useState(1);
   const [itemOffset, setItemOffset] = useState(0);
-  const [currentMovie, setCurrentMovie] = useState([]);
+  const [currentMovie, setCurrentMovie] = useState<MovieDetailInterface[]>([]);
 
-  const pageCount = Math.ceil(moviesData.length / itemsPerPage);
+  const pageCount =
+    moviesData != null && moviesData.length > 0 ? Math.ceil(moviesData.length / itemsPerPage) : 1;
   const endOffset = itemOffset + itemsPerPage;
 
   const handlePaginationChange = useCallback(
@@ -44,10 +49,16 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
   );
 
   const redirectToNameGenreScreen = useCallback(
-    () =>
+    (currentMovie: MovieDetailInterface[]) => {
+      const queryObject = {
+        movies: JSON.stringify(currentMovie),
+      };
+  
       router.push({
         pathname: `/genre/${title}`,
-      }),
+        query: queryObject,
+      });
+    },
     [router, title],
   );
 
@@ -60,16 +71,17 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
 
   return (
     <div className="h-full relative px-4 md:px-16 pt-20 pb-10">
-      <div onClick={() => (isNavigate ? redirectToNameGenreScreen() : {})} className='flex items-center cursor-pointer'>
-        <p className="text-white text-md md:text-xl lg:text-4xl font-semibold mb-4">
+      <div
+        onClick={() =>
+          isNavigate ? redirectToNameGenreScreen(moviesData) : {}
+        }
+        className="flex items-center cursor-pointer"
+      >
+        <p className="text-white text-md md:text-xl lg:text-4xl font-semibold">
           {capitalizeFirstLetter(title)}
         </p>
         {isNavigate && (
-          <img
-            className="w-[30px] h-[30px] ml-6"
-            src="/images/right-arrow-icon.png"
-            alt="icon"
-          />
+          <img className="w-[30px] h-[30px] ml-6" src="/images/right-arrow-icon.png" alt="icon" />
         )}
       </div>
 
