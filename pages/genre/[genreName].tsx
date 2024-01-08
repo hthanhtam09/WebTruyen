@@ -8,16 +8,14 @@ const GenreNameScreen = ({ isLoading = false }: any) => {
   const moviesData = JSON.parse(router.query.movies as any);
 
   return (
-    <div className="pt-[50px] h-screen">
-      <div className="pb-40">
-        <MovieAlbum
-          title={router.query.genreName as string}
-          moviesData={moviesData}
-          isLoading={isLoading}
-          itemsPerPage={24}
-          isPagination
-        />
-      </div>
+    <div className="pt-[50px]">
+      <MovieAlbum
+        title={router.query.genreName as string}
+        moviesData={moviesData}
+        isLoading={isLoading}
+        itemsPerPage={24}
+        isPagination
+      />
     </div>
   );
 };
