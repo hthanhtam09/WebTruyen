@@ -18,7 +18,7 @@ const Home = () => {
       </Head>
 
       <Billboard />
-      <div className="pt-14 h-[165vh]" id="moveTrending">
+      <div className={`pt-14 ${isLoading && 'h-[100vh]'}`} id="moveTrending">
         <MovieAlbum
           title={trans.home.trending}
           moviesData={moviesData}

@@ -88,9 +88,9 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
       {!isLoading ? (
         currentMovie.length > 0 ? (
           <>
-            <MovieList data={currentMovie} style="mt-10 mb-20" />
+            <MovieList data={currentMovie} style="mt-10 mb-10" />
             {isPagination && (
-              <div className="w-full pt-14 flex justify-center">
+              <div className="w-full flex justify-center">
                 <Pagination
                   count={pageCount}
                   variant="outlined"

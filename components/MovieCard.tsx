@@ -16,7 +16,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
     (data: MovieDetailInterface) =>
       router.push({
         pathname: `/album`,
-        query: data.movie.slug,
+        query: data.movie?.slug,
       }),
     [router],
   );
@@ -24,11 +24,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
   const redirectWatchMovie = useCallback((movie: any) => router.push(movie.link_embed), [router]);
 
   return data ? (
-    <div className="bg-zinc-900 col-span relative h-[12vw] mt-10">
+    <div className="relative mt-10">
       <img
         onClick={() => (isMovieDetail ? redirectWatchMovie(data) : redirectToAlbum(data))}
         src={
-          isMovieDetail ? posterDetailUrl : data.movie.poster_url
+          isMovieDetail ? posterDetailUrl : data.movie?.poster_url
         }
         alt="Movie"
         draggable={false}
@@ -44,7 +44,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
           hover:opacity-30
         "
       />
-      <p className="text-white py-4">{isMovieDetail ? (data as any).filename : data.movie.name}</p>
+      <p className="text-white py-4 text-sm">{isMovieDetail ? (data as any).filename : data.movie?.name}</p>
     </div>
   ) : null;
 };

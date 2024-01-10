@@ -7,11 +7,11 @@ import Pagination from '@material-ui/lab/Pagination';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import useMoviesData from '@/hooks/useMoviesData';
 import MovieList from '@/components/MovieList';
 import Search from '@/components/Search';
 import moviesJson from '@/movies.json';
 import Loading from '../loading';
+import useMovie from '@/hooks/useMovie';
 
 const itemsPerPage = 12;
 
@@ -28,7 +28,7 @@ const Content = styled.div`
 const MoviesSearch = () => {
   const router = useRouter();
   const classes = useStyles();
-  const { data: moviesData = [], isLoading } = useMoviesData();
+  const { data: moviesData = [], isLoading } = useMovie();
   const [moviesFilter, setMoviesFilter] = useState([]);
   const [currentMovie, setCurrentMovie] = useState([]);
   const [itemOffset, setItemOffset] = useState(0);
@@ -66,7 +66,7 @@ const MoviesSearch = () => {
       const resultFilter =
         moviesData.length > 0 &&
         moviesData.filter((movie: any) => {
-          const normalizedSlug = slugify(movie.slug, { remove: /[-]/g, lower: true });
+          const normalizedSlug = slugify(movie.movie.slug, { remove: /[-]/g, lower: true });
 
           return normalizedSlug.includes(normalizedKeyword);
         });
