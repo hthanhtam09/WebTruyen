@@ -1,5 +1,3 @@
-import useTrans from '@/hooks/useTrans';
-import { capitalizeFirstLetter } from '@/utils/utils';
 import Link from 'next/link';
 import React from 'react';
 
@@ -10,10 +8,10 @@ interface NavbarItemProps {
 const NavbarItem: React.FC<NavbarItemProps> = ({ label }) => {
   return (
     <Link
-      href={label === 'home' ? '/' : `/${label}`}
+      href={label === 'Home' ? '/' : `/${label}`}
       className="text-white cursor-pointer hover:text-gray-300 transition"
     >
-      {capitalizeFirstLetter(label)}
+      {label}
     </Link>
   );
 };

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { useRouter } from 'next/router';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
+import { Helmet } from 'react-helmet-async';
 
 import WatchButton from '@/components/WatchButton';
 import Line from '@/components/Line';
@@ -19,11 +20,15 @@ import 'swiper/css/pagination';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
+
   const { data: movie } = useMoviesDetail(Object.keys(router.query) as any as string);
   const { data: moviesRelatedData = [] } = useMovie();
 
   return (
     <>
+     <Helmet>
+        <title>{movie?.movie.name}</title>
+      </Helmet>
       <Suspense fallback={<Loading />}>
         <section className="relative flex-col pt-32 px-4 md:px-16 py-6 flex items-start transition duration-500 bg-zinc-900 bg-opacity-90">
           {movie ? (

@@ -5,13 +5,12 @@ import Link from 'next/link';
 
 import Search from './Search';
 import NavbarItem from './NavbarItem';
-import useTrans from '@/hooks/useTrans';
+import { convertToTitleCase } from '@/utils/utils';
 
 const Navbar: React.FC = () => {
-  const trans = useTrans();
   const navbarItemListData = [
-    trans.home.home,
-    trans.home.genre,
+    'Home',
+    'up_comming'
   ];
 
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
@@ -42,7 +41,7 @@ const Navbar: React.FC = () => {
           </div> */}
           <div className="flex-row ml-8 gap-12 hidden lg:flex">
             {navbarItemListData.map((item) => (
-              <NavbarItem label={item} key={item} />
+              <NavbarItem label={convertToTitleCase(item)} key={item} />
             ))}
           </div>
           <div className="flex-row ml-8 gap-8 hidden lg:flex">

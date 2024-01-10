@@ -39,7 +39,7 @@ const Billboard: React.FC = () => {
   const randomMoviesIndex = Math.floor(Math.random() * moviesJson.length);
 
   const handleMoveListFilm = useCallback(() => {
-    document.getElementById('moveTrending')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('moveMovies')?.scrollIntoView({ behavior: 'smooth' });
     history.replaceState({}, document.title, window.location.pathname);
   }, []);
 
@@ -63,14 +63,13 @@ const Billboard: React.FC = () => {
       <div className="relative top-28 h-[90vh] w-screen bg-black">{VideoBackground}</div>
       <div className="absolute left-[5%] top-[55%] w-[50%]">
         <Content>
-          <Title>Chào mừng bạn đến với CineShin</Title>
+          <Title>Welcome to CineShin</Title>
           <p className="text-xl mb-1 font-thin text-white mt-4">
-            Trải nghiệm điện ảnh đỉnh cao với hàng ngàn bộ phim đa dạng. Hãy khám phá và chia sẻ
-            niềm đam mê của bạn ngay hôm nay!
+            Experience the ultimate cinema with thousands of diverse movies. Discover and share your passion today!
           </p>
           <div className="mt-12 py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10 cursor-pointer hover:opacity-30">
             <Button className="text-white capitalize" onClick={handleMoveListFilm}>
-              Khám Phá Ngay
+              Explore Now
             </Button>
           </div>
         </Content>

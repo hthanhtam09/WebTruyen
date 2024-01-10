@@ -9,7 +9,11 @@ const ClientOnly = ({ children, ...delegated }) => {
 
   if (!hasMounted) return null;
 
-  return <React.Fragment {...delegated}>{children}</React.Fragment>;
+  return (
+    <React.Fragment {...delegated}>
+      {children}
+    </React.Fragment>
+  );
 };
 
 export default ClientOnly;

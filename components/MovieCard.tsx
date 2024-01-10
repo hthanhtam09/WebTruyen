@@ -15,7 +15,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
   const redirectToAlbum = useCallback(
     (data: MovieDetailInterface) =>
       router.push({
-        pathname: `/album`,
+        pathname: `/movieDetail`,
         query: data.movie?.slug,
       }),
     [router],

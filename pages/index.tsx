@@ -1,32 +1,61 @@
-import React from 'react';
-import Head from 'next/head';
+import React, { useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import Billboard from '@/components/Billboard';
 import MovieAlbum from '@/components/MovieAlbum';
-import useTrans from '@/hooks/useTrans';
 import useMovie from '@/hooks/useMovie';
+import Line from '@/components/Line';
+import { MovieDetailInterface } from '@/types';
+import { EGenreType } from '@/enum';
 
 const Home = () => {
-  const trans = useTrans();
   const { data: moviesData = [], isLoading } = useMovie();
+
+  const filterSeriesData = useMemo(
+    () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SERIES),
+    [moviesData],
+  );
+
+  const filterSingleData = useMemo(
+    () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SINGLE),
+    [moviesData],
+  );
 
   return (
     <>
-      <Head>
-        <link rel="shortcut icon" href="/images/favicon.ico" />
-        <title>CineShin</title>
-      </Head>
+      <Helmet prioritizeSeoTags>
+        <title>Home</title>
+      </Helmet>
 
       <Billboard />
-      <div className={`pt-14 ${isLoading && 'h-[100vh]'}`} id="moveTrending">
+      {/* <div className={`pt-14 ${isLoading && 'h-[100vh]'}`} id="moveTrending">
         <MovieAlbum
-          title={trans.home.trending}
+          title={trans.home.recommened_for_you}
           moviesData={moviesData}
           isLoading={isLoading}
           itemsPerPage={24}
           isPagination
         />
-      </div>
+      </div> */}
+      <section className="mt-16 h-[60vh]" id="moveMovies">
+        <MovieAlbum
+          title={'Series Movie'}
+          moviesData={filterSeriesData}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
+      <Line />
+      <section className="h-[60vh]">
+        <MovieAlbum
+          title={'Single Movie'}
+          moviesData={filterSingleData}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
     </>
   );
 };

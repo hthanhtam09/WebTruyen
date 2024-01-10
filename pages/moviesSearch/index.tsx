@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import Image from 'next/image';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet-async';
 
 import MovieList from '@/components/MovieList';
 import Search from '@/components/Search';
@@ -98,83 +99,86 @@ const MoviesSearch = () => {
   }, [router]);
 
   return (
-    <div className="relative h-screen w-screen bg-black">
-      {VideoBackground}
-      {!isLoading ? (
-        moviesFilter.length > 0 ? (
-          <div className="absolute top-32 px-4 md:px-16">
-            <MovieList
-              title={`Kết quả tìm kiếm: ${router.query.keyword}`}
-              data={moviesFilter.length > itemsPerPage ? currentMovie : moviesFilter}
-              style="mt-10 mb-20"
-            />
-            {moviesFilter.length > itemsPerPage ? (
-              <div className="w-full pt-14 flex justify-center">
-                <Pagination
-                  count={pageCount}
-                  variant="outlined"
-                  color="primary"
-                  page={page}
-                  size="large"
-                  onChange={handlePaginationChange}
-                  className={classes.paginationItem}
-                />
-              </div>
-            ) : null}
-          </div>
-        ) : (
-          <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
-            <Content>
-              <>
-                <p className="text-white text-2xl font-bold text-center">
-                  Oops!! Không có kết quả: {router.query.keyword}
-                </p>
-                <p className="text-white text-xl mt-2 text-center">
-                  Vui lòng trở về trang chủ hoặc tìm kiếm phim khác.
-                </p>
-                <p className="text-white text-xl mt-2 text-center">
-                 Cảm ơn!!!
-                </p>
-              </>
-              <Image
-                src={'/images/gif/not-found.gif'}
-                alt="GIF"
-                width={200}
-                height={200}
-                style={{ width: 'auto', height: 'auto', display: 'block', margin: '0 auto' }}
-                priority={true}
+    <>
+      <Helmet>
+        <title>Search</title>
+      </Helmet>
+      <div className="relative h-screen w-screen bg-black">
+        {VideoBackground}
+        {!isLoading ? (
+          moviesFilter.length > 0 ? (
+            <div className="absolute top-32 px-4 md:px-16">
+              <MovieList
+                title={`Kết quả tìm kiếm: ${router.query.keyword}`}
+                data={moviesFilter.length > itemsPerPage ? currentMovie : moviesFilter}
+                style="mt-10 mb-20"
               />
-              <div className="flex justify-between items-center">
-                <div
-                  className="relative inline-flex mt-4 cursor-pointer w-30"
-                  onClick={navigateHomeScreen}
-                >
-                  <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
-                  <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
-                    <span className="text-white capitalize">Trang chủ</span>
+              {moviesFilter.length > itemsPerPage ? (
+                <div className="w-full pt-14 flex justify-center">
+                  <Pagination
+                    count={pageCount}
+                    variant="outlined"
+                    color="primary"
+                    page={page}
+                    size="large"
+                    onChange={handlePaginationChange}
+                    className={classes.paginationItem}
+                  />
+                </div>
+              ) : null}
+            </div>
+          ) : (
+            <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
+              <Content>
+                <>
+                  <p className="text-white text-2xl font-bold text-center">
+                    Oops!! Không có kết quả: {router.query.keyword}
+                  </p>
+                  <p className="text-white text-xl mt-2 text-center">
+                    Vui lòng trở về trang chủ hoặc tìm kiếm phim khác.
+                  </p>
+                  <p className="text-white text-xl mt-2 text-center">Cảm ơn!!!</p>
+                </>
+                <Image
+                  src={'/images/gif/not-found.gif'}
+                  alt="GIF"
+                  width={200}
+                  height={200}
+                  style={{ width: 'auto', height: 'auto', display: 'block', margin: '0 auto' }}
+                  priority={true}
+                />
+                <div className="flex justify-between items-center">
+                  <div
+                    className="relative inline-flex mt-4 cursor-pointer w-30"
+                    onClick={navigateHomeScreen}
+                  >
+                    <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
+                    <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
+                      <span className="text-white capitalize">Trang chủ</span>
+                    </div>
+                  </div>
+                  <div
+                    className="relative inline-flex mt-4 cursor-pointer w-30"
+                    onClick={isOpenSearch}
+                  >
+                    <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
+                    <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
+                      <span className="text-white capitalize">Tìm kiếm</span>
+                    </div>
                   </div>
                 </div>
-                <div
-                  className="relative inline-flex mt-4 cursor-pointer w-30"
-                  onClick={isOpenSearch}
-                >
-                  <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
-                  <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
-                    <span className="text-white capitalize">Tìm kiếm</span>
-                  </div>
-                </div>
-              </div>
-            </Content>
+              </Content>
+            </div>
+          )
+        ) : (
+          <div className="h-[100vh]">
+            <Loading />
           </div>
-        )
-      ) : (
-        <div className="h-[100vh]">
-          <Loading />
-        </div>
-      )}
+        )}
 
-      {isShowSearch && <Search isOpenSearch={isOpenSearch} />}
-    </div>
+        {isShowSearch && <Search isOpenSearch={isOpenSearch} />}
+      </div>
+    </>
   );
 };
 

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
-import { capitalizeFirstLetter } from '@/utils/utils';
 import Loading from '@/pages/loading';
 import MovieList from './MovieList';
 import { useRouter } from 'next/router';
@@ -48,14 +47,13 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
     [itemsPerPage, page],
   );
 
-  const redirectToNameGenreScreen = useCallback(
+  const redirectToMoviesListNameScreen = useCallback(
     (currentMovie: MovieDetailInterface[]) => {
       const queryObject = {
         movies: JSON.stringify(currentMovie),
       };
-  
       router.push({
-        pathname: `/genre/${title}`,
+        pathname: `/${title}`,
         query: queryObject,
       });
     },
@@ -63,7 +61,7 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
   );
 
   useEffect(() => {
-    if (moviesData.length > 0) {
+    if (moviesData && moviesData.length > 0) {
       const currentItems = moviesData.slice(itemOffset, endOffset);
       setCurrentMovie(currentItems);
     }
@@ -71,17 +69,18 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
 
   return (
     <div className="h-full relative px-4 md:px-16 pt-20 pb-10">
-      <div
-        onClick={() =>
-          isNavigate ? redirectToNameGenreScreen(moviesData) : {}
-        }
-        className="flex items-center cursor-pointer"
-      >
+      <div className="flex items-center justify-between">
         <p className="text-white text-md md:text-xl lg:text-4xl font-semibold">
-          {capitalizeFirstLetter(title)}
+          {title}
         </p>
         {isNavigate && (
-          <img className="w-[30px] h-[30px] ml-6" src="/images/right-arrow-icon.png" alt="icon" />
+          <div
+            onClick={() => redirectToMoviesListNameScreen(moviesData)}
+            className="flex text-white items-center cursor-pointer"
+          >
+            View all
+            <img className="w-[30px] h-[30px] ml-2" src="/images/right-arrow-icon.png" alt="icon" />
+          </div>
         )}
       </div>
 
