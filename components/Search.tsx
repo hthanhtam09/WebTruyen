@@ -15,7 +15,6 @@ const Search: React.FC<SearchProps> = ({ isOpenSearch }) => {
   }, []);
 
   const handleSubmitSearch = useCallback(() => {
-    console.log('searchValue', searchValue)
       router.push({
         pathname: '/moviesSearch',
         query: { keyword: searchValue },
