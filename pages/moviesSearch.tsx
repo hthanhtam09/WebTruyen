@@ -132,10 +132,10 @@ const MoviesSearch = () => {
               <Content>
                 <>
                   <p className="text-white text-2xl font-bold text-center">
-                    Oops!! Không có kết quả: {router.query.keyword}
+                    Oops!! No results were found: {router.query.keyword}
                   </p>
                   <p className="text-white text-xl mt-2 text-center">
-                    Vui lòng trở về trang chủ hoặc tìm kiếm phim khác.
+                    Please return to the home page or search for other movies.
                   </p>
                   <p className="text-white text-xl mt-2 text-center">Cảm ơn!!!</p>
                 </>

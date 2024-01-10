@@ -17,6 +17,7 @@ import { MovieDetailInterface } from '@/types';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import LineImage from '@/components/LineImage';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
@@ -55,12 +56,12 @@ const MovieAlbumScreen = () => {
             )}
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Trạng thái: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Status: </span>
               {movie ? movie.movie.episode_current : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
             <p className="text-white font-normal text-lg py-2 flex items-center">
-              <span className="text-gray-400 inline-block w-[150px]">Mô tả: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Description: </span>
               <span className="inline-block w-[600px]">
                 {movie ? (
                   handleRemoveTagHtml(movie.movie.content)
@@ -71,7 +72,7 @@ const MovieAlbumScreen = () => {
             </p>
 
             <p className="text-white font-normal text-lg py-2 flex items-center">
-              <span className="text-gray-400 inline-block w-[150px]">Đạo diễn: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Director: </span>
               {movie ? (
                 movie.movie.director.map((item: any, index: number) => (
                   <span key={index}>
@@ -89,13 +90,13 @@ const MovieAlbumScreen = () => {
             </p>
 
             <p className="text-white font-normal text-lg py-2 flex items-center">
-              <span className="text-gray-400 inline-block w-[150px]">Diễn viên: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Actor: </span>
               <span className="inline-block w-[600px]">
                 {movie ? (
                   movie.movie.actor.map((item: any, index: number) => (
                     <span key={index}>
                       {item}
-                      {index === 0 && movie.movie.director.length === 1
+                      {index === 0 && movie.movie.actor.length === 1
                         ? '. '
                         : index !== movie.movie.actor.length - 1
                         ? ', '
@@ -109,32 +110,32 @@ const MovieAlbumScreen = () => {
             </p>
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Năm phát hành: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Year: </span>
               {movie ? movie.movie.year : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Ngôn ngữ: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Language: </span>
               {movie ? movie.movie.lang : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Chất lượng: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Quality: </span>
               {movie ? movie.movie.quality : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Thời gian: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Time: </span>
               {movie ? movie.movie.time : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Thể loại: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Genre: </span>
               {movie ? movie.movie.type : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
             <p className="text-white font-normal text-lg py-2">
-              <span className="text-gray-400 inline-block w-[150px]">Quốc gia: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Country: </span>
               {movie ? (
                 movie.movie.country.map((item: any, index: number) => (
                   <span key={index}>
@@ -148,7 +149,7 @@ const MovieAlbumScreen = () => {
             </p>
           </div>
           <div className="flex mt-6">
-            <WatchButton path={movie?.episodes[0].server_data[0].link_embed} text="Xem phim" />
+            <WatchButton path={movie?.episodes[0].server_data[0].link_embed} text="Watch" />
             <WatchButton style="ml-4" path={movie?.movie.trailer_url} text="Trailer" />
           </div>
         </section>
@@ -156,7 +157,7 @@ const MovieAlbumScreen = () => {
         <section className="w-full flex flex-wrap mt-10 gap-16 px-16 pb-10">
           {movie ? (
             <MovieList
-              title="Các tập phim: "
+              title="Episodes: "
               data={movie.episodes[0].server_data}
               posterDetailUrl={movie.movie.poster_url}
               style="mt-10 mb-20"
@@ -170,10 +171,10 @@ const MovieAlbumScreen = () => {
           )}
         </section>
       </Suspense>
-      <Line style="top-10" />
+      <LineImage numberImage={3} width='250px' height='250px' heightContainer={20} />
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 pb-10">
-          <p className="text-white text-2xl font-bold">Phim liên quan: </p>
+          <p className="text-white text-2xl font-bold">Related Film: </p>
           {moviesRelatedData.length > 0 ? (
             <SwiperContainer
               loop

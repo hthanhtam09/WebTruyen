@@ -7,6 +7,8 @@ import useMovie from '@/hooks/useMovie';
 import Line from '@/components/Line';
 import { MovieDetailInterface } from '@/types';
 import { EGenreType } from '@/enum';
+import LineImage from '@/components/LineImage';
+import ReactPlayer from 'react-player';
 
 const Home = () => {
   const { data: moviesData = [], isLoading } = useMovie();
@@ -47,7 +49,7 @@ const Home = () => {
         />
       </section>
       <Line />
-      <section className="h-[60vh]">
+      <section className="-mt-6 h-[60vh]">
         <MovieAlbum
           title={'Single Movie'}
           moviesData={filterSingleData}
@@ -56,6 +58,27 @@ const Home = () => {
           isNavigate
         />
       </section>
+      <LineImage numberImage={1} width='250px' height='200px' />
+      <section className="h-[60vh]">
+        <MovieAlbum
+          title={'Popular Movie'}
+          moviesData={filterSingleData}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
+      <Line />
+      <section className="-mt-6 h-[60vh]">
+        <MovieAlbum
+          title={'Most View Movie'}
+          moviesData={filterSingleData}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
+      <LineImage numberImage={2} width='250px' height='250px' heightContainer={20} />
     </>
   );
 };

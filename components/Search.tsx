@@ -1,6 +1,5 @@
 import React, { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
-import useMoviesData from '@/hooks/useMoviesData';
 
 interface SearchProps {
   isOpenSearch: () => void 
