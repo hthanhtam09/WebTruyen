@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet-async';
 import MovieList from '@/components/MovieList';
 import Search from '@/components/Search';
 import moviesJson from '@/movies.json';
-import Loading from '../loading';
+import Loading from '@/pages/loading';
 import useMovie from '@/hooks/useMovie';
 
 const itemsPerPage = 12;

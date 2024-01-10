@@ -10,7 +10,7 @@ import MovieList from '@/components/MovieList';
 import MovieCard from '@/components/MovieCard';
 import useMoviesDetail from '@/hooks/useMovieDetail';
 import { handleRemoveTagHtml } from '@/utils/utils';
-import Loading from '../loading';
+import Loading from '@/pages/loading';
 import SkeletonLoading from '@/components/Skeleton';
 import useMovie from '@/hooks/useMovie';
 import { MovieDetailInterface } from '@/types';
