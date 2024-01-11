@@ -8,11 +8,15 @@ interface LineImageProps {
   heightContainer?: number;
 }
 
-const LineImage = ({ numberImage, width, height, heightContainer = 10 }: LineImageProps) => {
+const LineImage = ({ numberImage, width, height, heightContainer = 20 }: LineImageProps) => {
   return (
-    <section className={`relative -top-10 h-[${heightContainer}vh]`}>
+    <section className={`relative top-0 h-[${heightContainer}vh]`}>
       <img
-        className={`w-[${width}] h-[${height}] absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-10`}
+        className={`absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-10`}
+        style={{
+          width: width,
+          height: height
+        }}
         src={`/images/cartoon${numberImage}.png`}
         alt="cartoon1"
       />

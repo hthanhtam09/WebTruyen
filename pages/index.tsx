@@ -58,7 +58,7 @@ const Home = () => {
           isNavigate
         />
       </section>
-      <LineImage numberImage={1} width='250px' height='200px' />
+      <Line />
       <section className="h-[60vh]">
         <MovieAlbum
           title={'Popular Movie'}
@@ -69,7 +69,7 @@ const Home = () => {
         />
       </section>
       <Line />
-      <section className="-mt-6 h-[60vh]">
+      <section className="-mt-6 h-[60vh] mb-16">
         <MovieAlbum
           title={'Most View Movie'}
           moviesData={filterSingleData}
@@ -78,7 +78,6 @@ const Home = () => {
           isNavigate
         />
       </section>
-      <LineImage numberImage={2} width='250px' height='250px' heightContainer={20} />
     </>
   );
 };
