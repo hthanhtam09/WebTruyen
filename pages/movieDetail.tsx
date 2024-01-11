@@ -17,7 +17,6 @@ import { MovieDetailInterface } from '@/types';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import LineImage from '@/components/LineImage';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
@@ -171,9 +170,9 @@ const MovieAlbumScreen = () => {
           )}
         </section>
       </Suspense>
-      <LineImage numberImage={3} width='250px' height='250px' heightContainer={20} />
+      <Line />
       <Suspense fallback={<Loading />}>
-        <section className="w-full h-[40vh] mt-20 gap-16 px-16 pb-10">
+        <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
           <p className="text-white text-2xl font-bold">Related Film: </p>
           {moviesRelatedData.length > 0 ? (
             <SwiperContainer
