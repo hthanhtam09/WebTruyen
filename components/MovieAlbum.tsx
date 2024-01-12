@@ -70,13 +70,13 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
   return (
     <div className="h-full relative px-4 md:px-16 pt-20 pb-10">
       <div className="flex items-center justify-between">
-        <p className="text-white text-md md:text-xl lg:text-4xl font-semibold">
+        <p className="dark:text-white text-themeDark text-md md:text-xl lg:text-4xl font-semibold transition duration-500">
           {title}
         </p>
         {isNavigate && (
           <div
             onClick={() => redirectToMoviesListNameScreen(moviesData)}
-            className="flex text-white items-center cursor-pointer"
+            className="flex dark:text-white text-themeDark items-center cursor-pointer transition duration-500"
           >
             View all
             <img className="w-[30px] h-[30px] ml-2" src="/images/right-arrow-icon.png" alt="icon" />

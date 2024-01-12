@@ -19,7 +19,7 @@ const MovieList: React.FC<MovieListProps> = ({ data, title, style, isMovieDetail
 
   return (
     <div className={style}>
-        {title ? <p className="text-white text-2xl font-bold">{title}</p> : null}
+        {title ? <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">{title}</p> : null}
         <div className='grid grid-cols-6 gap-x-6 '>
           {data.map((movie: any, index: number) => (
             <MovieCard key={index} data={movie} isMovieDetail={isMovieDetail} posterDetailUrl={posterDetailUrl}/>

@@ -55,12 +55,11 @@ const Billboard: React.FC = () => {
         muted
       />
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <div className="relative top-28 h-[90vh] w-screen bg-black">{VideoBackground}</div>
+      <div className="relative top-24 h-[90vh] w-screen dark:bg-black bg-themeLight transition duration-500">{VideoBackground}</div>
       <div className="absolute left-[5%] top-[55%] w-[50%]">
         <Content>
           <Title>Welcome to CineShin</Title>

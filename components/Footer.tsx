@@ -12,9 +12,9 @@ const Footer = () => {
   const imageFooter = imageArray[randomImage];
 
   return (
-    <footer className="relative w-screen h-[20vh] dark:bg-black bg-opacity-90 flex items-center justify-center">
+    <footer className="relative w-screen h-[20vh] dark:bg-black bg-themeLight-secondary bg-opacity-90 flex items-center justify-center transition duration-500">
        <img
-        className={`absolute -top-14 left-[50%] translate-x-[-50%] translate-y-[-50%] z-10`}
+        className={`absolute -top-14 left-[50%] translate-x-[-50%] translate-y-[-50%]  z-10`}
         style={{
           width: '280px',
           height: '250px'

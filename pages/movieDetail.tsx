@@ -30,7 +30,7 @@ const MovieAlbumScreen = () => {
         <title>{movie?.movie.name}</title>
       </Helmet>
       <Suspense fallback={<Loading />}>
-        <section className="relative flex-col pt-32 px-4 md:px-16 py-6 flex items-start transition duration-500 bg-zinc-900 bg-opacity-90">
+        <section className="relative flex-col pt-32 px-4 md:px-16 py-6 flex items-start dark:bg-themeDark bg-themeLight bg-opacity-90 transition duration-500">
           {movie ? (
             <div
               style={{
@@ -44,9 +44,9 @@ const MovieAlbumScreen = () => {
 
           <div className="w-[50%] z-10">
             {movie ? (
-              <p className="text-white font-bold text-4xl">
+              <p className="dark:text-white text-themeDark font-bold text-4xl transition duration-500">
                 {movie.movie.name}
-                <span className="text-white font-bold text-2xl pl-2">
+                <span className="dark:text-white text-themeDark font-bold text-2xl pl-2 transition duration-500">
                   ({movie.movie.origin_name})
                 </span>
               </p>
@@ -54,12 +54,12 @@ const MovieAlbumScreen = () => {
               <SkeletonLoading width={'80%'} height={40} />
             )}
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Status: </span>
               {movie ? movie.movie.episode_current : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
-            <p className="text-white font-normal text-lg py-2 flex items-center">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex items-center transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Description: </span>
               <span className="inline-block w-[600px]">
                 {movie ? (
@@ -70,7 +70,7 @@ const MovieAlbumScreen = () => {
               </span>
             </p>
 
-            <p className="text-white font-normal text-lg py-2 flex items-center">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex items-center transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Director: </span>
               {movie ? (
                 movie.movie.director.map((item: any, index: number) => (
@@ -88,7 +88,7 @@ const MovieAlbumScreen = () => {
               )}
             </p>
 
-            <p className="text-white font-normal text-lg py-2 flex items-center">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex items-center transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Actor: </span>
               <span className="inline-block w-[600px]">
                 {movie ? (
@@ -108,32 +108,32 @@ const MovieAlbumScreen = () => {
               </span>
             </p>
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Year: </span>
               {movie ? movie.movie.year : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Language: </span>
               {movie ? movie.movie.lang : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Quality: </span>
               {movie ? movie.movie.quality : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Time: </span>
               {movie ? movie.movie.time : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Genre: </span>
               {movie ? movie.movie.type : <SkeletonLoading width={'20%'} height={40} />}
             </p>
 
-            <p className="text-white font-normal text-lg py-2">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Country: </span>
               {movie ? (
                 movie.movie.country.map((item: any, index: number) => (
@@ -173,7 +173,7 @@ const MovieAlbumScreen = () => {
       <Line />
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
-          <p className="text-white text-2xl font-bold">Related Movies: </p>
+          <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">Related Movies: </p>
           {moviesRelatedData.length > 0 ? (
             <SwiperContainer
               loop

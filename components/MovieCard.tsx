@@ -44,7 +44,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
           hover:opacity-30
         "
       />
-      <p className="text-white py-4 text-sm">{isMovieDetail ? (data as any).filename : data.movie?.name}</p>
+      <p className="dark:text-white text-themeDark py-4 text-sm transition duration-500">{isMovieDetail ? (data as any).filename : data.movie?.name}</p>
     </div>
   ) : null;
 };

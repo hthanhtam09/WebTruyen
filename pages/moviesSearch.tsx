@@ -87,7 +87,6 @@ const MoviesSearch = () => {
         muted
       />
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const isOpenSearch = useCallback(() => {
@@ -103,7 +102,7 @@ const MoviesSearch = () => {
       <Helmet>
         <title>Search</title>
       </Helmet>
-      <div className="relative h-screen w-screen bg-black">
+      <div className="relative h-screen w-screen dark:bg-black bg-themeLight">
         {VideoBackground}
         {!isLoading ? (
           moviesFilter.length > 0 ? (
@@ -131,13 +130,13 @@ const MoviesSearch = () => {
             <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
               <Content>
                 <>
-                  <p className="text-white text-2xl font-bold text-center">
+                  <p className="dark:text-white text-themeDark text-2xl font-bold text-center transition duration-500">
                     Oops!! No results were found: {router.query.keyword}
                   </p>
-                  <p className="text-white text-xl mt-2 text-center">
+                  <p className="dark:text-white text-themeDark text-xl mt-2 text-center transition duration-500">
                     Please return to the home page or search for other movies.
                   </p>
-                  <p className="text-white text-xl mt-2 text-center">Cảm ơn!!!</p>
+                  <p className="dark:text-white text-themeDark text-xl mt-2 text-center transition duration-500">Cảm ơn!!!</p>
                 </>
                 <Image
                   src={'/images/gif/not-found.gif'}
@@ -154,7 +153,7 @@ const MoviesSearch = () => {
                   >
                     <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
                     <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
-                      <span className="text-white capitalize">Trang chủ</span>
+                      <span className="dark:text-white text-themeDark capitalize transition duration-500">Home</span>
                     </div>
                   </div>
                   <div
@@ -163,7 +162,7 @@ const MoviesSearch = () => {
                   >
                     <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
                     <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
-                      <span className="text-white capitalize">Tìm kiếm</span>
+                      <span className="dark:text-white text-themeDark capitalize transition duration-500">Search</span>
                     </div>
                   </div>
                 </div>

@@ -7,8 +7,19 @@ const config: Config = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        themeDark: {
+          DEFAULT: '#18181b'
+        },
+        themeLight: {
+          DEFAULT: '#EDF1F8',
+          secondary: '#B0B0B0'
+        }
+      }
+    },
   },
   plugins: [],
+  darkMode: 'class'
 };
 export default config;

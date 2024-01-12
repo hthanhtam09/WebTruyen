@@ -24,13 +24,14 @@ const Input: React.FC<InputProps> = ({ id, onChange, value, label, type }) => {
             pb-1
             w-full
             text-md
-            text-white
-            bg-neutral-700
+            dark:text-white text-themeDark
+            dark:bg-neutral-700 bg-themeLight
             appearance-none
             focus:outline-none
             focus:ring-0
             peer
             invalid:border-b-1
+            transition duration-500
         "
         placeholder=" "
       />

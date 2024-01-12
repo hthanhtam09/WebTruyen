@@ -1,7 +1,5 @@
-import React, { Suspense, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
-import { Autoplay, EffectFade } from 'swiper/modules';
 
 import Billboard from '@/components/Billboard';
 import MovieAlbum from '@/components/MovieAlbum';
@@ -9,12 +7,10 @@ import useMovie from '@/hooks/useMovie';
 import Line from '@/components/Line';
 import { MovieDetailInterface } from '@/types';
 import { EGenreType } from '@/enum';
-import Loading from './loading';
-import MovieCard from '@/components/MovieCard';
-import Image from 'next/image';
 
 const Home = () => {
   const { data: moviesData = [], isLoading } = useMovie();
+
 
   const filterSeriesData = useMemo(
     () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SERIES),

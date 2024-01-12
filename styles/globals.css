@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;500;700&display=swap');
 
 body {
-  @apply bg-zinc-900 h-full overflow-x-hidden;
+  @apply dark:bg-zinc-900 bg-themeLight h-full overflow-x-hidden;
   font-family: 'Montserrat', sans-serif;
 }
 
