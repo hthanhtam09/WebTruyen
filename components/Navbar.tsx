@@ -6,12 +6,10 @@ import Link from 'next/link';
 import Search from './Search';
 import NavbarItem from './NavbarItem';
 import { convertToTitleCase } from '@/utils/utils';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
-  const navbarItemListData = [
-    'Home',
-    'up_comming'
-  ];
+  const navbarItemListData = ['Home', 'up_comming'];
 
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
 
@@ -29,9 +27,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="w-full fixed z-40">
-      <div
-        className='px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 bg-zinc-800 bg-opacity-90'
-      >
+      <div className="px-4 md:px-16 py-6 flex flex-row items-center transition duration-500 bg-zinc-800 bg-opacity-90">
         <Link href={'/'}>
           <img className="bg-cover" src="/images/logo.png" alt="Logo" width={100} height={100} />
         </Link>
@@ -44,7 +40,7 @@ const Navbar: React.FC = () => {
               <NavbarItem label={convertToTitleCase(item)} key={item} />
             ))}
           </div>
-          <div className="flex-row ml-8 gap-8 hidden lg:flex">
+          <div className="flex items-center ml-8 gap-8 lg:flex">
             <div
               className="text-gray-200 hover:text-gray-300 cursor-pointer transition"
               onClick={isOpenFacebook}
@@ -63,6 +59,14 @@ const Navbar: React.FC = () => {
             >
               <BsSearch />
             </div>
+            <Image
+              src={'/images/gif/cat1.gif'}
+              alt="GIF"
+              width={100}
+              height={100}
+              style={{ width: '100', height: '100' }}
+              priority={true}
+            />
           </div>
         </div>
       </div>

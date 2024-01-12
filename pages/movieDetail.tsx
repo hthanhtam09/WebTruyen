@@ -173,7 +173,7 @@ const MovieAlbumScreen = () => {
       <Line />
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
-          <p className="text-white text-2xl font-bold">Related Film: </p>
+          <p className="text-white text-2xl font-bold">Related Movies: </p>
           {moviesRelatedData.length > 0 ? (
             <SwiperContainer
               loop

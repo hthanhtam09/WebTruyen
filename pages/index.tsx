@@ -1,5 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
+import { Autoplay, EffectFade } from 'swiper/modules';
 
 import Billboard from '@/components/Billboard';
 import MovieAlbum from '@/components/MovieAlbum';
@@ -7,8 +9,9 @@ import useMovie from '@/hooks/useMovie';
 import Line from '@/components/Line';
 import { MovieDetailInterface } from '@/types';
 import { EGenreType } from '@/enum';
-import LineImage from '@/components/LineImage';
-import ReactPlayer from 'react-player';
+import Loading from './loading';
+import MovieCard from '@/components/MovieCard';
+import Image from 'next/image';
 
 const Home = () => {
   const { data: moviesData = [], isLoading } = useMovie();
@@ -27,18 +30,10 @@ const Home = () => {
     <>
       <Helmet prioritizeSeoTags>
         <title>Home</title>
+        <meta name="description" content="Phimhay - phimhd" />
       </Helmet>
-
       <Billboard />
-      {/* <div className={`pt-14 ${isLoading && 'h-[100vh]'}`} id="moveTrending">
-        <MovieAlbum
-          title={trans.home.recommened_for_you}
-          moviesData={moviesData}
-          isLoading={isLoading}
-          itemsPerPage={24}
-          isPagination
-        />
-      </div> */}
+
       <section className="mt-16 h-[60vh]" id="moveMovies">
         <MovieAlbum
           title={'Series Movie'}

@@ -12,7 +12,7 @@ function App({ Component, pageProps: { ...pageProps } }: AppProps) {
     <ClientOnly>
       <HelmetProvider>
         <Helmet titleTemplate="Cineshin - %s" defaultTitle="Cineshin">
-          <meta name="description" content="Cineshin" />
+          <meta name="description" content="Phimhay" />
           <link rel="shortcut icon" href="/images/favicon.ico" />
         </Helmet>
         <Navbar />
