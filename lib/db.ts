@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-const URI = process.env.DATABASE_URL || ''
+const URI = process.env.DATABASE_URI || ''
 
 const connectDB = async () => {
     try {
