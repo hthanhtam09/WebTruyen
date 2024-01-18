@@ -1,16 +1,18 @@
 import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
 import { FiCommand } from 'react-icons/fi';
+
 import CommentItem from './CommentItem';
 import { MovieDetailCommentInterface } from '@/types';
 import useGetAllComment from '@/hooks/useGetAllComment';
 import useAddComment from '@/hooks/useAddComment';
 import useDeleteComment from '@/hooks/useDeleteComment';
-
+import { useToast } from '@/components/ui/use-toast';
 interface CommentProps {
   movieId: string;
 }
 
 const Comment = ({ movieId }: CommentProps) => {
+  const { toast } = useToast();
   const { data: comments = [], mutate: getAllComments } = useGetAllComment();
   const { addComment } = useAddComment();
   const { deleteComment } = useDeleteComment();
@@ -32,6 +34,10 @@ const Comment = ({ movieId }: CommentProps) => {
     };
 
     await addComment(params);
+    toast({
+      title: 'Successfully !!!',
+      description: 'The comment has been added successfully',
+    });
     setNewComment('');
     getAllComments();
   }, [movieId, newComment]);
@@ -49,11 +55,14 @@ const Comment = ({ movieId }: CommentProps) => {
   const handleDeleteComment = useCallback(
     async (commentId: string) => {
       await deleteComment({ id: commentId });
+      toast({
+        title: 'Successfully !!!',
+        description: 'The comment has been successfully deleted',
+      });
       getAllComments();
     },
     [deleteComment],
   );
-
 
   const onChangeComment = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setNewComment(event.target.value);
@@ -77,7 +86,7 @@ const Comment = ({ movieId }: CommentProps) => {
         Comment:
       </p>
       <input
-        className="h-[8vh] w-[100%] mt-4 outline-none text-sm rounded-lg text-white px-4"
+        className="h-[8vh] w-[100%] mt-4 outline-none text-sm rounded-lg dark:text-white text-themeDark px-4"
         type="text"
         id="search"
         placeholder="Add your comment here..."
@@ -97,11 +106,11 @@ const Comment = ({ movieId }: CommentProps) => {
             onClick={handleLoadMore}
             className={`${
               isLoadmore ? '' : 'border rounded-lg hover:opacity-70'
-            } text-white inline-block p-4`}
+            } dark:text-white text-themeDark inline-block p-4 dark:border-white border-black`}
           >
             {isLoadmore ? (
               <div className="flex items-center">
-                <FiCommand className="loading-icon mr-2" />
+                <FiCommand className="loading-icon mr-2 dark:text-white text-themeDark" />
                 <p>Loading more...</p>
               </div>
             ) : (
@@ -111,11 +120,9 @@ const Comment = ({ movieId }: CommentProps) => {
         </div>
       ) : (
         <div className="mt-4 mb-10 text-center">
-          <p className="text-white">You’ve reached the end of the list</p>
+          <p className="dark:text-white text-themeDark">You’ve reached the end of the list</p>
         </div>
       )}
-
-    
 
       {/* <Modal title="Warning !!!" content="Do you want to remove this comment ?" open={isConfirmDeleteComment} handleOpen={confirmDeleteComment} /> */}
     </div>

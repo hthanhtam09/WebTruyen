@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 
+import { Toaster } from "@/components/ui/toaster"
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ClientOnly from './ClientOnly';
@@ -20,6 +21,7 @@ function App({ Component, pageProps: { ...pageProps } }: AppProps) {
           <Navbar />
           <Component {...pageProps} />
           <Footer />
+          <Toaster />
         </ThemeProvider>
       </HelmetProvider>
     </ClientOnly>

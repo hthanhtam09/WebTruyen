@@ -36,7 +36,7 @@ const Search: React.FC<SearchProps> = ({ isOpenSearch }) => {
       <div className="max-w-md w-[50vw] h-[6vh] mx-auto z-10">
         <div className="relative w-full h-full rounded-lg focus-within:shadow-lg bg-white overflow-hidden z-10">
           <input
-            className="h-full w-full outline-none text-sm text-gray-700 px-4"
+            className="h-full w-full outline-none text-sm dark:text-white text-themeDark px-4"
             type="text"
             id="search"
             placeholder="Search film..."

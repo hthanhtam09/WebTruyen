@@ -14,13 +14,13 @@ interface CommentItemProps extends MovieDetailCommentInterface {
 
 const CommentItem: React.FC<CommentItemProps> = ({ content, nameUser, createdAt, onDelete }) => {
   return (
-    <div className="flex items-start space-x-4 p-4 my-10 w-full border rounded-lg">
+    <div className="flex items-start space-x-4 p-4 my-10 w-full border dark:border-white border-black rounded-lg">
       <img src="/images/user.png" alt="Avatar" className="w-12 h-12 rounded-full" />
       <div className="flex flex-col w-full">
         <div className="flex items-center justify-between py-2">
           <div>
             <span className="font-bold text-blue-500">{nameUser}</span>
-            <span className="text-white pl-2">{createTimelineString(createdAt)}</span>
+            <span className="dark:text-white text-themeDark pl-2">{createTimelineString(createdAt)}</span>
           </div>
           <Modal
             childrenTrigger={
@@ -35,7 +35,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ content, nameUser, createdAt,
             onDelete={onDelete}
           />
         </div>
-        <p className="text-white">{content}</p>
+        <p className="dark:text-white text-themeDark">{content}</p>
       </div>
     </div>
   );
