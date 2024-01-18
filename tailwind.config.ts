@@ -19,6 +19,13 @@ const config = {
     },
     extend: {
       colors: {
+        themeDark: {
+          DEFAULT: '#18181b'
+        },
+        themeLight: {
+          DEFAULT: '#EDF1F8',
+          secondary: '#B0B0B0'
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
