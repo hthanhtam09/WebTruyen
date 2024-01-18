@@ -1,3 +1,4 @@
+import Line from '@/components/Line';
 import MovieAlbum from '@/components/MovieAlbum';
 import { EGenreType } from '@/enum';
 import useMovie from '@/hooks/useMovie';
@@ -12,15 +13,27 @@ const UpCommingScreen = () => {
     [moviesData],
   );
   return (
-    <section className="-mt-6 h-[60vh]">
-    <MovieAlbum
-      title={'Up Comming Movie'}
-      moviesData={filterSingleData}
-      isLoading={isLoading}
-      itemsPerPage={6}
-      isNavigate
-    />
-  </section>
+    <div className='py-20'>
+      <section className="h-[60vh]">
+        <MovieAlbum
+          title={'Movie Theaters'}
+          moviesData={filterSingleData}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
+      <Line />
+      <section className="h-[60vh]">
+        <MovieAlbum
+          title={'Movie Horror'}
+          moviesData={filterSingleData}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
+    </div>
   );
 };
 

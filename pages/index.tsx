@@ -11,7 +11,6 @@ import { EGenreType } from '@/enum';
 const Home = () => {
   const { data: moviesData = [], isLoading } = useMovie();
 
-
   const filterSeriesData = useMemo(
     () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SERIES),
     [moviesData],

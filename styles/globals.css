@@ -1,73 +1,76 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 224 71.4% 4.1%;
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;500;700&display=swap');
+    --card: 0 0% 100%;
+    --card-foreground: 224 71.4% 4.1%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71.4% 4.1%;
+ 
+    --primary: 220.9 39.3% 11%;
+    --primary-foreground: 210 20% 98%;
+ 
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+ 
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+ 
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
 
-body {
-  @apply dark:bg-zinc-900 bg-themeLight h-full overflow-x-hidden;
-  font-family: 'Montserrat', sans-serif;
-}
-
-#__next {
-  @apply h-full;
-}
-
-html {
-  @apply h-full;
-  scroll-behavior: smooth;
-}
-
-:root {
-  --bg1: #000;
-  --bg2: #fff;
-  --wrm: #d1faff;
-  --deg: -12deg;
-  --sz: 5vmin;
-  --spd: 2.05s;
-}
-
-/* Loader */
-
-@property --deg {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: -12deg;
-}
-
-.loader {
-  width: var(--sz);
-  height: var(--sz);
-  background: conic-gradient(from var(--deg) at 50% 50%, var(--bg1) 0, var(--wrm) 25deg 50deg, var(--bg1) 51deg 100%);
-  clip-path: polygon(0% 0%, 40% 0%, 50% 10%, 60% 0%, 100% 0%, 100% 40%, 90% 50%, 100% 60%, 100% 100%, 60% 100%, 50% 90%, 40% 100%, 0% 100%, 0% 60%, 10% 50%, 0% 40%);
-  animation: spin var(--spd) linear 0s infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  border-radius: calc(var(--sz) / 10);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-}
-
-.loader:before {
-  content: "";
-  position: absolute;
-  width: calc(100% - calc(var(--sz) / 10));
-  height: calc(100% - calc(var(--sz) / 10));
-  border-radius: calc(var(--sz) / 20);
-  background: var(--bg2);
-  clip-path: polygon(0% 0%, 38% 0%, 50% 12%, 62% 0%, 100% 0%, 100% 38%, 88% 50%, 100% 62%, 100% 100%, 62% 100%, 50% 88%, 38% 100%, 0% 100%, 0% 62%, 12% 50%, 0% 38%);
-}
-
-@keyframes spin {
-  0% {
-    --deg: -12deg;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
+ 
+    --radius: 0.5rem;
   }
-
-  100% {
-    --deg: 348deg;
+ 
+  .dark {
+    --background: 224 71.4% 4.1%;
+    --foreground: 210 20% 98%;
+ 
+    --card: 224 71.4% 4.1%;
+    --card-foreground: 210 20% 98%;
+ 
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+ 
+    --primary: 210 20% 98%;
+    --primary-foreground: 220.9 39.3% 11%;
+ 
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
+ 
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
+ 
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+ 
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 216 12.2% 83.9%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

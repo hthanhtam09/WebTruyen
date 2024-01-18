@@ -3,12 +3,13 @@ import React from 'react';
 
 interface NavbarItemProps {
   label: string;
+  path: string
 }
 
-const NavbarItem: React.FC<NavbarItemProps> = ({ label }) => {
+const NavbarItem: React.FC<NavbarItemProps> = ({ label, path }) => {
   return (
     <Link
-      href={label === 'Home' ? '/' : `/${label}`}
+      href={path === 'Home' ? '/' : `/${path}`}
       className="dark:text-white text-themeDark cursor-pointer hover:text-gray-300 transition duration-500"
     >
       {label}

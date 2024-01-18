@@ -6,7 +6,10 @@ import { Tooltip, Typography } from '@material-tailwind/react';
 
 import Search from './Search';
 import NavbarItem from './NavbarItem';
-import { convertToTitleCase } from '@/utils/utils';
+import {
+  convertToTitleCaseForDisplay,
+  convertToTitleCaseForPath,
+} from '@/utils/utils';
 import Image from 'next/image';
 import IconTheme from './IconTheme';
 
@@ -39,26 +42,21 @@ const Navbar: React.FC = () => {
           </div> */}
           <div className="flex-row ml-8 gap-12 hidden lg:flex">
             {navbarItemListData.map((item) => (
-              <NavbarItem label={convertToTitleCase(item)} key={item} />
+              <NavbarItem
+                label={convertToTitleCaseForDisplay(item)}
+                path={convertToTitleCaseForPath(item)}
+                key={item}
+              />
             ))}
           </div>
           <div className="flex items-center ml-8 gap-8 lg:flex">
-            <div
-              className="hover:text-gray-300 cursor-pointer transition"
-              onClick={isOpenFacebook}
-            >
+            <div className="hover:text-gray-300 cursor-pointer transition" onClick={isOpenFacebook}>
               <BsFacebook />
             </div>
-            <div
-              className="hover:text-gray-300 cursor-pointer transition"
-              onClick={isOpenEmail}
-            >
+            <div className="hover:text-gray-300 cursor-pointer transition" onClick={isOpenEmail}>
               <TfiEmail />
             </div>
-            <div
-              className="hover:text-gray-300 cursor-pointer transition"
-              onClick={isOpenSearch}
-            >
+            <div className="hover:text-gray-300 cursor-pointer transition" onClick={isOpenSearch}>
               <BsSearch />
             </div>
             <div className="hover:text-gray-300 cursor-pointer transition">
@@ -68,17 +66,16 @@ const Navbar: React.FC = () => {
               className="border border-blue-gray-50 bg-white px-4 py-2 shadow-xl shadow-black/10 z-[99999]"
               content={
                 <Typography color="black">
-                  Don&apos;t <span className='font-bold'>touch</span> me !!!
+                  Don&apos;t <span className="font-bold">touch</span> me !!!
                 </Typography>
               }
             >
-              <Image
+              <img
                 src={'/images/gif/cat1.gif'}
                 alt="GIF"
                 width={100}
                 height={100}
-                style={{ width: '100', height: '100' }}
-                priority={true}
+                className='cursor-not-allowed'
               />
             </Tooltip>
           </div>

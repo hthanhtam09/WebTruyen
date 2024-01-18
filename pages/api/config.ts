@@ -1,5 +1,5 @@
 export const config = {
     api: {
-      responseLimit: '4MB',
+      responseLimit: '8mb',
     },
 }

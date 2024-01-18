@@ -1,8 +1,8 @@
 // pages/api/setup.js
+import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import cron from 'node-cron';
 import { MovieDetail, Movie } from '@/pages/api/Models';
-import { NextApiRequest, NextApiResponse } from 'next';
 import connectDB from '@/lib/db';
 
 const MAX_MOVIES_PER_CYCLE = 24;

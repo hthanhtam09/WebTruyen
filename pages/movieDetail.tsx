@@ -17,6 +17,7 @@ import { MovieDetailInterface } from '@/types';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import Comment from '@/components/Comment';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
@@ -170,6 +171,8 @@ const MovieAlbumScreen = () => {
           )}
         </section>
       </Suspense>
+      <Line />
+      <Comment movieId={movie?.movie._id} />
       <Line />
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">

@@ -66,3 +66,12 @@ export interface MovieDetailInterface {
   movie: MovieDetail;
   episodes: Episode[];
 }
+
+export interface MovieDetailCommentInterface {
+  _id: string;
+  movieId: string,
+  content: string,
+  nameUser: string,
+  userId: string,
+  createdAt: string
+}
