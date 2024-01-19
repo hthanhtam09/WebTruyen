@@ -32,9 +32,8 @@ const Auth = () => {
     try {
       const { email, password } = inputValue;
       await signIn('credentials', {
-        // email,
-        // password,
-        // callbackUrl: '/',
+        email,
+        password,
         callbackUrl: '/'
       });
     } catch (error) {

@@ -33,7 +33,6 @@ export const authOptions: AuthOptions = {
         }
       },
       async authorize(credentials) {
-        console.log('credentials', credentials)
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Email and password required');
         }
@@ -64,7 +63,7 @@ export const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(clientPromise) as Adapter,
   session: { strategy: 'jwt' },
   jwt: {
-    secret: process.env.NEXTAUTH_JWT_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

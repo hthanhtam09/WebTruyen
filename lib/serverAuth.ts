@@ -6,7 +6,6 @@ import mongoClient from "./db";
 
 const serverAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerSession(req, res, authOptions);
-    console.log('session', session)
   if (!session?.user?.email) {
     throw new Error('Not signed in');
   }
