@@ -1,9 +1,8 @@
 // pages/api/setup.js
 import axios from 'axios';
 import cron from 'node-cron';
-import { Movie } from '@/pages/api/Models/MovieModel';
 import { NextApiRequest, NextApiResponse } from 'next';
-import connectDB from '@/lib/db';
+import mongoClient from '@/lib/db';
 
 let currentPage = 1;
 const maxPages = 1044;
@@ -63,12 +62,14 @@ async function crawlAndStoreData(page: number) {
 
         if (isValidMovie) {
           try {
-            const existingMovie = await Movie.findOne({ _id: movie._id });
+            const moviesCollection = (await mongoClient).collection('movies')
+            const existingMovie = await moviesCollection.findOne({
+              _id:  movie._id
+            });
 
             if (!existingMovie) {
-              const newMovie = new Movie(movie);
-              console.log('Movie Valid: ', newMovie._id);
-              await newMovie.save();
+              await moviesCollection.insertOne(movie);
+              console.log('Movie Valid: ', movie._id);
             } else {
               console.log(`Bỏ qua: ${movie._id} - Movie already exists in the database`);
             }
@@ -106,7 +107,6 @@ const cronJob = cron.schedule(
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    await connectDB();
     cronJob.start();
     return res.status(200).send({ message: 'Cron job is working!!!' });
   } catch (error) {

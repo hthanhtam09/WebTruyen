@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/router';
 import slugify from 'slugify';
 import ReactPlayer from 'react-player';
-import { makeStyles } from '@material-ui/core/styles';
-import Pagination from '@material-ui/lab/Pagination';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -28,7 +26,6 @@ const Content = styled.div`
 
 const MoviesSearch = () => {
   const router = useRouter();
-  const classes = useStyles();
   const { data: moviesData = [], isLoading } = useMovie();
   const [moviesFilter, setMoviesFilter] = useState([]);
   const [currentMovie, setCurrentMovie] = useState([]);
@@ -37,7 +34,6 @@ const MoviesSearch = () => {
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
 
   const randomMoviesIndex = Math.floor(Math.random() * moviesJson.length);
-  const pageCount = Math.ceil(moviesFilter.length / itemsPerPage);
   const endOffset = itemOffset + itemsPerPage;
 
   useEffect(() => {
@@ -112,19 +108,6 @@ const MoviesSearch = () => {
                 data={moviesFilter.length > itemsPerPage ? currentMovie : moviesFilter}
                 style="mt-10 mb-20"
               />
-              {moviesFilter.length > itemsPerPage ? (
-                <div className="w-full pt-14 flex justify-center">
-                  <Pagination
-                    count={pageCount}
-                    variant="outlined"
-                    color="primary"
-                    page={page}
-                    size="large"
-                    onChange={handlePaginationChange}
-                    className={classes.paginationItem}
-                  />
-                </div>
-              ) : null}
             </div>
           ) : (
             <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]">
@@ -182,11 +165,3 @@ const MoviesSearch = () => {
 };
 
 export default MoviesSearch;
-
-const useStyles = makeStyles({
-  paginationItem: {
-    '&.MuiPagination-root .MuiPagination-ul li > button': {
-      color: '#fff',
-    },
-  },
-});

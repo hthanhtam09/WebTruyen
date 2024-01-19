@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import connectDB from '@/lib/db';
-import { MovieDetail } from '@/pages/api/Models';
+import clientPromise from '@/lib/db';
+import mongoClient from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -8,11 +8,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end();
     }
 
-    await connectDB();
+    await clientPromise;
     const { movieId } = req.query;
 
     if (movieId) {
-      const movie = await MovieDetail.findOne({ 'movie._id': movieId });
+      const movieDetailsCollection = (await mongoClient).collection('moviedetails');
+      const movie = movieDetailsCollection.findOne({ 'movie._id': movieId });
 
       return res.status(200).json(movie);
     } else {

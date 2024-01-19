@@ -1,19 +1,19 @@
 // pages/api/comments/add.js
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Comment } from '@/pages/api/Models';
-import connectDB from '@/lib/db';
+import clientPromise from '@/lib/db';
+import mongoClient from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
-  await connectDB();
+  await clientPromise;
   if (method !== 'POST') return res.status(400).json({error: 'Method not allowed'});
 
   try {
     const { id, movieId, content, nameUser, userId, createdAt } = body;
-    const comment = new Comment({ id ,movieId, content, nameUser, userId, createdAt });
-    const savedComment = await comment.save();
+    const commentCollection = (await mongoClient).collection('comments');
+    const comment = commentCollection.insertOne({ id ,movieId, content, nameUser, userId, createdAt })
 
-    res.status(201).json(savedComment);
+    res.status(201).json(comment);
 
   } catch (error: any) {
      if (error.name === 'ValidationError') {

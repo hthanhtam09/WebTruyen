@@ -1,14 +1,5 @@
-import mongoose from "mongoose"
+import clientPromise from './clientPromise';
 
-const URI = process.env.MONGODB_URI || ''
+const mongoClient = clientPromise.then((res) => res.db('Cineshin'));
 
-const connectDB = async () => {
-    try {
-        await mongoose.connect(URI)
-        console.log("Mongodb connect successful")
-    }catch(err) {
-        throw new Error("Error in connecting to mongodb.")
-    }
-}
-
-export default connectDB
+export default mongoClient;

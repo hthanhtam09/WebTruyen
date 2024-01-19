@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { getSession } from 'next-auth/react';
+import { NextPageContext } from 'next';
 
 import Billboard from '@/components/Billboard';
 import MovieAlbum from '@/components/MovieAlbum';
@@ -8,9 +10,25 @@ import Line from '@/components/Line';
 import { MovieDetailInterface } from '@/types';
 import { EGenreType } from '@/enum';
 
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/auth',
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
+  return {
+    props: {},
+  };
+}
+
 const Home = () => {
   const { data: moviesData = [], isLoading } = useMovie();
-
   const filterSeriesData = useMemo(
     () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SERIES),
     [moviesData],

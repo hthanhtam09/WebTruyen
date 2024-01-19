@@ -10,7 +10,6 @@ import {
   convertToTitleCaseForDisplay,
   convertToTitleCaseForPath,
 } from '@/utils/utils';
-import Image from 'next/image';
 import IconTheme from './IconTheme';
 
 const Navbar: React.FC = () => {
