@@ -11,26 +11,33 @@ import {
 import { ReactNode } from 'react';
 
 interface ModalProps {
-  childrenTrigger: ReactNode
-  title: string
-  content: string
-  onDelete: () => void
+  childrenTrigger: ReactNode;
+  title: string;
+  content: string;
+  confirmText: string;
+  cancelText: string;
+  onClick: () => void;
 }
 
-export default function Modal({ childrenTrigger, title, content, onDelete }: ModalProps) {
+export default function Modal({
+  childrenTrigger,
+  title,
+  content,
+  confirmText,
+  cancelText,
+  onClick,
+}: ModalProps) {
   return (
     <AlertDialog>
       {childrenTrigger}
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {content}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{content}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={onDelete}>Yes</AlertDialogAction>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onClick}>{confirmText}</AlertDialogAction>
+          <AlertDialogCancel>{cancelText}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

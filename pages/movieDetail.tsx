@@ -14,10 +14,10 @@ import Loading from '@/pages/loading';
 import SkeletonLoading from '@/components/Skeleton';
 import useMovie from '@/hooks/useMovie';
 import { MovieDetailInterface } from '@/types';
+import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import Comment from '@/components/Comment';
 
 const MovieAlbumScreen = () => {
   const router = useRouter();
@@ -172,7 +172,7 @@ const MovieAlbumScreen = () => {
       </Suspense>
       <Line />
       <Suspense fallback={<Loading />}>
-        <Comment movieId={movie?.movie._id} />
+        <Comment movieId={movie?.movie._id} movieSlug={movie?.movie.slug}/>
       </Suspense>
       <Line />
       <Suspense fallback={<Loading />}>

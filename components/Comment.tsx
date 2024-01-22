@@ -1,5 +1,6 @@
 import React, { KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { FiCommand } from 'react-icons/fi';
+import { useRouter } from 'next/router';
 
 import CommentItem from './CommentItem';
 import { MovieDetailCommentInterface } from '@/types';
@@ -7,46 +8,56 @@ import useGetAllComment from '@/hooks/useGetAllComment';
 import useAddComment from '@/hooks/useAddComment';
 import useDeleteComment from '@/hooks/useDeleteComment';
 import { useToast } from '@/components/ui/use-toast';
+import useCurrentUser from '@/hooks/useCurrentUser';
+import Modal from './Modal';
+import { AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
+import useGetAllUser from '@/hooks/useGetAllUser';
+
 interface CommentProps {
   movieId: string;
+  movieSlug: string;
 }
 
-const Comment = ({ movieId }: CommentProps) => {
+const Comment = ({ movieId, movieSlug }: CommentProps) => {
+  const router = useRouter();
   const { toast } = useToast();
   const { data: comments = [], mutate: getAllComments } = useGetAllComment();
   const { addComment } = useAddComment();
   const { deleteComment } = useDeleteComment();
+  const { data: userData } = useCurrentUser();
+  const { data: allUserData = [] } = useGetAllUser();
 
   const [newComment, setNewComment] = useState<string>('');
   const [visibleComments, setVisibleComments] = useState<number>(5);
   const [isLoadmore, setIsLoadmore] = useState<boolean>(false);
 
   // Filter comments by movieId
-  const commentsData = useMemo(
+  const filteredCommentsData = useMemo(
     () => comments.filter((comment: any) => comment.movieId === movieId),
     [comments, movieId],
   );
-
   const handleAddComment = useCallback(async () => {
     if (!newComment) {
       return;
     }
 
-    const params = {
-      movieId: movieId,
-      content: newComment,
-      nameUser: 'John Doe',
-      userId: '609ac7621c342a001f61eb28',
-      createdAt: new Date().getTime(),
-    };
+    if (userData && movieId) {
+      const params = {
+        movieId: movieId,
+        content: newComment,
+        nameUser: userData.name,
+        userId: userData._id,
+        createdAt: new Date().getTime(),
+      };
 
-    await addComment(params);
-    toast({
-      title: 'Successfully !!!',
-      description: 'The comment has been added successfully',
-    });
-    setNewComment('');
-    getAllComments();
+      await addComment(params);
+      getAllComments();
+      toast({
+        title: 'Successfully !!!',
+        description: 'The comment has been added successfully',
+      });
+      setNewComment('');
+    }
   }, [movieId, newComment]);
 
   const onKeyDown = useCallback(
@@ -58,6 +69,10 @@ const Comment = ({ movieId }: CommentProps) => {
     },
     [handleAddComment],
   );
+
+  const onRedirectLogin = useCallback(() => {
+    router.push(`/auth?redirect=${encodeURIComponent(router.pathname)}?${movieSlug}`);
+  }, [router, movieSlug]);
 
   const handleDeleteComment = useCallback(
     async (commentId: string) => {
@@ -92,22 +107,48 @@ const Comment = ({ movieId }: CommentProps) => {
       <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500 pt-10">
         Comment:
       </p>
-      <input
-        className="h-[8vh] w-[100%] mt-4 outline-none text-sm rounded-lg dark:text-white text-themeDark px-4"
-        type="text"
-        id="search"
-        placeholder="Add your comment here..."
-        value={newComment}
-        onChange={onChangeComment}
-        onKeyDown={onKeyDown}
-      />
-      {[...commentsData]
+      {userData ? (
+        <input
+          className="h-[8vh] w-[100%] mt-4 outline-none text-sm rounded-lg dark:text-white text-themeDark px-4"
+          type="text"
+          id="search"
+          placeholder="Add your comment here..."
+          value={newComment}
+          onChange={onChangeComment}
+          onKeyDown={onKeyDown}
+        />
+      ) : (
+        <Modal
+          childrenTrigger={
+            <AlertDialogTrigger>
+              <input
+                className="h-[8vh] w-[92vw] mt-4 outline-none text-sm rounded-lg dark:text-white text-themeDark px-4"
+                type="text"
+                id="search"
+                placeholder="Add your comment here..."
+              />
+            </AlertDialogTrigger>
+          }
+          content="Please log in to comment here..."
+          title="You are not logged in?"
+          confirmText="Log in"
+          cancelText="Cancel"
+          onClick={onRedirectLogin}
+        />
+      )}
+
+      {[...filteredCommentsData]
         .reverse()
         .slice(0, visibleComments)
         .map((item: MovieDetailCommentInterface) => (
-          <CommentItem key={item._id} onDelete={() => handleDeleteComment(item._id)} {...item} />
+          <CommentItem
+            key={item._id}
+            onDelete={() => handleDeleteComment(item._id)}
+            allUserData={allUserData}
+            {...item}
+          />
         ))}
-      {visibleComments < commentsData.length ? (
+      {visibleComments < filteredCommentsData.length ? (
         <div className="mt-4 mb-10 text-center">
           <button
             onClick={handleLoadMore}
@@ -128,16 +169,14 @@ const Comment = ({ movieId }: CommentProps) => {
       ) : (
         <div className="mt-4 mb-10 text-center">
           <p className="dark:text-white text-themeDark">
-            {commentsData.length > 5
+            {filteredCommentsData.length > 5
               ? 'You’ve reached the end of the list'
-              : commentsData.length === 0
+              : filteredCommentsData.length === 0
               ? 'Add comment of you here!!!'
               : ''}
           </p>
         </div>
       )}
-
-      {/* <Modal title="Warning !!!" content="Do you want to remove this comment ?" open={isConfirmDeleteComment} handleOpen={confirmDeleteComment} /> */}
     </div>
   );
 };
