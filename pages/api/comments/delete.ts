@@ -21,11 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       _id: new ObjectId(id),
     });
 
-    if (!deletedComment?.value) {
-      return res.status(404).json({ error: 'Comment not found' });
-    }
-
-    res.status(200).json(deletedComment.value);
+    res.status(200).json(deletedComment);
   } catch (error) {
     console.error('Error:', error);
     res.status(400).json({ error: 'Error deleting comment' });

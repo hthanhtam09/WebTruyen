@@ -27,7 +27,7 @@ const MovieAlbumScreen = () => {
 
   return (
     <>
-     <Helmet>
+      <Helmet>
         <title>{movie?.movie.name}</title>
       </Helmet>
       <Suspense fallback={<Loading />}>
@@ -162,7 +162,6 @@ const MovieAlbumScreen = () => {
               posterDetailUrl={movie.movie.poster_url}
               style="mt-10 mb-20"
               isMovieDetail
-              
             />
           ) : (
             <div className="h-screen">
@@ -172,11 +171,15 @@ const MovieAlbumScreen = () => {
         </section>
       </Suspense>
       <Line />
-      <Comment movieId={movie?.movie._id} />
+      <Suspense fallback={<Loading />}>
+        <Comment movieId={movie?.movie._id} />
+      </Suspense>
       <Line />
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
-          <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">Related Movies: </p>
+          <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">
+            Related Movies:
+          </p>
           {moviesRelatedData.length > 0 ? (
             <SwiperContainer
               loop
@@ -193,8 +196,11 @@ const MovieAlbumScreen = () => {
                 </SwiperSlide>
               ))}
             </SwiperContainer>
-          ) : <div className='h-[40vh] relative'>
-            <Loading /></div>}
+          ) : (
+            <div className="h-[40vh] relative">
+              <Loading />
+            </div>
+          )}
         </section>
       </Suspense>
     </>

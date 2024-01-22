@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, useCallback, useEffect, useState } from 'react';
+import React, { KeyboardEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { FiCommand } from 'react-icons/fi';
 
 import CommentItem from './CommentItem';
@@ -16,9 +16,16 @@ const Comment = ({ movieId }: CommentProps) => {
   const { data: comments = [], mutate: getAllComments } = useGetAllComment();
   const { addComment } = useAddComment();
   const { deleteComment } = useDeleteComment();
+
   const [newComment, setNewComment] = useState<string>('');
   const [visibleComments, setVisibleComments] = useState<number>(5);
   const [isLoadmore, setIsLoadmore] = useState<boolean>(false);
+
+  // Filter comments by movieId
+  const commentsData = useMemo(
+    () => comments.filter((comment: any) => comment.movieId === movieId),
+    [comments, movieId],
+  );
 
   const handleAddComment = useCallback(async () => {
     if (!newComment) {
@@ -94,13 +101,13 @@ const Comment = ({ movieId }: CommentProps) => {
         onChange={onChangeComment}
         onKeyDown={onKeyDown}
       />
-      {[...comments]
+      {[...commentsData]
         .reverse()
         .slice(0, visibleComments)
         .map((item: MovieDetailCommentInterface) => (
           <CommentItem key={item._id} onDelete={() => handleDeleteComment(item._id)} {...item} />
         ))}
-      {visibleComments < comments.length ? (
+      {visibleComments < commentsData.length ? (
         <div className="mt-4 mb-10 text-center">
           <button
             onClick={handleLoadMore}
@@ -120,7 +127,13 @@ const Comment = ({ movieId }: CommentProps) => {
         </div>
       ) : (
         <div className="mt-4 mb-10 text-center">
-          <p className="dark:text-white text-themeDark">You’ve reached the end of the list</p>
+          <p className="dark:text-white text-themeDark">
+            {commentsData.length > 5
+              ? 'You’ve reached the end of the list'
+              : commentsData.length === 0
+              ? 'Add comment of you here!!!'
+              : ''}
+          </p>
         </div>
       )}
 
