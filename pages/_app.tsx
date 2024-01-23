@@ -20,7 +20,10 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         <SessionProvider session={session}>
           <ThemeProvider attribute="class">
             <Helmet titleTemplate="Cineshin - %s" defaultTitle="Cineshin">
-              <meta name="description" content="Phimhay" />
+              <meta
+                name="description"
+                content="Khám phá thế giới phim tuyệt vời tại Cineshin - Nơi quy tụ hàng nghìn bộ phim đa dạng và độc đáo. Với Cineshin, bạn sẽ đắm chìm trong không gian giải trí độc đáo với những tác phẩm điện ảnh đỉnh cao từ mọi thể loại. Tận hưởng trải nghiệm xem phim tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ phim là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại Cineshin, nơi mang đến cho bạn trải nghiệm xem phim đỉnh cao và đa chiều."
+              />
               <link rel="shortcut icon" href="/images/favicon.ico" />
             </Helmet>
             {router.pathname !== '/auth' && <Navbar />}
