@@ -19,8 +19,11 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       <HelmetProvider>
         <SessionProvider session={session}>
           <ThemeProvider attribute="class">
-            <Helmet titleTemplate="Cineshin - %s" defaultTitle="Cineshin">
-              <meta name="description" content="Phimhay" />
+            <Helmet titleTemplate="TruyenHayNhat - %s" defaultTitle="TruyenHayNhat">
+              <meta
+                name="description"
+                content="Khám phá thế giới truyện tuyệt vời tại TruyenHayNhat - Nơi tập trung hàng ngàn câu chuyện đặc sắc và đa dạng. Với TruyenHayNhat, bạn sẽ được thưởng thức những câu chuyện full chữ hấp dẫn nhất, từ tiểu thuyết đến truyện ngắn, mà không phải lựa chọn giữa hàng ngàn truyện tranh. Duyệt qua thư viện truyện đồ sộ của chúng tôi, mỗi câu chuyện là một hành trình mới đầy kỳ diệu và ghi điểm sâu sắc. Hãy đồng hành cùng TruyenHayNhat, nơi mang đến cho bạn trải nghiệm đọc truyện tốt nhất."
+              />
               <link rel="shortcut icon" href="/images/favicon.ico" />
             </Helmet>
             {router.pathname !== '/auth' && <Navbar />}

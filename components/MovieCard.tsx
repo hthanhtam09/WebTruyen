@@ -7,9 +7,10 @@ interface MovieCardProps {
   data: MovieDetailInterface;
   isMovieDetail?: boolean;
   posterDetailUrl?: string;
+  index?: number;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetailUrl }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetailUrl, index }) => {
   const router = useRouter();
 
   const redirectToAlbum = useCallback(
@@ -44,7 +45,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ data, isMovieDetail, posterDetail
           hover:opacity-30
         "
       />
-      <p className="dark:text-white text-themeDark py-4 text-sm transition duration-500">{isMovieDetail ? (data as any).filename : data.movie?.name}</p>
+      <p className="dark:text-white text-themeDark py-4 text-sm transition duration-500">{isMovieDetail ? `Episodes ${Number(index) + 1}` : data.movie?.name}</p>
     </div>
   ) : null;
 };

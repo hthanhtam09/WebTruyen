@@ -62,7 +62,7 @@ const Billboard: React.FC = () => {
       <div className="relative top-24 h-[90vh] w-screen dark:bg-black bg-themeLight transition duration-500">{VideoBackground}</div>
       <div className="absolute left-[5%] top-[55%] w-[50%]">
         <Content>
-          <Title>Welcome to CineShin</Title>
+          <Title>Welcome to TruyenHayNhat</Title>
           <p className="text-xl mb-1 font-thin text-white mt-4">
             Experience the ultimate cinema with thousands of diverse movies. Discover and share your passion today!
           </p>
