@@ -1,8 +1,8 @@
 
 import useSWR from "swr";
 import fetcher from "@/lib/fetchAPI";
-// /api/movieDetail/${id}
-const useMoviesDetail = (slug: string) => {
+
+const useStoriesDetail = (slug: string) => {
     const {data, error, isLoading} = useSWR(`/phim/${slug}`, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
@@ -16,4 +16,4 @@ const useMoviesDetail = (slug: string) => {
     }
 }
 
-export default useMoviesDetail
+export default useStoriesDetail

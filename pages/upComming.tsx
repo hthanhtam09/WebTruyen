@@ -1,23 +1,20 @@
 import Line from '@/components/Line';
-import MovieAlbum from '@/components/MovieAlbum';
+import StoryAlbum from '@/components/StoryAlbum';
 import { EGenreType } from '@/enum';
-import useMovie from '@/hooks/useMovie';
-import { MovieDetailInterface } from '@/types';
+import useStories from '@/hooks/useStories';
+import { StoriesInterface } from '@/types';
+
 import React, { useMemo } from 'react';
 
 const UpCommingScreen = () => {
-  const { data: moviesData = [], isLoading } = useMovie();
+  const { data: storiesData = [], isLoading } = useStories();
 
-  const filterSingleData = useMemo(
-    () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SINGLE),
-    [moviesData],
-  );
   return (
     <div className='py-20'>
-      <section className="h-[60vh]">
-        <MovieAlbum
+      {/* <section className="h-[60vh]">
+        <StoryAlbum
           title={'Movie Theaters'}
-          moviesData={filterSingleData}
+          storiesData={filterSingleData}
           isLoading={isLoading}
           itemsPerPage={6}
           isNavigate
@@ -25,14 +22,14 @@ const UpCommingScreen = () => {
       </section>
       <Line />
       <section className="h-[60vh]">
-        <MovieAlbum
+        <StoryAlbum
           title={'Movie Horror'}
-          moviesData={filterSingleData}
+          storiesData={filterSingleData}
           isLoading={isLoading}
           itemsPerPage={6}
           isNavigate
         />
-      </section>
+      </section> */}
     </div>
   );
 };

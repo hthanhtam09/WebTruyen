@@ -6,11 +6,10 @@ import Image from 'next/image';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
 
-import MovieList from '@/components/MovieList';
+import StoriesList from '@/components/StoriesList';
 import Search from '@/components/Search';
-import moviesJson from '@/movies.json';
 import Loading from '@/pages/loading';
-import useMovie from '@/hooks/useMovie';
+import useStories from '@/hooks/useStories';
 
 const itemsPerPage = 12;
 
@@ -24,16 +23,15 @@ const Content = styled.div`
   width: 30vw;
 `;
 
-const MoviesSearch = () => {
+const StoriesSearch = () => {
   const router = useRouter();
-  const { data: moviesData = [], isLoading } = useMovie();
+  const { data: moviesData = [], isLoading } = useStories();
   const [moviesFilter, setMoviesFilter] = useState([]);
   const [currentMovie, setCurrentMovie] = useState([]);
   const [itemOffset, setItemOffset] = useState(0);
   const [page, setPage] = useState(1);
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
 
-  const randomMoviesIndex = Math.floor(Math.random() * moviesJson.length);
   const endOffset = itemOffset + itemsPerPage;
 
   useEffect(() => {
@@ -71,19 +69,6 @@ const MoviesSearch = () => {
     })();
   }, [moviesData, router.query.keyword]);
 
-  const VideoBackground = useMemo(() => {
-    return (
-      <ReactPlayer
-        className="absolute top-0 bottom-0 left-0 right-0 pointer-events-none w-full brightness-[60%] object-cover h-full"
-        url={`${moviesJson[randomMoviesIndex].videoUrl}`}
-        width="100%"
-        height="100%"
-        playing
-        controls={false}
-        muted
-      />
-    );
-  }, []);
 
   const isOpenSearch = useCallback(() => {
     setIsShowSearch((prev) => !prev);
@@ -99,11 +84,10 @@ const MoviesSearch = () => {
         <title>Search</title>
       </Helmet>
       <div className="relative h-screen w-screen dark:bg-black bg-themeLight">
-        {VideoBackground}
         {!isLoading ? (
           moviesFilter.length > 0 ? (
             <div className="absolute top-32 px-4 md:px-16">
-              <MovieList
+              <StoriesList
                 title={`Kết quả tìm kiếm: ${router.query.keyword}`}
                 data={moviesFilter.length > itemsPerPage ? currentMovie : moviesFilter}
                 style="mt-10 mb-20"
@@ -164,4 +148,4 @@ const MoviesSearch = () => {
   );
 };
 
-export default MoviesSearch;
+export default StoriesSearch;

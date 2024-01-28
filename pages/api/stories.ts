@@ -5,11 +5,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     if (req.method !== 'GET') {
       return res.status(405).end();
-    } 
-    const moviedetailsCollection = (await mongoClient).collection('moviedetails')
-    const movies = await moviedetailsCollection.find({}).toArray()
+    }
+    const storiesCollection = (await mongoClient).collection('stories')
+    const stories = await storiesCollection.find({}).toArray();
 
-    return res.status(200).json(movies);
+    return res.status(200).json(stories);
   } catch (error) {
     console.log(error);
     return res.status(500).end();

@@ -1,18 +1,18 @@
 import React from 'react';
 
 import { isEmpty } from 'lodash';
-import MovieCard from './MovieCard';
-import { MovieDetailInterface } from '@/types';
+import StoryCard from './StoryCard';
+import { StoriesInterface } from '@/types';
 
-interface MovieListProps {
-  data: MovieDetailInterface[];
+interface StoriesListProps {
+  data: StoriesInterface[];
   title?: string;
   style?: string;
   isMovieDetail?: boolean;
   posterDetailUrl?: string;
 }
 
-const MovieList: React.FC<MovieListProps> = ({ data, title, style, isMovieDetail, posterDetailUrl }) => {
+const StoriesList: React.FC<StoriesListProps> = ({ data, title, style }) => {
   if (isEmpty(data)) {
     return null;
   }
@@ -21,12 +21,12 @@ const MovieList: React.FC<MovieListProps> = ({ data, title, style, isMovieDetail
     <div className={style}>
         {title ? <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">{title}</p> : null}
         <div className='grid grid-cols-6 gap-x-6 '>
-          {data.map((movie: any, index: number) => (
-            <MovieCard key={index} index={index} data={movie} isMovieDetail={isMovieDetail} posterDetailUrl={posterDetailUrl}/>
+          {data.map((story: any, index: number) => (
+            <StoryCard key={index} data={story} />
           ))}
         </div>
     </div>
   );
 };
 
-export default MovieList;
+export default StoriesList;

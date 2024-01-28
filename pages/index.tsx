@@ -4,10 +4,10 @@ import { getSession } from 'next-auth/react';
 import { NextPageContext } from 'next';
 
 import Billboard from '@/components/Billboard';
-import MovieAlbum from '@/components/MovieAlbum';
-import useMovie from '@/hooks/useMovie';
+import StoryAlbum from '@/components/StoryAlbum';
+import useStories from '@/hooks/useStories';
 import Line from '@/components/Line';
-import { MovieDetailInterface } from '@/types';
+import { StoriesInterface } from '@/types';
 import { EGenreType } from '@/enum';
 
 export async function getServerSideProps(context: NextPageContext) {
@@ -28,59 +28,30 @@ export async function getServerSideProps(context: NextPageContext) {
 }
 
 const Home = () => {
-  const { data: moviesData = [], isLoading } = useMovie();
-  const filterSeriesData = useMemo(
-    () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SERIES),
-    [moviesData],
-  );
-
-  const filterSingleData = useMemo(
-    () => moviesData.filter((data: MovieDetailInterface) => data.movie.type === EGenreType.SINGLE),
-    [moviesData],
-  );
+  const { data: storiesData = [], isLoading } = useStories();
 
   return (
     <>
       <Helmet prioritizeSeoTags>
-        <title>Home</title>
-        <meta name="description" content="Phimhay - phimhd" />
+        <title>Trang chủ</title>
+        <meta name="description" content="WebTruyen - Trang chủ" />
       </Helmet>
-      <Billboard />
+      {/* <Billboard /> */}
 
-      <section className="mt-16 h-[60vh]" id="moveMovies">
-        <MovieAlbum
-          title={'Series Movie'}
-          moviesData={filterSeriesData}
+      <section className="mt-16 h-[80vh]" id="moveStories">
+        <StoryAlbum
+          title={'Stories'}
+          storiesData={storiesData}
           isLoading={isLoading}
           itemsPerPage={6}
           isNavigate
         />
       </section>
       <Line />
-      <section className="-mt-6 h-[60vh]">
-        <MovieAlbum
-          title={'Single Movie'}
-          moviesData={filterSingleData}
-          isLoading={isLoading}
-          itemsPerPage={6}
-          isNavigate
-        />
-      </section>
-      <Line />
-      <section className="h-[60vh]">
-        <MovieAlbum
-          title={'Popular Movie'}
-          moviesData={filterSingleData}
-          isLoading={isLoading}
-          itemsPerPage={6}
-          isNavigate
-        />
-      </section>
-      <Line />
-      <section className="-mt-6 h-[60vh] mb-16">
-        <MovieAlbum
-          title={'Most View Movie'}
-          moviesData={filterSingleData}
+      <section className="mt-6 h-[80vh]" id="moveStories">
+        <StoryAlbum
+          title={'Stories'}
+          storiesData={storiesData}
           isLoading={isLoading}
           itemsPerPage={6}
           isNavigate

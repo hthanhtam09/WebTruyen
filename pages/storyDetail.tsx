@@ -6,24 +6,25 @@ import { Helmet } from 'react-helmet-async';
 
 import WatchButton from '@/components/WatchButton';
 import Line from '@/components/Line';
-import MovieList from '@/components/MovieList';
-import MovieCard from '@/components/MovieCard';
-import useMoviesDetail from '@/hooks/useMovieDetail';
+import StoriesList from '@/components/StoriesList';
+import StoryCard from '@/components/StoryCard';
+import useStoriesDetail from '@/hooks/useStoriesDetail';
 import { handleRemoveTagHtml } from '@/utils/utils';
 import Loading from '@/pages/loading';
 import SkeletonLoading from '@/components/Skeleton';
-import useMovie from '@/hooks/useMovie';
-import { MovieDetailInterface } from '@/types';
+import useStories from '@/hooks/useStories';
+import { StoriesInterface } from '@/types';
+
 import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-const MovieAlbumScreen = () => {
+const StoryDetailScreen = () => {
   const router = useRouter();
 
-  const { data: movie } = useMoviesDetail(Object.keys(router.query) as any as string);
-  const { data: moviesRelatedData = [] } = useMovie();
+  const { data: movie } = useStoriesDetail(Object.keys(router.query) as any as string);
+  const { data: moviesRelatedData = [] } = useStories();
 
   return (
     <>
@@ -156,7 +157,7 @@ const MovieAlbumScreen = () => {
         <Line style="top-10" />
         <section className="w-full flex flex-wrap mt-10 gap-16 px-16 pb-10">
           {movie ? (
-            <MovieList
+            <StoriesList
               title="Episodes: "
               data={movie.episodes[0].server_data}
               posterDetailUrl={movie.movie.poster_url}
@@ -190,9 +191,9 @@ const MovieAlbumScreen = () => {
               touchEventsTarget="wrapper"
               className="mySwiper"
             >
-              {moviesRelatedData.map((movie: MovieDetailInterface, index: number) => (
+              {moviesRelatedData.map((movie: StoriesInterface, index: number) => (
                 <SwiperSlide key={index}>
-                  <MovieCard data={movie} />
+                  <StoryCard data={movie} />
                 </SwiperSlide>
               ))}
             </SwiperContainer>
@@ -207,4 +208,4 @@ const MovieAlbumScreen = () => {
   );
 };
 
-export default MovieAlbumScreen;
+export default StoryDetailScreen;

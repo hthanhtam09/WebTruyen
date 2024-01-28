@@ -120,7 +120,7 @@ const Auth = () => {
             </div>
             <p className="text-neutral-500 mt-12">
               {variant === AUTHENTICATION.LOGIN
-                ? 'First time using Cineshin?'
+                ? 'First time using WebTruyen?'
                 : 'Already have an account?'}
               <span
                 onClick={toggleVariant}
