@@ -1,5 +1,6 @@
-import clientPromise from './clientPromise';
+import { clientPromise1, clientPromise2 } from './clientPromise';
 
-const mongoClient = clientPromise.then((res) => res.db('WebTruyen'));
+const mongoClient1 = clientPromise1.then((res) => res.db('WebTruyen'));
+const mongoClient2 = clientPromise2.then((res) => res.db('WebTruyen2'));
 
-export default mongoClient;
+export { mongoClient1, mongoClient2 };

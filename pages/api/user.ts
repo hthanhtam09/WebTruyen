@@ -1,4 +1,4 @@
-import mongoClient from '@/lib/db';
+import { mongoClient1 } from '@/lib/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const usersCollection = (await mongoClient).collection('users');
+    const usersCollection = (await mongoClient1).collection('users');
     const users = await usersCollection.find({}).toArray();
 
     return res.status(200).json(users);

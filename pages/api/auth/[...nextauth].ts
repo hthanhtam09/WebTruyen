@@ -3,9 +3,9 @@ import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcrypt';
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
-import clientPromise from '@/lib/clientPromise';
-import mongoClient from '@/lib/db';
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
+import { clientPromise1 } from '@/lib/clientPromise';
+import { mongoClient1 } from '@/lib/db';
 import { Adapter } from 'next-auth/adapters';
 import { WithId, Document } from 'mongodb';
 
@@ -29,14 +29,14 @@ export const authOptions: AuthOptions = {
         },
         password: {
           label: 'Password',
-          type: 'password'
-        }
+          type: 'password',
+        },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Email and password required');
         }
-        const usersCollection = (await mongoClient).collection('users');
+        const usersCollection = (await mongoClient1).collection('users');
         const user = await usersCollection.findOne({ email: credentials.email });
 
         if (!user || !user.hashedPassword) {
@@ -53,14 +53,14 @@ export const authOptions: AuthOptions = {
           id: (user as WithId<Document>).id?.toString(),
           email: (user as WithId<Document>).email,
         };
-      }
-    })
+      },
+    }),
   ],
   pages: {
-    signIn: '/auth'
+    signIn: '/auth',
   },
-  debug: process.env.NODE_ENV !== "production",
-  adapter: MongoDBAdapter(clientPromise) as Adapter,
+  debug: process.env.NODE_ENV !== 'production',
+  adapter: MongoDBAdapter(clientPromise1) as Adapter,
   session: { strategy: 'jwt' },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,
