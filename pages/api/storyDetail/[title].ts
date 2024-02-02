@@ -6,11 +6,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method !== 'GET') {
       return res.status(405).end();
     }
+    const { title } = req.query;
 
     const storiesCollection = (await mongoClient2).collection('stories');
-    const stories = await storiesCollection.find({}).toArray();
-
-    return res.status(200).json(stories);
+    const story = await storiesCollection.findOne({ title });
+    return res.status(200).json(story);
   } catch (error) {
     console.log(error);
     return res.status(500).end();

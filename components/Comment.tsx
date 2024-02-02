@@ -3,7 +3,7 @@ import { FiCommand } from 'react-icons/fi';
 import { useRouter } from 'next/router';
 
 import CommentItem from './CommentItem';
-import { MovieDetailCommentInterface } from '@/types';
+import { commentInterface } from '@/types';
 import useGetAllComment from '@/hooks/useGetAllComment';
 import useAddComment from '@/hooks/useAddComment';
 import useDeleteComment from '@/hooks/useDeleteComment';
@@ -14,11 +14,11 @@ import { AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
 import useGetAllUser from '@/hooks/useGetAllUser';
 
 interface CommentProps {
-  movieId: string;
-  movieSlug: string;
+  storyId: string;
+  storySlug: string;
 }
 
-const Comment = ({ movieId, movieSlug }: CommentProps) => {
+const Comment = ({ storyId, storySlug }: CommentProps) => {
   const router = useRouter();
   const { toast } = useToast();
   const { data: comments = [], mutate: getAllComments } = useGetAllComment();
@@ -31,19 +31,18 @@ const Comment = ({ movieId, movieSlug }: CommentProps) => {
   const [visibleComments, setVisibleComments] = useState<number>(5);
   const [isLoadmore, setIsLoadmore] = useState<boolean>(false);
 
-  // Filter comments by movieId
   const filteredCommentsData = useMemo(
-    () => comments.filter((comment: any) => comment.movieId === movieId),
-    [comments, movieId],
+    () => comments.filter((comment: any) => comment.storyId === storyId),
+    [comments, storyId],
   );
   const handleAddComment = useCallback(async () => {
     if (!newComment) {
       return;
     }
 
-    if (userData && movieId) {
+    if (userData && storyId) {
       const params = {
-        movieId: movieId,
+        storyId: storyId,
         content: newComment,
         nameUser: userData.name,
         userId: userData._id,
@@ -58,7 +57,7 @@ const Comment = ({ movieId, movieSlug }: CommentProps) => {
       });
       setNewComment('');
     }
-  }, [movieId, newComment]);
+  }, [storyId, newComment]);
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
@@ -71,8 +70,8 @@ const Comment = ({ movieId, movieSlug }: CommentProps) => {
   );
 
   const onRedirectLogin = useCallback(() => {
-    router.push(`/auth?redirect=${encodeURIComponent(router.pathname)}?${movieSlug}`);
-  }, [router, movieSlug]);
+    router.push(`/auth?redirect=${encodeURIComponent(router.pathname)}?${storySlug}`);
+  }, [router, storySlug]);
 
   const handleDeleteComment = useCallback(
     async (commentId: string) => {
@@ -98,9 +97,9 @@ const Comment = ({ movieId, movieSlug }: CommentProps) => {
   }, []);
 
   useEffect(() => {
-    // Reset visible comments when the movieId changes
+    // Reset visible comments when the storyId changes
     setVisibleComments(5);
-  }, [movieId]);
+  }, [storyId]);
 
   return (
     <div className="w-full min-h-[50vh] px-16">
@@ -140,7 +139,7 @@ const Comment = ({ movieId, movieSlug }: CommentProps) => {
       {[...filteredCommentsData]
         .reverse()
         .slice(0, visibleComments)
-        .map((item: MovieDetailCommentInterface) => (
+        .map((item: commentInterface) => (
           <CommentItem
             key={item._id}
             onDelete={() => handleDeleteComment(item._id)}

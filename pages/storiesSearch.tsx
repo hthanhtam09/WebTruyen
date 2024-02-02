@@ -25,9 +25,9 @@ const Content = styled.div`
 
 const StoriesSearch = () => {
   const router = useRouter();
-  const { data: moviesData = [], isLoading } = useStories();
-  const [moviesFilter, setMoviesFilter] = useState([]);
-  const [currentMovie, setCurrentMovie] = useState([]);
+  const { data: StoriesData = [], isLoading } = useStories();
+  const [storiesFilter, setStoriesFilter] = useState([]);
+  const [currentStory, setCurrentStory] = useState([]);
   const [itemOffset, setItemOffset] = useState(0);
   const [page, setPage] = useState(1);
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
@@ -35,23 +35,11 @@ const StoriesSearch = () => {
   const endOffset = itemOffset + itemsPerPage;
 
   useEffect(() => {
-    if (moviesFilter.length > 0) {
-      const currentItems = moviesFilter.slice(itemOffset, endOffset);
-      setCurrentMovie(currentItems);
+    if (storiesFilter.length > 0) {
+      const currentItems = storiesFilter.slice(itemOffset, endOffset);
+      setCurrentStory(currentItems);
     }
-  }, [endOffset, itemOffset, moviesFilter, setCurrentMovie]);
-
-  const handlePaginationChange = useCallback(
-    (_: React.ChangeEvent<unknown>, value: number) => {
-      const action = value > page ? 'next' : 'previous';
-      const newPage = action === 'next' ? page + 1 : page - 1;
-
-      setPage(newPage);
-      const newOffset = (newPage - 1) * itemsPerPage;
-      setItemOffset(newOffset);
-    },
-    [page],
-  );
+  }, [endOffset, itemOffset, storiesFilter, setCurrentStory]);
 
   useEffect(() => {
     (async () => {
@@ -59,15 +47,15 @@ const StoriesSearch = () => {
         ? slugify(router.query.keyword as string, { remove: /[-]/g, lower: true })
         : '';
       const resultFilter =
-        moviesData.length > 0 &&
-        moviesData.filter((movie: any) => {
-          const normalizedSlug = slugify(movie.movie.slug, { remove: /[-]/g, lower: true });
+        StoriesData.length > 0 &&
+        StoriesData.filter((story: any) => {
+          const normalizedSlug = slugify(story.slug, { remove: /[-]/g, lower: true });
 
           return normalizedSlug.includes(normalizedKeyword);
         });
-      setMoviesFilter(resultFilter);
+      setStoriesFilter(resultFilter);
     })();
-  }, [moviesData, router.query.keyword]);
+  }, [StoriesData, router.query.keyword]);
 
 
   const isOpenSearch = useCallback(() => {
@@ -85,11 +73,11 @@ const StoriesSearch = () => {
       </Helmet>
       <div className="relative h-screen w-screen dark:bg-black bg-themeLight">
         {!isLoading ? (
-          moviesFilter.length > 0 ? (
+          storiesFilter.length > 0 ? (
             <div className="absolute top-32 px-4 md:px-16">
               <StoriesList
                 title={`Kết quả tìm kiếm: ${router.query.keyword}`}
-                data={moviesFilter.length > itemsPerPage ? currentMovie : moviesFilter}
+                data={storiesFilter.length > itemsPerPage ? currentStory : storiesFilter}
                 style="mt-10 mb-20"
               />
             </div>

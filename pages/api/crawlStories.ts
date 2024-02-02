@@ -8,6 +8,8 @@ const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
 async function processChapterURL(page: Page, detailsUrl: string) {
   const browser = await puppeteer.launch({ headless: 'new' });
   const chapterContents = [];
+  let description = '';
+  const genres: (string | undefined)[] = [];
   let currentPage = 1;
 
   while (true) {
@@ -16,6 +18,13 @@ async function processChapterURL(page: Page, detailsUrl: string) {
       timeout: 0,
     });
     const $ = cheerio.load(await page.content());
+    description = $('.desc-text').text();
+    $('.info')
+      .find('a')
+      .each((_, genreElement) => {
+        const genreValue = $(genreElement).attr('title');
+        genres.push(genreValue);
+      });
 
     for (const element of $('.list-chapter li a').toArray()) {
       const chapterUrl = $(element).attr('href') as string;
@@ -23,6 +32,7 @@ async function processChapterURL(page: Page, detailsUrl: string) {
       const chapterPage = await browser.newPage();
       await chapterPage.goto(chapterUrl, { waitUntil: 'domcontentloaded', timeout: 0 });
       const $details = cheerio.load(await chapterPage.content());
+
       const paragraphs = $details('.chapter-c').contents().text();
       chapterContents.push(paragraphs);
       await chapterPage.close();
@@ -40,7 +50,11 @@ async function processChapterURL(page: Page, detailsUrl: string) {
     }
   }
 
-  return chapterContents;
+  return {
+    chapterContents,
+    description,
+    genres,
+  };
 }
 
 async function scrapePage(page: Page, url: string, browser: Browser) {
@@ -61,7 +75,10 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
       const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
       const createdAt = new Date();
       const chapterStory = $(element).find('.text-info a').text();
-      const chapterContents = await processChapterURL(chapterPage, detailsUrl);
+      const { chapterContents, description, genres } = await processChapterURL(
+        chapterPage,
+        detailsUrl,
+      );
       await chapterPage.close();
 
       storiesCollection.insertOne({
@@ -69,6 +86,8 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
         author,
         imageUrl,
         storySlug,
+        description,
+        genres,
         createdAt,
         chapterStory,
         chapterContents,
@@ -86,7 +105,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 4;
+    let currentPage = 3;
     while (true) {
       await page.goto(`${uri}trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',

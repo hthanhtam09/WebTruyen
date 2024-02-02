@@ -8,6 +8,9 @@ const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
 async function processChapterURL(page: Page, detailsUrl: string) {
   const browser = await puppeteer.launch({ headless: 'new' });
   const chapterContents = [];
+  let description = '';
+  const genres: (string | undefined)[] = [];
+  let imageUrl: string = ''
   let currentPage = 1;
 
   while (true) {
@@ -16,6 +19,15 @@ async function processChapterURL(page: Page, detailsUrl: string) {
       timeout: 0,
     });
     const $ = cheerio.load(await page.content());
+    description = $('.desc-text').text();
+    imageUrl = $('.book').find('img').attr('src') as string;
+  
+    $('.info')
+      .find('a')
+      .each((_, genreElement) => {
+        const genreValue = $(genreElement).attr('title');
+        genres.push(genreValue);
+      });
 
     for (const element of $('.list-chapter li a').toArray()) {
       const chapterUrl = $(element).attr('href') as string;
@@ -23,6 +35,7 @@ async function processChapterURL(page: Page, detailsUrl: string) {
       const chapterPage = await browser.newPage();
       await chapterPage.goto(chapterUrl, { waitUntil: 'domcontentloaded', timeout: 0 });
       const $details = cheerio.load(await chapterPage.content());
+
       const paragraphs = $details('.chapter-c').contents().text();
       chapterContents.push(paragraphs);
       await chapterPage.close();
@@ -40,35 +53,44 @@ async function processChapterURL(page: Page, detailsUrl: string) {
     }
   }
 
-  return chapterContents;
+  return {
+    chapterContents,
+    description,
+    genres,
+    imageUrl,
+  };
 }
 
 async function scrapePage(page: Page, url: string, browser: Browser) {
   await page.goto(`${url}`, { waitUntil: 'domcontentloaded', timeout: 0 });
   const $ = cheerio.load(await page.content());
 
-  const storiesCollection2 = (await mongoClient2).collection('stories');
+  const storiesCollection = (await mongoClient2).collection('stories');
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
-    const existingStory = await storiesCollection2.findOne({ title });
+    const existingStory = await storiesCollection.findOne({ title });
     if (!existingStory) {
       const chapterPage = await browser.newPage();
 
       const author = $(element).find('.author').text();
-      const imageUrl = $(element).find('.col-xs-3 div[data-classname="cover"]').attr('data-image');
       const detailsUrl = $(element).find('a').attr('href') as string;
       const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
       const createdAt = new Date();
       const chapterStory = $(element).find('.text-info a').text();
-      const chapterContents = await processChapterURL(chapterPage, detailsUrl);
+      const { chapterContents, description, genres, imageUrl } = await processChapterURL(
+        chapterPage,
+        detailsUrl,
+      );
       await chapterPage.close();
 
-      storiesCollection2.insertOne({
+      storiesCollection.insertOne({
         title,
         author,
         imageUrl,
         storySlug,
+        description,
+        genres,
         createdAt,
         chapterStory,
         chapterContents,
