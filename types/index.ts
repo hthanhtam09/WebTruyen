@@ -1,6 +1,6 @@
-export interface MovieDetailCommentInterface {
+export interface commentInterface {
   _id: string;
-  movieId: string,
+  storyId: string,
   content: string,
   nameUser: string,
   userId: string,
@@ -34,8 +34,12 @@ export interface UserInterface {
 export interface StoriesInterface {
   _id: string;
   title: string;
-  image: string;
-  detailsUrl: string;
+  author: string;
+  imageUrl: string;
+  storySlug: string;
+  description: string;
+  chapterStory: string;
   createdAt: string;
-  chapterUrls: string[]
+  genres: string[];
+  chapterContents: string[]
 }

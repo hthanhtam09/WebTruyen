@@ -1,7 +1,3 @@
-export function handleRemoveTagHtml(str: string) {
-  return str ? str.replace(/<[^>]*>|&nbsp;/g, "") : '';
-}
-
 export function isEndOfSentence(word: string): boolean {
   return /[.!?]$/.test(word);
 }

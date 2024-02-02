@@ -2,11 +2,11 @@ import React, { useMemo } from 'react';
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
 
-import { MovieDetailCommentInterface } from '@/types';
+import { commentInterface } from '@/types';
 import { createTimelineString } from '@/utils/utils';
 import Modal from './Modal';
 
-interface CommentItemProps extends MovieDetailCommentInterface {
+interface CommentItemProps extends commentInterface {
   allUserData: any[];
   onDelete: () => void;
 }

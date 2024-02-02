@@ -28,7 +28,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
 
   const [page, setPage] = useState(1);
   const [itemOffset, setItemOffset] = useState(0);
-  const [currentMovie, setCurrentMovie] = useState<StoriesInterface[]>([]);
+  const [currentStory, setCurrentStory] = useState<StoriesInterface[]>([]);
 
   const pageCount =
     storiesData != null && storiesData.length > 0 ? Math.ceil(storiesData.length / itemsPerPage) : 1;
@@ -46,10 +46,10 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
     [itemsPerPage, page],
   );
 
-  const redirectToMoviesListNameScreen = useCallback(
-    (currentMovie: StoriesInterface[]) => {
+  const redirectToStoriesListNameScreen = useCallback(
+    (currentStory: StoriesInterface[]) => {
       const queryObject = {
-        movies: JSON.stringify(currentMovie),
+        movies: JSON.stringify(currentStory),
       };
       router.push({
         pathname: `/${title}`,
@@ -62,9 +62,9 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
   useEffect(() => {
     if (storiesData && storiesData.length > 0) {
       const currentItems = storiesData.slice(itemOffset, endOffset);
-      setCurrentMovie(currentItems);
+      setCurrentStory(currentItems);
     }
-  }, [endOffset, itemOffset, storiesData, setCurrentMovie]);
+  }, [endOffset, itemOffset, storiesData, setCurrentStory]);
 
   return (
     <div className="h-full relative px-4 md:px-16 pt-20 pb-10">
@@ -74,7 +74,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
         </p>
         {isNavigate && (
           <div
-            onClick={() => redirectToMoviesListNameScreen(storiesData)}
+            onClick={() => redirectToStoriesListNameScreen(storiesData)}
             className="flex dark:text-white text-themeDark items-center cursor-pointer transition duration-500"
           >
             View all
@@ -84,9 +84,9 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
       </div>
 
       {!isLoading ? (
-        currentMovie.length > 0 ? (
+        currentStory.length > 0 ? (
           <>
-            <StoriesList data={currentMovie} style="mt-10 mb-10" />
+            <StoriesList data={currentStory} style="mt-10 mb-10" />
             {isPagination && (
               <div className="w-full flex justify-center">
                 <Pagination

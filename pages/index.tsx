@@ -10,22 +10,6 @@ import Line from '@/components/Line';
 import { StoriesInterface } from '@/types';
 import { EGenreType } from '@/enum';
 
-export async function getServerSideProps(context: NextPageContext) {
-  const session = await getSession(context);
-
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: '/auth',
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
-  return {
-    props: {},
-  };
-}
 
 const Home = () => {
   const { data: storiesData = [], isLoading } = useStories();
