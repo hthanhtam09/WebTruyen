@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { mongoClient1 } from '@/lib/db';
+import { mongoClient2 } from '@/lib/db';
 import * as cheerio from 'cheerio';
 import puppeteer, { Browser, Page } from 'puppeteer';
 
@@ -47,11 +47,11 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
   await page.goto(`${url}`, { waitUntil: 'domcontentloaded', timeout: 0 });
   const $ = cheerio.load(await page.content());
 
-  const storiesCollection = (await mongoClient1).collection('stories');
+  const storiesCollection2 = (await mongoClient2).collection('stories');
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
-    const existingStory = await storiesCollection.findOne({ title });
+    const existingStory = await storiesCollection2.findOne({ title });
     if (!existingStory) {
       const chapterPage = await browser.newPage();
 
@@ -64,7 +64,7 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
       const chapterContents = await processChapterURL(chapterPage, detailsUrl);
       await chapterPage.close();
 
-      storiesCollection.insertOne({
+      storiesCollection2.insertOne({
         title,
         author,
         imageUrl,
@@ -86,7 +86,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 4;
+    let currentPage = 3;
     while (true) {
       await page.goto(`${uri}trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
