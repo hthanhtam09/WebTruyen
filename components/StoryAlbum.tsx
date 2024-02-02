@@ -2,23 +2,22 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import Loading from '@/pages/loading';
-import MovieList from './MovieList';
+import StoriesList from './StoriesList';
 import { useRouter } from 'next/router';
-import useMovie from '@/hooks/useMovie';
-import { MovieDetailInterface } from '@/types';
+import { StoriesInterface } from '@/types';
 
-interface MovieAlbumProps {
+interface StoryAlbumProps {
   title: string;
-  moviesData: MovieDetailInterface[];
+  storiesData: StoriesInterface[];
   isLoading: boolean;
   itemsPerPage?: number;
   isPagination?: boolean;
   isNavigate?: boolean;
 }
 
-const MovieAlbum: React.FC<MovieAlbumProps> = ({
+const StoryAlbum: React.FC<StoryAlbumProps> = ({
   title,
-  moviesData,
+  storiesData,
   isLoading,
   itemsPerPage = 24,
   isPagination = false,
@@ -29,10 +28,10 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
 
   const [page, setPage] = useState(1);
   const [itemOffset, setItemOffset] = useState(0);
-  const [currentMovie, setCurrentMovie] = useState<MovieDetailInterface[]>([]);
+  const [currentMovie, setCurrentMovie] = useState<StoriesInterface[]>([]);
 
   const pageCount =
-    moviesData != null && moviesData.length > 0 ? Math.ceil(moviesData.length / itemsPerPage) : 1;
+    storiesData != null && storiesData.length > 0 ? Math.ceil(storiesData.length / itemsPerPage) : 1;
   const endOffset = itemOffset + itemsPerPage;
 
   const handlePaginationChange = useCallback(
@@ -48,7 +47,7 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
   );
 
   const redirectToMoviesListNameScreen = useCallback(
-    (currentMovie: MovieDetailInterface[]) => {
+    (currentMovie: StoriesInterface[]) => {
       const queryObject = {
         movies: JSON.stringify(currentMovie),
       };
@@ -61,11 +60,11 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
   );
 
   useEffect(() => {
-    if (moviesData && moviesData.length > 0) {
-      const currentItems = moviesData.slice(itemOffset, endOffset);
+    if (storiesData && storiesData.length > 0) {
+      const currentItems = storiesData.slice(itemOffset, endOffset);
       setCurrentMovie(currentItems);
     }
-  }, [endOffset, itemOffset, moviesData, setCurrentMovie]);
+  }, [endOffset, itemOffset, storiesData, setCurrentMovie]);
 
   return (
     <div className="h-full relative px-4 md:px-16 pt-20 pb-10">
@@ -75,7 +74,7 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
         </p>
         {isNavigate && (
           <div
-            onClick={() => redirectToMoviesListNameScreen(moviesData)}
+            onClick={() => redirectToMoviesListNameScreen(storiesData)}
             className="flex dark:text-white text-themeDark items-center cursor-pointer transition duration-500"
           >
             View all
@@ -87,7 +86,7 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
       {!isLoading ? (
         currentMovie.length > 0 ? (
           <>
-            <MovieList data={currentMovie} style="mt-10 mb-10" />
+            <StoriesList data={currentMovie} style="mt-10 mb-10" />
             {isPagination && (
               <div className="w-full flex justify-center">
                 <Pagination
@@ -110,7 +109,7 @@ const MovieAlbum: React.FC<MovieAlbumProps> = ({
   );
 };
 
-export default MovieAlbum;
+export default StoryAlbum;
 
 const useStyles = makeStyles({
   paginationItem: {

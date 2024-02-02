@@ -37,15 +37,12 @@ const Navbar: React.FC = () => {
   }, []);
 
   return (
-    <nav className="w-full fixed z-40">
+    <nav className="w-full fixed z-40 top-0">
       <div className="h-[10vh] px-4 md:px-16 py-6 flex flex-row items-center dark:bg-themeDark bg-themeLight-secondary bg-opacity-90 transition duration-500">
         <Link href={'/'}>
           <img className="bg-cover" src="/images/logo.png" alt="Logo" width={100} height={100} />
         </Link>
         <div className="flex flex-row ml-auto gap-7 items-center justify-between w-[50%]">
-          {/* <div className="text-gray-200 hover:text-gray-300 cursor-pointer transition">
-            <Language />
-          </div> */}
           <div className="flex-row ml-8 gap-12 hidden lg:flex">
             {navbarItemListData.map((item) => (
               <NavbarItem
