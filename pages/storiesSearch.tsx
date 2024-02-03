@@ -68,8 +68,22 @@ const StoriesSearch = () => {
 
   return (
     <>
-      <Helmet>
+     <Helmet prioritizeSeoTags>
         <title>Search</title>
+        <meta name="description" content='Tìm kiếm WebTruyen' />
+        {/* Các thẻ khác liên quan đến SEO */}
+        <meta name="keywords" content="WebTruyen, Search" />
+        <meta name="author" content="WebTruyen" />
+        {/* Các thẻ Open Graph */}
+        <meta property="og:title" content='WebTruyen' />
+        <meta property="og:description" content='Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều.' />
+        <meta property="og:image" content='WebTruyen' />
+        <meta property="og:url" content='WebTruyen' />
+        {/* Các thẻ Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content='WebTruyen' />
+        <meta name="twitter:description" content='Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều.' />
+        <meta name="twitter:image" content='WebTruyen' />
       </Helmet>
       <div className="relative h-screen w-screen dark:bg-black bg-themeLight">
         {!isLoading ? (

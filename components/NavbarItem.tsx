@@ -10,7 +10,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({ label, path }) => {
   return (
     <Link
       href={path === 'Home' ? '/' : `/${path}`}
-      className="dark:text-white text-themeDark cursor-pointer hover:text-gray-300 transition duration-500"
+      className="dark:text-white text-themeDark cursor-pointer hover:text-gray-300 transition duration-500 text-lg"
     >
       {label}
     </Link>

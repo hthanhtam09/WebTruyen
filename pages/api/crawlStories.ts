@@ -10,6 +10,7 @@ async function processChapterURL(page: Page, detailsUrl: string) {
   const chapterContents = [];
   let description = '';
   const genres: (string | undefined)[] = [];
+  let imageUrl: string = ''
   let currentPage = 1;
 
   while (true) {
@@ -19,6 +20,8 @@ async function processChapterURL(page: Page, detailsUrl: string) {
     });
     const $ = cheerio.load(await page.content());
     description = $('.desc-text').text();
+    imageUrl = $('.book').find('img').attr('src') as string;
+  
     $('.info')
       .find('a')
       .each((_, genreElement) => {
@@ -54,6 +57,7 @@ async function processChapterURL(page: Page, detailsUrl: string) {
     chapterContents,
     description,
     genres,
+    imageUrl,
   };
 }
 
@@ -62,6 +66,7 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
   const $ = cheerio.load(await page.content());
 
   const storiesCollection = (await mongoClient1).collection('stories');
+  const storiesDetailCollection = (await mongoClient1).collection('storiesDetail');
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
@@ -70,12 +75,11 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
       const chapterPage = await browser.newPage();
 
       const author = $(element).find('.author').text();
-      const imageUrl = $(element).find('.col-xs-3 div[data-classname="cover"]').attr('data-image');
       const detailsUrl = $(element).find('a').attr('href') as string;
       const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
       const createdAt = new Date();
       const chapterStory = $(element).find('.text-info a').text();
-      const { chapterContents, description, genres } = await processChapterURL(
+      const { chapterContents, description, genres, imageUrl } = await processChapterURL(
         chapterPage,
         detailsUrl,
       );
@@ -86,12 +90,20 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
         author,
         imageUrl,
         storySlug,
-        description,
-        genres,
         createdAt,
         chapterStory,
-        chapterContents,
       });
+
+      storiesDetailCollection.insertOne({
+        title,
+        author,
+        imageUrl,
+        chapterContents,
+        description,
+        genres,
+        storySlug,
+        createdAt,
+      })
     } else {
       console.log('Story is have already...');
     }

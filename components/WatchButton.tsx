@@ -1,11 +1,11 @@
 import React from 'react';
-import { PlayIcon } from '@heroicons/react/24/solid';
+import { BookOpenIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/router';
 
 interface WatchButtonProps {
   path: string;
   text?: string;
-  query?: string;
+  query?: any;
   style?: string;
 }
 
@@ -17,7 +17,7 @@ const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) =
       onClick={() => router.push({ pathname: `${path}`, query })}
       className={` 
       dark:bg-white
-      bg-themeDark
+      bg-themeLight-secondary
       rounded-md 
       py-1 md:py-2 
       px-2 md:px-4
@@ -27,14 +27,14 @@ const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) =
       flex
       flex-row
       items-center
-      hover:bg-neutral-300
+      hover:opacity-70
       transition
       duration-500
       ${style}
       `}
     >
-      <PlayIcon className="w-4 md:w-7 dark:text-black text-themeLight mr-1" />
-      {text ? <span className='dark:text-black text-themeLight'>{text}</span> : null}
+      <BookOpenIcon className="w-4 md:w-7 text-black mr-1" />
+      {text ? <span className='text-black'>{text}</span> : null}
     </button>
   );
 };

@@ -24,7 +24,7 @@ const config = {
         },
         themeLight: {
           DEFAULT: '#EDF1F8',
-          secondary: '#B0B0B0'
+          secondary: 'white'
         },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
