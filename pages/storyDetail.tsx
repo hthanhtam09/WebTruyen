@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useCallback, Fragment } from 'react';
 import { useRouter } from 'next/router';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet-async';
 
 import WatchButton from '@/components/WatchButton';
 import Line from '@/components/Line';
-import StoriesList from '@/components/StoriesList';
 import StoryCard from '@/components/StoryCard';
 import useStoryDetail from '@/hooks/useStoryDetail';
 import Loading from '@/pages/loading';
@@ -22,24 +21,36 @@ import 'swiper/css/pagination';
 const StoryDetailScreen = () => {
   const router = useRouter();
   const { data: storyData } = useStoryDetail(Object.keys(router.query) as any as string);
-  const { data: storiesData = [], isLoading } = useStories();
+  const { data: storiesData = [] } = useStories();
   const uniqueGenresSet = new Set(storyData?.genres);
   const uniqueGenresArray = [...uniqueGenresSet];
 
+  const redirectChapterDetail = useCallback(
+    (title: string, author: string, stories: string[], chapter: number) => {
+      if (storyData) {
+        localStorage.setItem('lastClickedChapter', chapter.toString());
+        router.push({
+          pathname: `/chapterDetail`,
+          query: { title, author, stories, chapter },
+        });
+      }
+    },
+    [storyData],
+  );
+
+  const storedChapter = localStorage.getItem('lastClickedChapter');
+
   return (
-    <>
+    <div className="flex flex-col justify-center mb-32">
       <Helmet>
         <title>{storyData?.title}</title>
         <meta name="description" content={storyData?.description} />
-        {/* Các thẻ khác liên quan đến SEO */}
         <meta name="keywords" content="" />
         <meta name="author" content={storyData?.author} />
-        {/* Các thẻ Open Graph */}
         <meta property="og:title" content={storyData?.title} />
         <meta property="og:description" content={storyData?.description} />
         <meta property="og:image" content={storyData?.imageUrl} />
-        <meta property="og:url" content={window.location.href} />
-        {/* Các thẻ Twitter Card */}
+        <meta property="og:url" content="WebTruyen" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={storyData?.title} />
         <meta name="twitter:description" content={storyData?.description} />
@@ -101,29 +112,60 @@ const StoryDetailScreen = () => {
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Genre: </span>
               <span className="inline-block w-[600px]">
-                {storyData ? uniqueGenresArray.map((item: any, index: number) => (
-                   <>
-                    {item}
-                    {index === 0 && uniqueGenresArray.length === 1
-                      ? '. '
-                      : index !== uniqueGenresArray.length - 1
-                      ? ', '
-                      : '. '}
-                   </>
-                )) : <SkeletonLoading width={'100%'} height={40} />}
+                {storyData ? (
+                  uniqueGenresArray.map((item: any, index: number) => (
+                    <Fragment key={index}>
+                      {item}
+                      {index === 0 && uniqueGenresArray.length === 1
+                        ? '. '
+                        : index !== uniqueGenresArray.length - 1
+                        ? ', '
+                        : '. '}
+                    </Fragment>
+                  ))
+                ) : (
+                  <SkeletonLoading width={'100%'} height={40} />
+                )}
               </span>
             </p>
           </div>
-          <div className="flex mt-6">{/* <WatchButton path={storyData.} text="Read" /> */}</div>
+          {storyData ? (
+            <div className="flex mt-6">
+              <WatchButton
+                path={'/chapterDetail'}
+                query={{ stories: storyData.chapterContents, chapter: 1 }}
+                text="Read now"
+              />
+            </div>
+          ) : null}
         </section>
         <Line style="top-10" />
         <section className="w-full mt-10 px-16 pb-10">
-          <p className='mt-28 text-2xl font-bold'>Chapters: </p>
-          <div className="w-full gap-16 flex flex-wrap mt-10">
+          <p className="mt-28 text-2xl font-bold">Chapters: </p>
+          <div className="w-full gap-16 grid grid-cols-8 grid-flow-row-dense mt-10">
             {storyData ? (
               <>
-                {storyData.chapterContents.map((story, index) => {
-                  return <p key={index}>Chương {index + 1}</p>;
+                {storyData.chapterContents.map((_, index) => {
+                  return (
+                    <p
+                      className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4 ${
+                        Number(storedChapter) === index + 1
+                          ? 'dark:bg-white dark:text-black bg-themeLight-secondary text-white'
+                          : ''
+                      }`}
+                      key={index}
+                      onClick={() =>
+                        redirectChapterDetail(
+                          storyData.title,
+                          storyData.author,
+                          storyData.chapterContents,
+                          index,
+                        )
+                      }
+                    >
+                      Chương {index + 1}
+                    </p>
+                  );
                 })}
               </>
             ) : (
@@ -167,7 +209,7 @@ const StoryDetailScreen = () => {
           )}
         </section>
       </Suspense>
-    </>
+    </div>
   );
 };
 

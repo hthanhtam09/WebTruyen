@@ -32,9 +32,9 @@ const Footer = () => {
         alt="cartoon1"
       />
       
-      <div className="w-[40%] h-[1px] bg-white absolute left-0 top-[50%]" />
+      <div className="w-[40%] h-[1px] dark:bg-white bg-black absolute left-0 top-[50%]" />
       <img className="bg-cover" src="/images/logo.png" alt="Logo" width={100} height={100} />
-      <div className="w-[40%] h-[1px] bg-white absolute right-0 top-[50%]" />
+      <div className="w-[40%] h-[1px] dark:bg-white bg-black absolute right-0 top-[50%]" />
     </footer>
   );
 };

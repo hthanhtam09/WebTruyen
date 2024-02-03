@@ -45,7 +45,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
     },
     [itemsPerPage, page],
   );
-
+  
   const redirectToStoriesListNameScreen = useCallback(
     (currentStory: StoriesInterface[]) => {
       const queryObject = {

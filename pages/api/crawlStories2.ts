@@ -66,6 +66,7 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
   const $ = cheerio.load(await page.content());
 
   const storiesCollection = (await mongoClient2).collection('stories');
+  const storiesDetailCollection = (await mongoClient2).collection('storiesDetail');
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
@@ -89,12 +90,20 @@ async function scrapePage(page: Page, url: string, browser: Browser) {
         author,
         imageUrl,
         storySlug,
-        description,
-        genres,
         createdAt,
         chapterStory,
-        chapterContents,
       });
+
+      storiesDetailCollection.insertOne({
+        title,
+        author,
+        imageUrl,
+        chapterContents,
+        description,
+        genres,
+        storySlug,
+        createdAt,
+      })
     } else {
       console.log('Story is have already...');
     }
