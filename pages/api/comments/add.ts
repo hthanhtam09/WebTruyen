@@ -1,11 +1,9 @@
 // pages/api/comments/add.js
 import { NextApiRequest, NextApiResponse } from 'next';
-import { clientPromise1 } from '@/lib/clientPromise';
 import { mongoClient1 } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
-  await clientPromise1;
   if (method !== 'POST') return res.status(400).json({ error: 'Method not allowed' });
 
   try {

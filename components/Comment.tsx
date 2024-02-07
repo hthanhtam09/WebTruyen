@@ -35,6 +35,7 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
     () => comments.filter((comment: any) => comment.storyId === storyId),
     [comments, storyId],
   );
+
   const handleAddComment = useCallback(async () => {
     if (!newComment) {
       return;
