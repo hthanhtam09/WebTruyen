@@ -1,18 +1,36 @@
 import type { AppProps } from 'next/app';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { SessionProvider } from 'next-auth/react';
+import Script from 'next/script';
+import { ThemeProvider } from 'next-themes';
+import { useRouter } from 'next/router';
 
 import { Toaster } from '@/components/ui/toaster';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import ClientOnly from './ClientOnly.mjs';
-import { ThemeProvider } from 'next-themes';
 
 import '../styles/globals.css';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        if ('serviceWorker' in navigator) {
+          const registration1 = await navigator.serviceWorker.register('/sw1.js');
+          console.log('Service Worker 1 registered with scope:', registration1.scope);
+
+          // const registration2 = await navigator.serviceWorker.register('/sw2.js');
+          // console.log('Service Worker 2 registered with scope:', registration2.scope);
+        }
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+      }
+    })();
+  }, [])
 
   return (
     <ClientOnly>
