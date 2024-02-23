@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
 import { Helmet } from 'react-helmet-async';
+import { NextSeo } from 'next-seo';
 
 import WatchButton from '@/components/WatchButton';
 import Line from '@/components/Line';
@@ -26,13 +27,7 @@ const StoryDetailScreen = () => {
   const { data: storiesData = [] } = useStories();
   const { addChapterFollow } = useAddChapterFollow();
   const { getChapterFollow } = useGetChapterFollow();
-  useEffect(() => {
-    ;(async () => {
-      console.log('getChapterFollow', await getChapterFollow(storyData))
 
-    })()
-
-  }, [])
   const uniqueGenresSet = new Set(storyData?.genres);
   const uniqueGenresArray = [...uniqueGenresSet];
 
@@ -41,7 +36,7 @@ const StoryDetailScreen = () => {
       if (storyData) {
         localStorage.setItem('lastClickedChapter', (chapter + 1).toString());
         router.push({
-          pathname: `/chapterDetail`,
+          pathname: `/chapterDetail/${chapter}`,
           query: { title, author, stories, chapter },
         });
         handleAddChapterFollow()
@@ -77,6 +72,11 @@ const StoryDetailScreen = () => {
         <meta name="twitter:description" content={storyData?.description} />
         <meta name="twitter:image" content={storyData?.imageUrl} />
       </Helmet>
+      <NextSeo
+        title={storyData?.title}
+        description={storyData?.description}
+        canonical={`webtruyen.io.vn/storyDetail/${storyData?.title}`}
+      />
       <Suspense fallback={<Loading />}>
         <section className="relative flex-col pt-32 px-4 md:px-16 py-6 flex items-start dark:bg-themeDark bg-themeLight bg-opacity-90 transition duration-500">
           {storyData ? (
@@ -149,8 +149,8 @@ const StoryDetailScreen = () => {
           {storyData ? (
             <div className="flex mt-6">
               <WatchButton
-                path={'/chapterDetail'}
-                query={{ stories: storyData.chapterContents, chapter: 1 }}
+                path={`/chapterDetail/0`}
+                query={{ stories: storyData.chapterContents, chapter: 0 }}
                 text="Đọc ngay"
               />
             </div>

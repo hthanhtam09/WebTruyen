@@ -18,7 +18,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <ClientOnly>
       <HelmetProvider>
         <SessionProvider session={session}>
-          <ThemeProvider attribute="class">
+          <ThemeProvider attribute="class" defaultTheme='dark'>
             <Helmet titleTemplate="WebTruyen - %s" defaultTitle="WebTruyen">
               <meta
                 name="description"

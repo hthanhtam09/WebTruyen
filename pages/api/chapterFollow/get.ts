@@ -8,7 +8,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     if (method !== 'GET') return res.status(400).json({ error: 'Method not allowed' });
     const { storyId } = req.query;
-    console.log('req.query', req.query)
     const chapterFollowCollection = (await mongoClient2).collection('chapterFollow');
     const chapterFollow = chapterFollowCollection.findOne({ storyId });
 
