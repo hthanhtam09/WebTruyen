@@ -11,10 +11,12 @@ interface WatchButtonProps {
 
 const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) => {
   const router = useRouter();
-
   return (
     <button
-      onClick={() => router.push({ pathname: `${path}`, query })}
+      onClick={() => {
+        router.push({ pathname: `${path}`, query });
+        localStorage.setItem('lastClickedChapter', '1');
+      }}
       className={` 
       dark:bg-white
       bg-themeLight-secondary
@@ -34,7 +36,7 @@ const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) =
       `}
     >
       <BookOpenIcon className="w-4 md:w-7 text-black mr-1" />
-      {text ? <span className='text-black'>{text}</span> : null}
+      {text ? <span className="text-black">{text}</span> : null}
     </button>
   );
 };

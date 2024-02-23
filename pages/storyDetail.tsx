@@ -1,8 +1,9 @@
-import { Suspense, useCallback, Fragment } from 'react';
+import { Suspense, useCallback, Fragment, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
 import { Helmet } from 'react-helmet-async';
+import { NextSeo } from 'next-seo';
 
 import WatchButton from '@/components/WatchButton';
 import Line from '@/components/Line';
@@ -17,28 +18,43 @@ import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import useAddChapterFollow from '@/hooks/useAddChapterFollow';
+import useGetChapterFollow from '@/hooks/useGetChapterFollow';
 
 const StoryDetailScreen = () => {
   const router = useRouter();
   const { data: storyData } = useStoryDetail(Object.keys(router.query) as any as string);
   const { data: storiesData = [] } = useStories();
+  const { addChapterFollow } = useAddChapterFollow();
+  const { getChapterFollow } = useGetChapterFollow();
+
   const uniqueGenresSet = new Set(storyData?.genres);
   const uniqueGenresArray = [...uniqueGenresSet];
 
   const redirectChapterDetail = useCallback(
     (title: string, author: string, stories: string[], chapter: number) => {
       if (storyData) {
-        localStorage.setItem('lastClickedChapter', chapter.toString());
+        localStorage.setItem('lastClickedChapter', (chapter + 1).toString());
         router.push({
-          pathname: `/chapterDetail`,
+          pathname: `/chapterDetail/${chapter}`,
           query: { title, author, stories, chapter },
         });
+        handleAddChapterFollow()
       }
     },
     [storyData],
   );
 
-  const storedChapter = localStorage.getItem('lastClickedChapter');
+  const lastClickedChapter = localStorage.getItem('lastClickedChapter');
+
+  const handleAddChapterFollow = useCallback(async () => {
+    if (!storyData) return
+      await addChapterFollow({
+        storyId: storyData._id,
+        chapter: lastClickedChapter
+      });
+    }, [])
+
 
   return (
     <div className="flex flex-col justify-center mb-32">
@@ -56,6 +72,11 @@ const StoryDetailScreen = () => {
         <meta name="twitter:description" content={storyData?.description} />
         <meta name="twitter:image" content={storyData?.imageUrl} />
       </Helmet>
+      <NextSeo
+        title={storyData?.title}
+        description={storyData?.description}
+        canonical={`webtruyen.io.vn/storyDetail/${storyData?.title}`}
+      />
       <Suspense fallback={<Loading />}>
         <section className="relative flex-col pt-32 px-4 md:px-16 py-6 flex items-start dark:bg-themeDark bg-themeLight bg-opacity-90 transition duration-500">
           {storyData ? (
@@ -82,35 +103,31 @@ const StoryDetailScreen = () => {
             )}
 
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Total chapters: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Tổng: </span>
               {storyData ? (
-                <span>{storyData.chapterContents.length} chapters</span>
+                <span>{storyData.chapterContents.length} chương</span>
               ) : (
                 <SkeletonLoading width={'20%'} height={40} />
               )}
             </p>
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Description: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Mô tả: </span>
               <span className="inline-block w-[600px]">
                 {storyData ? storyData.description : <SkeletonLoading width={'100%'} height={40} />}
               </span>
             </p>
 
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex items-center transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Author: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Tác giả: </span>
               {storyData ? (
                 <span>{storyData.author}</span>
               ) : (
                 <SkeletonLoading width={'20%'} height={40} />
               )}
             </p>
-
-            <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Language: </span>
-              {storyData ? 'Vietnamese' : <SkeletonLoading width={'20%'} height={40} />}
-            </p>
+           
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Genre: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Thể loại: </span>
               <span className="inline-block w-[600px]">
                 {storyData ? (
                   uniqueGenresArray.map((item: any, index: number) => (
@@ -132,24 +149,30 @@ const StoryDetailScreen = () => {
           {storyData ? (
             <div className="flex mt-6">
               <WatchButton
-                path={'/chapterDetail'}
-                query={{ stories: storyData.chapterContents, chapter: 1 }}
-                text="Read now"
+                path={`/chapterDetail/0`}
+                query={{ stories: storyData.chapterContents, chapter: 0 }}
+                text="Đọc ngay"
               />
             </div>
           ) : null}
         </section>
+        <section className="w-full mt-10 px-16 pb-10">
+          <p className="mt-28 text-2xl font-bold">Chương đang theo dõi: </p>
+          <div className="w-full mt-10">
+            Chương {Number(lastClickedChapter)}
+          </div>
+        </section>
         <Line style="top-10" />
         <section className="w-full mt-10 px-16 pb-10">
-          <p className="mt-28 text-2xl font-bold">Chapters: </p>
+          <p className="mt-28 text-2xl font-bold">Danh sách chương: </p>
           <div className="w-full gap-16 grid grid-cols-8 grid-flow-row-dense mt-10">
             {storyData ? (
               <>
-                {storyData.chapterContents.map((_, index) => {
+                {storyData.chapterContents.map((story, index) => {
                   return (
                     <p
                       className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4 ${
-                        Number(storedChapter) === index + 1
+                        Number(lastClickedChapter) === index + 1
                           ? 'dark:bg-white dark:text-black bg-themeLight-secondary text-white'
                           : ''
                       }`}
