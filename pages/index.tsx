@@ -81,6 +81,8 @@ const Home = () => {
           content="Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều."
         />
         <meta name="twitter:image" content="WebTruyen" />
+        <meta name="monetag" content="a1a8e8f7653ab5ad8594f0234c1bf801"></meta>
+        <meta name="google-adsense-account" content="ca-pub-4979943891567316"></meta>
       </Helmet>
       {/* <Billboard /> */}
 

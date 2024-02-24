@@ -25,6 +25,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               />
               <link rel="shortcut icon" href="/images/favicon.ico" />
               <meta name="monetag" content="a1a8e8f7653ab5ad8594f0234c1bf801"></meta>
+              <meta name="google-adsense-account" content="ca-pub-4979943891567316"></meta>
             </Helmet>
               {router.pathname !== '/auth' && <Navbar />}
               <Component {...pageProps} />
