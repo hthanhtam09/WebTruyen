@@ -156,15 +156,16 @@ const StoryDetailScreen = () => {
             </div>
           ) : null}
         </section>
+        <Line style="top-10" />
         <section className="w-full mt-10 px-16 pb-10">
           <p className="mt-28 text-2xl font-bold">Chương đang theo dõi: </p>
           <div className="w-full mt-10">
-            Chương {Number(lastClickedChapter)}
+            {Number(lastClickedChapter) === 0 ? 'Chưa xem' : `Chương ${Number(lastClickedChapter)}`}
           </div>
         </section>
         <Line style="top-10" />
         <section className="w-full mt-10 px-16 pb-10">
-          <p className="mt-28 text-2xl font-bold">Danh sách chương: </p>
+          <p className="mt-12 text-2xl font-bold">Danh sách chương: </p>
           <div className="w-full gap-16 grid grid-cols-8 grid-flow-row-dense mt-10">
             {storyData ? (
               <>

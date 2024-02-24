@@ -103,7 +103,7 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
   }, [storyId]);
 
   return (
-    <div className="w-full min-h-[50vh] px-16">
+    <div className="w-full min-h-[30vh] px-16">
       <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500 pt-10">
         Comment:
       </p>
