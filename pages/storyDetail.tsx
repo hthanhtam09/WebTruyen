@@ -249,7 +249,7 @@ const StoryDetailScreen = () => {
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
           <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">
-            Related Stories:
+            Truyện cùng thể loại:
           </p>
           {storiesData.length > 0 ? (
             <SwiperContainer
