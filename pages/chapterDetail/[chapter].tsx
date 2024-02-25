@@ -48,7 +48,7 @@ const ChapterDetailScreen = () => {
         <meta name="twitter:image" content={title?.toString()} />
       </Helmet>
       <div className="mt-[150px] mb-40 px-16">
-        <h1 className="text-center font-bold text-[40px]">Chapter: {Number(chapter) + 1}</h1>
+        <h1 className="text-center font-bold text-[40px]">Chương: {Number(chapter) + 1}</h1>
         <div className="my-8">
           <Line />
         </div>
@@ -60,7 +60,7 @@ const ChapterDetailScreen = () => {
             }}
           />
         ) : (
-          <p className='tracking-wider leading-loose text-2xl min-h-screen pt-40 text-center'>This chapter no have data, please try with chapter other!!!</p>
+          <p className='tracking-wider leading-loose text-2xl min-h-screen pt-40 text-center'>Chương này chưa có, vui lòng thử lại chương khác!!!</p>
         )}
 
         <div className="flex justify-center">

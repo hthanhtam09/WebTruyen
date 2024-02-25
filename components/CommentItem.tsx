@@ -8,6 +8,7 @@ import Modal from './Modal';
 
 interface CommentItemProps extends commentInterface {
   allUserData: any[];
+  userData: any;
   onDelete: () => void;
 }
 
@@ -16,14 +17,12 @@ const CommentItem: React.FC<CommentItemProps> = ({
   content,
   createdAt,
   userId,
+  userData,
   onDelete,
 }) => {
-  const userAccount = useMemo(
-    () => {
-      return allUserData && allUserData.find((user: any) => user._id === userId)
-    },
-    [allUserData, userId],
-  );
+  const userAccount = useMemo(() => {
+    return allUserData && allUserData.find((user: any) => user._id === userId);
+  }, [allUserData, userId]);
 
   return (
     <div className="flex items-start space-x-4 p-4 my-10 w-full border dark:border-white border-black rounded-lg">
@@ -35,23 +34,27 @@ const CommentItem: React.FC<CommentItemProps> = ({
       <div className="flex flex-col w-full">
         <div className="flex items-center justify-between py-2">
           <div>
-            <span className="font-bold text-blue-500">{userAccount?.name}</span>
+            <span className="font-bold text-blue-500">
+              {userData && userData._id === userAccount?._id ? `${userData?.name} (You)` : userAccount?.name}
+            </span>
             <span className="dark:text-white text-themeDark pl-2">
               {createTimelineString(createdAt)}
             </span>
           </div>
-          <Modal
-            childrenTrigger={
-              <AlertDialogTrigger>
-                <TrashIcon className="w-[20px] cursor-pointer hover:opacity-70" />
-              </AlertDialogTrigger>
-            }
-            content="Do you want to remove this comment?"
-            title="Are you absolutely sure?"
-            confirmText="Delete"
-            cancelText="Cancel"
-            onClick={onDelete}
-          />
+          {userData && userData._id === userAccount?._id && (
+            <Modal
+              childrenTrigger={
+                <AlertDialogTrigger>
+                  <TrashIcon className="w-[20px] cursor-pointer hover:opacity-70" />
+                </AlertDialogTrigger>
+              }
+              content="Do you want to remove this comment?"
+              title="Are you absolutely sure?"
+              confirmText="Delete"
+              cancelText="Cancel"
+              onClick={onDelete}
+            />
+          )}
         </div>
         <p className="dark:text-white text-themeDark">{content}</p>
       </div>

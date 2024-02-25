@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import slugify from 'slugify';
-import ReactPlayer from 'react-player';
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet-async';
@@ -10,8 +9,6 @@ import StoriesList from '@/components/StoriesList';
 import Search from '@/components/Search';
 import Loading from '@/pages/loading';
 import useStories from '@/hooks/useStories';
-
-const itemsPerPage = 12;
 
 const Content = styled.div`
   backdrop-filter: blur(2px);
@@ -25,21 +22,10 @@ const Content = styled.div`
 
 const StoriesSearch = () => {
   const router = useRouter();
-  const { data: StoriesData = [], isLoading } = useStories();
+  const { data: storiesData = [], isLoading } = useStories();
   const [storiesFilter, setStoriesFilter] = useState([]);
-  const [currentStory, setCurrentStory] = useState([]);
-  const [itemOffset, setItemOffset] = useState(0);
-  const [page, setPage] = useState(1);
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
 
-  const endOffset = itemOffset + itemsPerPage;
-
-  useEffect(() => {
-    if (storiesFilter.length > 0) {
-      const currentItems = storiesFilter.slice(itemOffset, endOffset);
-      setCurrentStory(currentItems);
-    }
-  }, [endOffset, itemOffset, storiesFilter, setCurrentStory]);
 
   useEffect(() => {
     (async () => {
@@ -47,15 +33,17 @@ const StoriesSearch = () => {
         ? slugify(router.query.keyword as string, { remove: /[-]/g, lower: true })
         : '';
       const resultFilter =
-        StoriesData.length > 0 &&
-        StoriesData.filter((story: any) => {
-          const normalizedSlug = slugify(story.slug, { remove: /[-]/g, lower: true });
+        storiesData.length > 0 &&
+        storiesData.filter((story: any) => {
+          const normalizedSlug = slugify(story.title, { remove: /[-]/g, lower: true });
 
           return normalizedSlug.includes(normalizedKeyword);
         });
-      setStoriesFilter(resultFilter);
+        if (resultFilter.length) {
+          setStoriesFilter(resultFilter.slice(0, 12));
+        }
     })();
-  }, [StoriesData, router.query.keyword]);
+  }, [storiesData, router.query.keyword]);
 
 
   const isOpenSearch = useCallback(() => {
@@ -69,29 +57,26 @@ const StoriesSearch = () => {
   return (
     <>
      <Helmet prioritizeSeoTags>
-        <title>Search</title>
+        <title>Tìm kiếm</title>
         <meta name="description" content='Tìm kiếm WebTruyen' />
-        {/* Các thẻ khác liên quan đến SEO */}
-        <meta name="keywords" content="WebTruyen, Search" />
+        <meta name="keywords" content="WebTruyen, tìm kiếm" />
         <meta name="author" content="WebTruyen" />
-        {/* Các thẻ Open Graph */}
         <meta property="og:title" content='WebTruyen' />
         <meta property="og:description" content='Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều.' />
         <meta property="og:image" content='WebTruyen' />
         <meta property="og:url" content='WebTruyen' />
-        {/* Các thẻ Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content='WebTruyen' />
         <meta name="twitter:description" content='Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều.' />
         <meta name="twitter:image" content='WebTruyen' />
       </Helmet>
-      <div className="relative h-screen w-screen dark:bg-black bg-themeLight">
+      <div className="relative dark:bg-black bg-themeLight h-[120vh] min-h-screen flex flex-col justify-between">
         {!isLoading ? (
           storiesFilter.length > 0 ? (
             <div className="absolute top-32 px-4 md:px-16">
               <StoriesList
                 title={`Kết quả tìm kiếm: ${router.query.keyword}`}
-                data={storiesFilter.length > itemsPerPage ? currentStory : storiesFilter}
+                data={storiesFilter}
                 style="mt-10 mb-20"
               />
             </div>
@@ -100,10 +85,10 @@ const StoriesSearch = () => {
               <Content>
                 <>
                   <p className="dark:text-white text-themeDark text-2xl font-bold text-center transition duration-500">
-                    Oops!! No results were found: {router.query.keyword}
+                    Không tìm thấy kết quả cho: {router.query.keyword}
                   </p>
                   <p className="dark:text-white text-themeDark text-xl mt-2 text-center transition duration-500">
-                    Please return to the home page or search for other movies.
+                    Vui lòng trở về trang chủ hoặc tìm kiếm truyện khác.
                   </p>
                   <p className="dark:text-white text-themeDark text-xl mt-2 text-center transition duration-500">Cảm ơn!!!</p>
                 </>
@@ -122,7 +107,7 @@ const StoriesSearch = () => {
                   >
                     <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
                     <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
-                      <span className="dark:text-white text-themeDark capitalize transition duration-500">Home</span>
+                      <span className="dark:text-white text-themeDark capitalize transition duration-500">Trang chủ</span>
                     </div>
                   </div>
                   <div
@@ -131,7 +116,7 @@ const StoriesSearch = () => {
                   >
                     <div className="absolute transitiona-all duration-1000 opacity-70 -inset-px bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg group-hover:opacity-100 group-hover:-inset-1" />
                     <div className="!mx-auto py-4 text-lg font-bold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 z-10">
-                      <span className="dark:text-white text-themeDark capitalize transition duration-500">Search</span>
+                      <span className="dark:text-white text-themeDark capitalize transition duration-500">Tìm kiếm</span>
                     </div>
                   </div>
                 </div>

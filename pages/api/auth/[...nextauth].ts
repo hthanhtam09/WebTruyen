@@ -4,8 +4,8 @@ import GoogleProvider from 'next-auth/providers/google';
 import Credentials from 'next-auth/providers/credentials';
 import { compare } from 'bcrypt';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
-import { clientPromise1 } from '@/lib/clientPromise';
-import { mongoClient1 } from '@/lib/db';
+import { userClientPromise } from '@/lib/clientPromise';
+import { userClient } from '@/lib/db';
 import { Adapter } from 'next-auth/adapters';
 import { WithId, Document } from 'mongodb';
 
@@ -36,7 +36,7 @@ export const authOptions: AuthOptions = {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Email and password required');
         }
-        const usersCollection = (await mongoClient1).collection('users');
+        const usersCollection = (await userClient).collection('users');
         const user = await usersCollection.findOne({ email: credentials.email });
 
         if (!user || !user.hashedPassword) {
@@ -60,7 +60,7 @@ export const authOptions: AuthOptions = {
     signIn: '/auth',
   },
   debug: process.env.NODE_ENV !== 'production',
-  adapter: MongoDBAdapter(clientPromise1) as Adapter,
+  adapter: MongoDBAdapter(userClientPromise) as Adapter,
   session: { strategy: 'jwt' },
   jwt: {
     secret: process.env.NEXTAUTH_SECRET,

@@ -1,6 +1,6 @@
 // pages/api/comments/add.js
 import { NextApiRequest, NextApiResponse } from 'next';
-import { mongoClient1 } from '@/lib/db';
+import { commentDetailClient } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const { storyId, content, nameUser, userId, createdAt } = body;
-    const commentCollection = (await mongoClient1).collection('comments');
+    const commentCollection = (await commentDetailClient).collection('comments');
     const comment = commentCollection.insertOne({ storyId, content, nameUser, userId, createdAt });
 
     res.status(201).json(comment);

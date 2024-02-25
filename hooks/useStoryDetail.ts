@@ -11,7 +11,7 @@ interface Props {
   
 
 const useStoryDetail  = (storySlug: string): Props => {
-    const {data, error, isLoading} = useSWR(`/api/storyDetail/${storySlug}`, fetcher, {
+    const {data, error, isLoading} = useSWR(`/api/storyDetail/${storySlug[0]}`, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false

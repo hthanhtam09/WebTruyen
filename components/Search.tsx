@@ -39,7 +39,7 @@ const Search: React.FC<SearchProps> = ({ isOpenSearch }) => {
             className="h-full w-full outline-none text-sm dark:text-white text-themeDark px-4"
             type="text"
             id="search"
-            placeholder="Search film..."
+            placeholder="Tìm kiếm truyện..."
             value={searchValue}
             onChange={handleChange}
             onKeyDown={onKeyDown}

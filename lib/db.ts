@@ -1,6 +1,21 @@
-import { clientPromise1, clientPromise2 } from './clientPromise';
+import {
+  commentClientPromise,
+  storiesClientPromise,
+  storiesDetailClientPromise,
+  userClientPromise,
+  viewCountClientPromise,
+} from './clientPromise';
 
-const mongoClient1 = clientPromise1.then((res) => res.db('WebTruyen'));
-const mongoClient2 = clientPromise2.then((res) => res.db('WebTruyen2'));
+const storiesClient = storiesClientPromise.then((res) => res.db('stories'));
+const storiesDetailClient = storiesDetailClientPromise.then((res) => res.db('storiesDetail'));
+const userClient = userClientPromise.then((res) => res.db('user'));
+const commentDetailClient = commentClientPromise.then((res) => res.db('comment'));
+const viewcountDetailClient = viewCountClientPromise.then((res) => res.db('viewCount'));
 
-export { mongoClient1, mongoClient2 };
+export {
+  storiesClient,
+  storiesDetailClient,
+  userClient,
+  commentDetailClient,
+  viewcountDetailClient,
+};
