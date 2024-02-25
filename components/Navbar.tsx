@@ -12,7 +12,7 @@ import { convertToTitleCaseForDisplay, convertToTitleCaseForPath } from '@/utils
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Icon from './Icon';
 
-const navbarItemListData = ['Home', 'up_comming'];
+const navbarItemListData = ['Trang_chủ'];
 
 const Navbar: React.FC = () => {
   const { data: userData } = useCurrentUser();

@@ -73,17 +73,21 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
   const onRedirectLogin = useCallback(() => {
     router.push(`/auth?redirect=${encodeURIComponent(router.pathname)}?${storySlug}`);
   }, [router, storySlug]);
-
+  
   const handleDeleteComment = useCallback(
-    async (commentId: string) => {
-      await deleteComment({ id: commentId });
-      toast({
-        title: 'Successfully !!!',
-        description: 'The comment has been successfully deleted',
-      });
-      getAllComments();
+    async (commentId: string, userId: string) => {
+      const isMatchingUserExists = comments.filter((comment: any) => comment.userId === userId);
+      const isFindCommentId = isMatchingUserExists.find((comment: any) => comment._id === commentId);
+      if (isFindCommentId) {
+        await deleteComment({ id: isFindCommentId._id });
+        toast({
+          title: 'Successfully !!!',
+          description: 'The comment has been successfully deleted',
+        });
+        getAllComments();
+      }
     },
-    [deleteComment],
+    [deleteComment, comments, userData._id, getAllComments, toast]
   );
 
   const onChangeComment = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,14 +109,14 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
   return (
     <div className="w-full min-h-[30vh] px-16">
       <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500 pt-10">
-        Comment:
+        Bình luận:
       </p>
       {userData ? (
         <input
           className="h-[8vh] w-[100%] mt-4 outline-none text-sm rounded-lg dark:text-white text-themeDark px-4"
           type="text"
           id="search"
-          placeholder="Add your comment here..."
+          placeholder="Thêm bình luận của bạn ở đây..."
           value={newComment}
           onChange={onChangeComment}
           onKeyDown={onKeyDown}
@@ -125,14 +129,14 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
                 className="h-[8vh] w-[92vw] mt-4 outline-none text-sm rounded-lg dark:text-white text-themeDark px-4"
                 type="text"
                 id="search"
-                placeholder="Add your comment here..."
+                placeholder="Thêm bình luận của bạn ở đây..."
               />
             </AlertDialogTrigger>
           }
-          content="Please log in to comment here..."
-          title="You are not logged in?"
-          confirmText="Log in"
-          cancelText="Cancel"
+          content="Vui lòng đăng nhập để bình luận..."
+          title="Bạn chưa đăng nhập?"
+          confirmText="Đăng nhập"
+          cancelText="Huỷ"
           onClick={onRedirectLogin}
         />
       )}
@@ -143,8 +147,9 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
         .map((item: commentInterface) => (
           <CommentItem
             key={item._id}
-            onDelete={() => handleDeleteComment(item._id)}
+            onDelete={() => handleDeleteComment(item._id, userData._id)}
             allUserData={allUserData}
+            userData={userData}
             {...item}
           />
         ))}
@@ -159,10 +164,10 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
             {isLoadmore ? (
               <div className="flex items-center">
                 <FiCommand className="loading-icon mr-2 dark:text-white text-themeDark" />
-                <p>Loading more...</p>
+                <p>Đang tải...</p>
               </div>
             ) : (
-              'Load More...'
+              'Tải thêm...'
             )}
           </button>
         </div>
@@ -170,9 +175,9 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
         <div className="mt-4 mb-10 text-center">
           <p className="dark:text-white text-themeDark">
             {filteredCommentsData.length > 5
-              ? 'You’ve reached the end of the list'
+              ? 'Bạn đã ở cuối danh sách rồi!!!'
               : filteredCommentsData.length === 0
-              ? 'Add comment of you here!!!'
+              ? 'Thêm bình luận của bạn ở đây!!!'
               : ''}
           </p>
         </div>

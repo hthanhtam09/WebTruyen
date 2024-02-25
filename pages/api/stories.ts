@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { mongoClient2 } from '@/lib/db';
+import { storiesClient } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -7,9 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(405).end();
     }
 
-    const storiesCollection = (await mongoClient2).collection('stories');
+    const storiesCollection = (await storiesClient).collection('stories');
     const stories = await storiesCollection.find({}).toArray();
-
     return res.status(200).json(stories);
   } catch (error) {
     console.log(error);

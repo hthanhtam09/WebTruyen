@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { mongoClient1 } from './db';
+import { userClient } from './db';
 
 const serverAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getServerSession(req, res, authOptions);
@@ -10,11 +10,10 @@ const serverAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session?.user?.email) {
     throw new Error('Not signed in');
   }
-  const usersCollection = (await mongoClient1).collection('users');
+  const usersCollection = (await userClient).collection('users');
   const currentUser = await usersCollection.findOne({ email: session.user.email });
-
   if (!currentUser) {
-    throw new Error('Not signed in');
+    return {}
   }
 
   return { currentUser };

@@ -1,12 +1,12 @@
 // api/countView.ts
 
-import { mongoClient1 } from '@/lib/db';
+import { viewcountDetailClient } from '@/lib/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
     try {
-      const countViewCollection = (await mongoClient1).collection('countView');
+      const countViewCollection = (await viewcountDetailClient).collection('countView');
       const { deviceName } = req.body;
 
       const existingCount = await countViewCollection.findOne();

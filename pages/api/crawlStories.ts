@@ -1,16 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { mongoClient1 } from '@/lib/db';
+import { storiesClient, storiesDetailClient } from '@/lib/db';
 import * as cheerio from 'cheerio';
 import puppeteer, { Browser, Page } from 'puppeteer';
 
 const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
 
-async function processChapterURL(page: Page, detailsUrl: string) {
-  const browser = await puppeteer.launch({ headless: 'new' });
+async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCollection: any) {
+  const browser = await puppeteer.launch({headless: 'new', args: ['--disable-features=site-per-process']})
   const chapterContents = [];
   let description = '';
   const genres: (string | undefined)[] = [];
-  let imageUrl: string = ''
+  let imageUrl: string = '';
   let currentPage = 1;
 
   while (true) {
@@ -21,7 +21,7 @@ async function processChapterURL(page: Page, detailsUrl: string) {
     const $ = cheerio.load(await page.content());
     description = $('.desc-text').text();
     imageUrl = $('.book').find('img').attr('src') as string;
-  
+
     $('.info')
       .find('a')
       .each((_, genreElement) => {
@@ -31,21 +31,27 @@ async function processChapterURL(page: Page, detailsUrl: string) {
 
     for (const element of $('.list-chapter li a').toArray()) {
       const chapterUrl = $(element).attr('href') as string;
-      console.log('chapterUrl', chapterUrl);
       const chapterPage = await browser.newPage();
       await chapterPage.goto(chapterUrl, { waitUntil: 'domcontentloaded', timeout: 0 });
       const $details = cheerio.load(await chapterPage.content());
 
       const paragraphs = $details('.chapter-c').contents().text();
-      chapterContents.push(paragraphs);
+      const existingChapter = await storiesDetailCollection.findOne({
+        chapterContents: paragraphs,
+      });
+      if (existingChapter) {
+        console.log('Chapter already exists:', chapterUrl);
+
+    } else {
+        console.log('New chapter:', chapterUrl);
+        chapterContents.push(paragraphs);
+    }
       await chapterPage.close();
     }
 
-    // Check if there is a next page
     const hasNextPage = $('.pagination li.active + li:not(.active)').length > 0;
     const hasPageNav = $('.pagination li.active + li.page-nav').length > 0;
     if (!hasNextPage || hasPageNav) {
-      // If there is no 'active' class or no next page, break out of the loop
       console.log('break loop');
       break;
     } else {
@@ -61,71 +67,66 @@ async function processChapterURL(page: Page, detailsUrl: string) {
   };
 }
 
-async function scrapePage(page: Page, url: string, browser: Browser) {
-  await page.goto(`${url}`, { waitUntil: 'domcontentloaded', timeout: 0 });
+async function scrapePage(page: Page, browser: Browser) {
   const $ = cheerio.load(await page.content());
 
-  const storiesCollection = (await mongoClient1).collection('stories');
-  const storiesDetailCollection = (await mongoClient1).collection('storiesDetail');
+  const storiesCollection = (await storiesClient).collection('stories');
+  const storiesDetailCollection = (await storiesDetailClient).collection('storiesDetail');
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
-    const existingStory = await storiesCollection.findOne({ title });
-    if (!existingStory) {
-      const chapterPage = await browser.newPage();
+    const chapterPage = await browser.newPage();
+    const author = $(element).find('.author').text();
+    const detailsUrl = $(element).find('a').attr('href') as string;
+    const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
+    const createdAt = new Date();
+    const chapterStory = $(element).find('.text-info a').text();
+    const { chapterContents, description, genres, imageUrl } = await processChapterURL(
+      chapterPage,
+      detailsUrl,
+      storiesDetailCollection,
+    );
 
-      const author = $(element).find('.author').text();
-      const detailsUrl = $(element).find('a').attr('href') as string;
-      const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
-      const createdAt = new Date();
-      const chapterStory = $(element).find('.text-info a').text();
-      const { chapterContents, description, genres, imageUrl } = await processChapterURL(
-        chapterPage,
-        detailsUrl,
-      );
-      await chapterPage.close();
+    await chapterPage.close();
 
-      storiesCollection.insertOne({
-        title,
-        author,
-        imageUrl,
-        storySlug,
-        createdAt,
-        chapterStory,
-      });
+    storiesCollection.insertOne({
+      title,
+      author,
+      imageUrl,
+      storySlug,
+      createdAt,
+      chapterStory,
+    });
 
-      storiesDetailCollection.insertOne({
-        title,
-        author,
-        imageUrl,
-        chapterContents,
-        description,
-        genres,
-        storySlug,
-        createdAt,
-      })
-    } else {
-      console.log('Story is have already...');
-    }
+    storiesDetailCollection.insertOne({
+      title,
+      author,
+      imageUrl,
+      chapterContents,
+      description,
+      genres,
+      storySlug,
+      createdAt,
+    });
   }
 }
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({headless: 'new', args: ['--disable-features=site-per-process']})
     const page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 3;
+    let currentPage = 2;
     while (true) {
-      await page.goto(`${uri}trang-${currentPage}`, {
+      await page.goto(`${uri}/trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
         timeout: 0,
       });
       const $ = cheerio.load(await page.content());
 
-      await scrapePage(page, uri, browser);
+      await scrapePage(page, browser);
 
       // Check if there is a next page
       const hasNextPage = $('.pagination li.active + li:not(.active)').length > 0;
@@ -144,6 +145,6 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     res.status(200).send({ message: 'Successfully' });
   } catch (error) {
     console.log(error);
-    res.status(500).end();
+    res.status(500).send({ error });
   }
 }

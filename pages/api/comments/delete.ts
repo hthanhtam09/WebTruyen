@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
-import { mongoClient1 } from '@/lib/db';
+import { commentDetailClient } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: 'Invalid ObjectId' });
     }
 
-    const commentsCollection = (await mongoClient1).collection('comments')
+    const commentsCollection = (await commentDetailClient).collection('comments')
     const deletedComment = await commentsCollection.findOneAndDelete({
       _id: new ObjectId(id),
     });

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { mongoClient1 } from '@/lib/db';
+import { userClient } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const { email, name, password } = req.body;
-    const usersCollection = (await mongoClient1).collection('users')
+    const usersCollection = (await userClient).collection('users')
 
     const existingUser = await usersCollection.findOne({ email });
 

@@ -49,7 +49,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
   const redirectToStoriesListNameScreen = useCallback(
     (currentStory: StoriesInterface[]) => {
       const queryObject = {
-        movies: JSON.stringify(currentStory),
+        stories: JSON.stringify(currentStory),
       };
       router.push({
         pathname: `/${title}`,
@@ -77,7 +77,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
             onClick={() => redirectToStoriesListNameScreen(storiesData)}
             className="flex dark:text-white text-themeDark items-center cursor-pointer transition duration-500"
           >
-            View all
+            Xem tất cả
             <img className="w-[30px] h-[30px] ml-2" src="/images/right-arrow-icon.png" alt="icon" />
           </div>
         )}
@@ -86,9 +86,9 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
       {!isLoading ? (
         currentStory.length > 0 ? (
           <>
-            <StoriesList data={currentStory} style="mt-10 mb-10" />
+            <StoriesList data={currentStory} style="my-10" />
             {isPagination && (
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center mb-32">
                 <Pagination
                   count={pageCount}
                   variant="outlined"

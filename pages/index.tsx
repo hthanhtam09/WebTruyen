@@ -60,12 +60,10 @@ const Home = () => {
   return (
     <>
       <Helmet prioritizeSeoTags>
-        <title>Home</title>
+        <title>Trang chủ</title>
         <meta name="description" content="Trang chủ WebTruyen" />
-        {/* Các thẻ khác liên quan đến SEO */}
         <meta name="keywords" content="WebTruyen, Home" />
         <meta name="author" content="WebTruyen" />
-        {/* Các thẻ Open Graph */}
         <meta property="og:title" content="WebTruyen" />
         <meta
           property="og:description"
@@ -73,7 +71,6 @@ const Home = () => {
         />
         <meta property="og:image" content="WebTruyen" />
         <meta property="og:url" content="WebTruyen" />
-        {/* Các thẻ Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="WebTruyen" />
         <meta
@@ -88,7 +85,7 @@ const Home = () => {
 
       <section className="mt-16 h-[80vh]" id="moveStories">
         <StoryAlbum
-          title={'Stories'}
+          title={'Truyện mới cập nhật'}
           storiesData={storiesData}
           isLoading={isLoading}
           itemsPerPage={6}
@@ -98,7 +95,7 @@ const Home = () => {
       <Line />
       <section className="mt-6 h-[80vh]">
         <StoryAlbum
-          title={'Stories'}
+          title={'Truyện full tập'}
           storiesData={storiesData}
           isLoading={isLoading}
           itemsPerPage={6}
