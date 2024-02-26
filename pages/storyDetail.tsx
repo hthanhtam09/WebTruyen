@@ -28,8 +28,8 @@ const StoryDetailScreen = () => {
   const router = useRouter();
   const { data: storyData } = useStoryDetail(Object.keys(router.query) as any as string);
   const { data: storiesData = [] } = useStories();
-  const { addChapterFollow } = useAddChapterFollow();
-  const { getChapterFollow } = useGetChapterFollow();
+  // const { addChapterFollow } = useAddChapterFollow();
+  // const { getChapterFollow } = useGetChapterFollow();
 
   const [visibleChapters, setVisibleChapters] = useState<number>(INIT_CHAPTER);
   const [isLoadmore, setIsLoadmore] = useState<boolean>(false);
@@ -52,21 +52,21 @@ const StoryDetailScreen = () => {
           pathname: `/chapterDetail/${chapter}`,
           query: { title, author, stories, chapter },
         });
-        handleAddChapterFollow();
+        // handleAddChapterFollow();
       }
     },
     [storyData],
   );
 
-  const lastClickedChapter = localStorage.getItem('lastClickedChapter');
+  // const lastClickedChapter = localStorage.getItem('lastClickedChapter');
 
-  const handleAddChapterFollow = useCallback(async () => {
-    if (!storyData) return;
-    await addChapterFollow({
-      storyId: storyData._id,
-      chapter: lastClickedChapter,
-    });
-  }, []);
+  // const handleAddChapterFollow = useCallback(async () => {
+  //   if (!storyData) return;
+  //   await addChapterFollow({
+  //     storyId: storyData._id,
+  //     chapter: lastClickedChapter,
+  //   });
+  // }, []);
 
   return (
     <div className="flex flex-col justify-center mb-32">
@@ -168,13 +168,12 @@ const StoryDetailScreen = () => {
             </div>
           ) : null}
         </section>
-        <Line style="top-10" />
-        <section className="w-full mt-10 px-16 pb-10">
+        {/* <section className="w-full mt-10 px-16 pb-10">
           <p className="mt-28 text-2xl font-bold">Chương đang theo dõi: </p>
           <div className="w-full mt-10">
             {Number(lastClickedChapter) === 0 ? 'Chưa xem' : `Chương ${Number(lastClickedChapter)}`}
           </div>
-        </section>
+        </section> */}
         <Line style="top-10" />
         <section className="w-full mt-10 px-16 pb-10">
           <p className="mt-12 text-2xl font-bold">Danh sách chương: </p>
@@ -184,11 +183,7 @@ const StoryDetailScreen = () => {
                 {storyData.chapterContents.slice(0, visibleChapters).map((_, index) => {
                   return (
                     <p
-                      className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4 ${
-                        Number(lastClickedChapter) === index + 1
-                          ? 'dark:bg-white dark:text-black bg-themeLight-secondary text-white'
-                          : ''
-                      }`}
+                      className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4`}
                       key={index}
                       onClick={() =>
                         redirectChapterDetail(

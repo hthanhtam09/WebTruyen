@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet-async';
 import { useRouter } from 'next/router';
 
 import Input from '../components/Input';
-import { AUTHENTICATION } from '../constants/enum';
+import { AUTHENTICATION } from '../enum/';
 import Link from 'next/link';
 
 const Auth = () => {
