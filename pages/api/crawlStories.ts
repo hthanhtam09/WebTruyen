@@ -6,12 +6,16 @@ import puppeteer, { Browser, Page } from 'puppeteer';
 const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
 
 async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCollection: any) {
-  const browser = await puppeteer.launch({headless: 'new', args: ['--disable-features=site-per-process']})
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--disable-features=site-per-process'],
+  });
   const chapterContents = [];
   let description = '';
   const genres: (string | undefined)[] = [];
   let imageUrl: string = '';
   let currentPage = 1;
+  let status: string = '';
 
   while (true) {
     await page.goto(`${detailsUrl}trang-${currentPage}`, {
@@ -21,7 +25,7 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
     const $ = cheerio.load(await page.content());
     description = $('.desc-text').text();
     imageUrl = $('.book').find('img').attr('src') as string;
-
+    status = $('.info').find('div:last-child .text-success').text();
     $('.info')
       .find('a')
       .each((_, genreElement) => {
@@ -41,11 +45,10 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
       });
       if (existingChapter) {
         console.log('Chapter already exists:', chapterUrl);
-
-    } else {
+      } else {
         console.log('New chapter:', chapterUrl);
         chapterContents.push(paragraphs);
-    }
+      }
       await chapterPage.close();
     }
 
@@ -64,11 +67,13 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
     description,
     genres,
     imageUrl,
+    status,
   };
 }
 
 async function scrapePage(page: Page, browser: Browser) {
   const $ = cheerio.load(await page.content());
+  const statusLabels: string[] = [];
 
   const storiesCollection = (await storiesClient).collection('stories');
   const storiesDetailCollection = (await storiesDetailClient).collection('storiesDetail');
@@ -77,11 +82,21 @@ async function scrapePage(page: Page, browser: Browser) {
     const title = $(element).find('.truyen-title a').text();
     const chapterPage = await browser.newPage();
     const author = $(element).find('.author').text();
+    $(element)
+      .find('.label-title')
+      .each((_, element) => {
+        const classes = $(element).attr('class');
+        if (classes) {
+          const classList = classes.split(' ').filter((className) => className !== 'label-title');
+          statusLabels.push(...classList);
+        }
+      });
+
     const detailsUrl = $(element).find('a').attr('href') as string;
     const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
     const createdAt = new Date();
     const chapterStory = $(element).find('.text-info a').text();
-    const { chapterContents, description, genres, imageUrl } = await processChapterURL(
+    const { chapterContents, description, genres, imageUrl, status } = await processChapterURL(
       chapterPage,
       detailsUrl,
       storiesDetailCollection,
@@ -96,6 +111,7 @@ async function scrapePage(page: Page, browser: Browser) {
       storySlug,
       createdAt,
       chapterStory,
+      statusLabels,
     });
 
     storiesDetailCollection.insertOne({
@@ -106,6 +122,7 @@ async function scrapePage(page: Page, browser: Browser) {
       description,
       genres,
       storySlug,
+      status,
       createdAt,
     });
   }
@@ -113,12 +130,15 @@ async function scrapePage(page: Page, browser: Browser) {
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const browser = await puppeteer.launch({headless: 'new', args: ['--disable-features=site-per-process']})
+    const browser = await puppeteer.launch({
+      headless: 'new',
+      args: ['--disable-features=site-per-process'],
+    });
     const page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 2;
+    let currentPage = 3;
     while (true) {
       await page.goto(`${uri}/trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
