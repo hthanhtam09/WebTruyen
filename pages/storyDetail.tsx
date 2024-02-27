@@ -1,4 +1,4 @@
-import { Suspense, useCallback, Fragment, useState } from 'react';
+import { Suspense, useCallback, Fragment, useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
@@ -19,54 +19,71 @@ import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import useAddChapterFollow from '@/hooks/useAddChapterFollow';
-import useGetChapterFollow from '@/hooks/useGetChapterFollow';
-
-const INIT_CHAPTER = 48;
+// import useAddChapterFollow from '@/hooks/useAddChapterFollow';
+// import useGetChapterFollow from '@/hooks/useGetChapterFollow';
 
 const StoryDetailScreen = () => {
   const router = useRouter();
-  const { data: storyData } = useStoryDetail(Object.keys(router.query) as any as string);
+  const { data: storyData, fetchMoreData } = useStoryDetail(
+    Object.keys(router.query) as any as string,
+  );
+  const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface>(
+    storyData as StoriesInterface,
+  );
   const { data: storiesData = [] } = useStories();
-  const { addChapterFollow } = useAddChapterFollow();
-  const { getChapterFollow } = useGetChapterFollow();
-
-  const [visibleChapters, setVisibleChapters] = useState<number>(INIT_CHAPTER);
+  // const { addChapterFollow } = useAddChapterFollow();
+  // const { getChapterFollow } = useGetChapterFollow();
   const [isLoadmore, setIsLoadmore] = useState<boolean>(false);
+  const [page, setPage] = useState<number>(1);
+  const uniqueGenresArray = [...new Set(storyData?.genres)];
+  const uniqueMergeStoryData = [...new Set(mergeStoryData?.chapterContents)];
 
-  const uniqueGenresSet = new Set(storyData?.genres);
-  const uniqueGenresArray = [...uniqueGenresSet];
-
+  const totalChapter = useMemo(
+    () =>
+      storiesData
+        .filter((story: StoriesInterface) => story.title === storyData?.title)[0]
+        ?.chapterStory.replace('Chương', '')
+        .trim(),
+    [storiesData, storyData],
+  );
   const handleLoadMore = useCallback(async () => {
     setIsLoadmore(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    setVisibleChapters((prevVisibleChapter) => prevVisibleChapter + INIT_CHAPTER);
+    fetchMoreData(Object.keys(router.query) as any as string, page);
     setIsLoadmore(false);
-  }, []);
+    setPage((prev) => prev + 1);
+  }, [Object.keys(router.query)]);
 
   const redirectChapterDetail = useCallback(
     (title: string, author: string, stories: string[], chapter: number) => {
-      if (storyData) {
-        localStorage.setItem('lastClickedChapter', (chapter + 1).toString());
-        router.push({
-          pathname: `/chapterDetail/${chapter}`,
-          query: { title, author, stories, chapter },
-        });
-        handleAddChapterFollow();
-      }
+      // localStorage.setItem('lastClickedChapter', (chapter + 1).toString());
+      router.push({
+        pathname: `/chapterDetail/${chapter}`,
+        query: { title, author, stories, chapter },
+      });
+      // handleAddChapterFollow();
     },
-    [storyData],
+    [],
   );
 
-  const lastClickedChapter = localStorage.getItem('lastClickedChapter');
+  useEffect(() => {
+    if (storyData) {
+      setMergeStoryData((prev) => ({
+        ...prev,
+        chapterContents: [...(prev?.chapterContents || []), ...(storyData.chapterContents || [])],
+      }));
+    }
+  }, [storyData]);
 
-  const handleAddChapterFollow = useCallback(async () => {
-    if (!storyData) return;
-    await addChapterFollow({
-      storyId: storyData._id,
-      chapter: lastClickedChapter,
-    });
-  }, []);
+  // const lastClickedChapter = localStorage.getItem('lastClickedChapter');
+
+  // const handleAddChapterFollow = useCallback(async () => {
+  //   if (!storyData) return;
+  //   await addChapterFollow({
+  //     storyId: storyData._id,
+  //     chapter: lastClickedChapter,
+  //   });
+  // }, []);
 
   return (
     <div className="flex flex-col justify-center mb-32">
@@ -115,9 +132,9 @@ const StoryDetailScreen = () => {
             )}
 
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Tổng: </span>
+              <span className="text-gray-400 inline-block w-[150px]">Tổng chương: </span>
               {storyData ? (
-                <span>{storyData.chapterContents.length} chương</span>
+                <span>{totalChapter}</span>
               ) : (
                 <SkeletonLoading width={'20%'} height={40} />
               )}
@@ -168,33 +185,28 @@ const StoryDetailScreen = () => {
             </div>
           ) : null}
         </section>
-        <Line style="top-10" />
-        <section className="w-full mt-10 px-16 pb-10">
+        {/* <section className="w-full mt-10 px-16 pb-10">
           <p className="mt-28 text-2xl font-bold">Chương đang theo dõi: </p>
           <div className="w-full mt-10">
             {Number(lastClickedChapter) === 0 ? 'Chưa xem' : `Chương ${Number(lastClickedChapter)}`}
           </div>
-        </section>
+        </section> */}
         <Line style="top-10" />
         <section className="w-full mt-10 px-16 pb-10">
           <p className="mt-12 text-2xl font-bold">Danh sách chương: </p>
           <div className="w-full gap-16 grid grid-cols-8 grid-flow-row-dense mt-10">
-            {storyData ? (
+            {uniqueMergeStoryData ? (
               <>
-                {storyData.chapterContents.slice(0, visibleChapters).map((_, index) => {
+                {uniqueMergeStoryData?.map((_, index) => {
                   return (
                     <p
-                      className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4 ${
-                        Number(lastClickedChapter) === index + 1
-                          ? 'dark:bg-white dark:text-black bg-themeLight-secondary text-white'
-                          : ''
-                      }`}
+                      className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4`}
                       key={index}
                       onClick={() =>
                         redirectChapterDetail(
-                          storyData.title,
-                          storyData.author,
-                          storyData.chapterContents,
+                          mergeStoryData.title,
+                          mergeStoryData.author,
+                          mergeStoryData.chapterContents,
                           index,
                         )
                       }
@@ -210,7 +222,7 @@ const StoryDetailScreen = () => {
               </div>
             )}
           </div>
-          {storyData && visibleChapters < storyData.chapterContents.length ? (
+          {mergeStoryData && +totalChapter !== +mergeStoryData.chapterContents?.length ? (
             <div className="mt-20 mb-10 text-center">
               <button
                 onClick={handleLoadMore}
@@ -228,15 +240,11 @@ const StoryDetailScreen = () => {
                 )}
               </button>
             </div>
+          ) : storyData?.chapterContents.length === 0 ? (
+            <SkeletonLoading width={'20%'} height={40} />
           ) : (
             <div className="mt-20 mb-10 text-center">
-              <p className="dark:text-white text-themeDark">
-                {storyData && storyData.chapterContents.length > 5
-                  ? 'Bạn đã ở cuối danh sách rồi!!!'
-                  : storyData && storyData.chapterContents.length === 0
-                  ? 'Chưa ra chương mới, bạn chờ sau nhé!!!'
-                  : ''}
-              </p>
+              <p className="dark:text-white text-themeDark">Bạn đã ở cuối danh sách rồi!!!</p>
             </div>
           )}
         </section>
@@ -263,7 +271,7 @@ const StoryDetailScreen = () => {
             >
               {storiesData.map((story: StoriesInterface, index: number) => (
                 <SwiperSlide key={index}>
-                  <StoryCard data={story} />
+                  <StoryCard data={story} setMergeStoryData={setMergeStoryData} setPage={setPage} isStoryDetail />
                 </SwiperSlide>
               ))}
             </SwiperContainer>
