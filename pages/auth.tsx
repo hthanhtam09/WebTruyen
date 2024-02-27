@@ -1,8 +1,5 @@
 import axios from 'axios';
-import Image from 'next/image';
 import { useCallback, useState } from 'react';
-import { FcGoogle } from 'react-icons/fc';
-import { FaGithub } from 'react-icons/fa';
 import { signIn } from 'next-auth/react';
 import { Helmet } from 'react-helmet-async';
 import { useRouter } from 'next/router';
@@ -53,10 +50,6 @@ const Auth = () => {
       console.log(error);
     }
   }, [inputValue, login]);
-
-  const loginOAuth = useCallback((url: string) => {
-    signIn(url, { callbackUrl: '/' });
-  }, []);
 
   return (
     <div className="relative h-screen w-full">
@@ -117,20 +110,6 @@ const Auth = () => {
             >
               {variant === AUTHENTICATION.LOGIN ? 'Login' : 'Sign up'}
             </button>
-            <div className="flex flex-row items-center gap-4 mt-8 justify-center">
-              <div
-                onClick={() => loginOAuth('google')}
-                className="w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition"
-              >
-                <FcGoogle size={30} />
-              </div>
-              <div
-                onClick={() => loginOAuth('github')}
-                className="w-10 h-10 bg-white rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition"
-              >
-                <FaGithub size={30} />
-              </div>
-            </div>
             <p className="text-neutral-500 mt-12">
               {variant === AUTHENTICATION.LOGIN
                 ? 'First time using WebTruyen?'

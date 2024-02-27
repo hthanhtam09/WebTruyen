@@ -1,21 +1,33 @@
-
 import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { StoriesInterface } from '@/types';
 
 interface StoryCardProps {
-  data: StoriesInterface
+  data: StoriesInterface;
+  setMergeStoryData?: any;
+  setPage?: any;
+  isStoryDetail?: boolean;
 }
 
-const StoryCard: React.FC<StoryCardProps> = ({ data}) => {
+const StoryCard: React.FC<StoryCardProps> = ({
+  data,
+  setMergeStoryData,
+  setPage,
+  isStoryDetail,
+}) => {
   const router = useRouter();
 
   const redirectToStoryDetail = useCallback(
-    (data: StoriesInterface) =>
+    (data: StoriesInterface) => {
+      if (isStoryDetail) {
+        setMergeStoryData([]);
+        setPage(1);
+      }
       router.push({
         pathname: `/storyDetail`,
         query: data.storySlug,
-      }),
+      });
+    },
     [router],
   );
 
@@ -23,9 +35,7 @@ const StoryCard: React.FC<StoryCardProps> = ({ data}) => {
     <div className="relative mt-10">
       <img
         onClick={() => redirectToStoryDetail(data)}
-        src={
-          data.imageUrl
-        }
+        src={data.imageUrl}
         alt={data.title}
         draggable={false}
         className="
@@ -40,7 +50,9 @@ const StoryCard: React.FC<StoryCardProps> = ({ data}) => {
           hover:opacity-30
         "
       />
-      <p className="dark:text-white text-themeDark py-4 text-sm transition duration-500">{data.title}</p>
+      <p className="dark:text-white text-themeDark py-4 text-sm transition duration-500">
+        {data.title}
+      </p>
     </div>
   ) : null;
 };

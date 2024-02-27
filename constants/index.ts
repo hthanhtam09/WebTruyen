@@ -1,1 +1,1 @@
-export const INIT_CHAPTER = 48
+export const INIT_CHAPTER = 50
