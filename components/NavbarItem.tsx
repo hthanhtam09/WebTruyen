@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 interface NavbarItemProps {
   label: string;
-  path: string
+  path: string;
 }
 
 const NavbarItem: React.FC<NavbarItemProps> = ({ label, path }) => {
