@@ -42,4 +42,5 @@ export interface StoriesInterface {
   createdAt: string;
   genres: string[];
   chapterContents: string[]
+  statusLabels: string[]
 }

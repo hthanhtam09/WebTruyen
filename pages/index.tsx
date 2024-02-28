@@ -1,41 +1,51 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { getSession } from 'next-auth/react';
-import { NextPageContext } from 'next';
 
-import Billboard from '@/components/Billboard';
 import StoryAlbum from '@/components/StoryAlbum';
 import useStories from '@/hooks/useStories';
 import Line from '@/components/Line';
-import { StoriesInterface } from '@/types';
-import { EGenreType } from '@/enum';
 import useCountView from '@/hooks/useCountView';
+import { classifyStoriesByLabel } from '@/utils/utils';
 
 const Home = () => {
   const { data: storiesData = [], isLoading } = useStories();
   const { countView } = useCountView();
+  const newStories = [...new Set(classifyStoriesByLabel(storiesData).new)]
+  const hotStories = [...new Set(classifyStoriesByLabel(storiesData).hot)]
+  const fullStories = [...new Set(classifyStoriesByLabel(storiesData).full)]
 
   const [hasScrolledHalfPage, setHasScrolledHalfPage] = useState(false);
   const [deviceName, setDeviceName] = useState('');
 
   useEffect(() => {
     const userAgent = navigator.userAgent;
-    if (userAgent.match(/Android/i)) {
-      setDeviceName('Android');
-    } else if (userAgent.match(/iPhone|iPad|iPod/i)) {
-      setDeviceName('iOS');
-    } else if (userAgent.match(/Windows Phone/i)) {
-      setDeviceName('Windows Phone');
-    } else if (userAgent.match(/Macintosh/i)) {
-      setDeviceName('Macintosh');
-    } else if (userAgent.match(/Windows/i)) {
-      setDeviceName('Windows');
-    } else if (userAgent.match(/Linux/i)) {
-      setDeviceName('Linux');
-    } else {
-      setDeviceName('Unknown');
+    let deviceName;
+
+    switch (true) {
+        case /Android/i.test(userAgent):
+            deviceName = 'Android';
+            break;
+        case /iPhone|iPad|iPod/i.test(userAgent):
+            deviceName = 'iOS';
+            break;
+        case /Windows Phone/i.test(userAgent):
+            deviceName = 'Windows Phone';
+            break;
+        case /Macintosh/i.test(userAgent):
+            deviceName = 'Macintosh';
+            break;
+        case /Windows/i.test(userAgent):
+            deviceName = 'Windows';
+            break;
+        case /Linux/i.test(userAgent):
+            deviceName = 'Linux';
+            break;
+        default:
+            deviceName = 'Unknown';
     }
-  }, []);
+
+    setDeviceName(deviceName);
+}, []);
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'production') { 
@@ -84,7 +94,7 @@ const Home = () => {
       <section className="mt-16 h-[80vh]" id="moveStories">
         <StoryAlbum
           title={'Truyện mới cập nhật'}
-          storiesData={storiesData}
+          storiesData={newStories}
           isLoading={isLoading}
           itemsPerPage={6}
           isNavigate
@@ -94,7 +104,17 @@ const Home = () => {
       <section className="mt-6 h-[80vh]">
         <StoryAlbum
           title={'Truyện full tập'}
-          storiesData={storiesData}
+          storiesData={fullStories}
+          isLoading={isLoading}
+          itemsPerPage={6}
+          isNavigate
+        />
+      </section>
+      <Line />
+      <section className="mt-6 h-[80vh]">
+        <StoryAlbum
+          title={'Truyện hot'}
+          storiesData={hotStories}
           isLoading={isLoading}
           itemsPerPage={6}
           isNavigate
