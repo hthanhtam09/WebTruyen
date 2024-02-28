@@ -6,6 +6,8 @@ import useStories from '@/hooks/useStories';
 import Line from '@/components/Line';
 import useCountView from '@/hooks/useCountView';
 import { classifyStoriesByLabel } from '@/utils/utils';
+import Billboard from '@/components/Billboard';
+
 
 const Home = () => {
   const { data: storiesData = [], isLoading } = useStories();
@@ -89,9 +91,9 @@ const Home = () => {
         />
         <meta name="twitter:image" content="WebTruyen" />
       </Helmet>
-      {/* <Billboard /> */}
+      <Billboard />
 
-      <section className="mt-16 h-[80vh]" id="moveStories">
+      <section className="h-[70vh]" id="moveStories">
         <StoryAlbum
           title={'Truyện mới cập nhật'}
           storiesData={newStories}
@@ -101,7 +103,7 @@ const Home = () => {
         />
       </section>
       <Line />
-      <section className="mt-6 h-[80vh]">
+      <section className="h-[70vh]">
         <StoryAlbum
           title={'Truyện full tập'}
           storiesData={fullStories}
@@ -111,7 +113,7 @@ const Home = () => {
         />
       </section>
       <Line />
-      <section className="mt-6 h-[80vh]">
+      <section className="h-[80vh]">
         <StoryAlbum
           title={'Truyện hot'}
           storiesData={hotStories}
