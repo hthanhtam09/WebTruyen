@@ -110,6 +110,7 @@ const Home = () => {
           isNavigate
         />
       </section>
+      <Line />
       <section className="mt-6 h-[80vh]">
         <StoryAlbum
           title={'Truyện hot'}
