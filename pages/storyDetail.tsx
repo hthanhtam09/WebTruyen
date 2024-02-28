@@ -19,6 +19,8 @@ import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { getColor, processLabels } from '@/utils/utils';
+import { IconLabels } from '@/components/IconLabels';
 // import useAddChapterFollow from '@/hooks/useAddChapterFollow';
 // import useGetChapterFollow from '@/hooks/useGetChapterFollow';
 
@@ -46,6 +48,16 @@ const StoryDetailScreen = () => {
         .trim(),
     [storiesData, storyData],
   );
+
+  const statusChapter = useMemo(
+    () =>
+      storiesData.filter((story: StoriesInterface) => story.title === storyData?.title)[0]
+        ?.statusLabels,
+    [storiesData, storyData],
+  );
+
+  const statusLabels = [...new Set(statusChapter)] as string[];
+
   const handleLoadMore = useCallback(async () => {
     setIsLoadmore(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -65,6 +77,16 @@ const StoryDetailScreen = () => {
     },
     [],
   );
+
+  const renderLabels = useMemo(() => {
+    return processLabels(statusLabels).map((label, index) => {
+      return (
+        <span key={index} className="w-14 h-14" style={getColor(label)}>
+          {IconLabels(label)}
+        </span>
+      );
+    });
+  }, []);
 
   useEffect(() => {
     if (storyData) {
@@ -174,6 +196,11 @@ const StoryDetailScreen = () => {
                 )}
               </span>
             </p>
+
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex items-center transition duration-500">
+              <span className="text-gray-400 inline-block w-[150px]">Trạng thái: </span>
+              {storyData ? renderLabels : <SkeletonLoading width={'100%'} height={40} />}
+            </p>
           </div>
           {storyData ? (
             <div className="flex mt-6">
@@ -257,7 +284,7 @@ const StoryDetailScreen = () => {
       <Suspense fallback={<Loading />}>
         <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
           <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">
-            Truyện cùng thể loại:
+            Truyện khác:
           </p>
           {storiesData.length > 0 ? (
             <SwiperContainer
@@ -271,7 +298,12 @@ const StoryDetailScreen = () => {
             >
               {storiesData.map((story: StoriesInterface, index: number) => (
                 <SwiperSlide key={index}>
-                  <StoryCard data={story} setMergeStoryData={setMergeStoryData} setPage={setPage} isStoryDetail />
+                  <StoryCard
+                    data={story}
+                    setMergeStoryData={setMergeStoryData}
+                    setPage={setPage}
+                    isStoryDetail
+                  />
                 </SwiperSlide>
               ))}
             </SwiperContainer>
