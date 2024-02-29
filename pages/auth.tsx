@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import Input from '../components/Input';
 import { AUTHENTICATION } from '../enum/';
 import Link from 'next/link';
+import TextLight from '@/components/TextLight';
 
 const Auth = () => {
   const router = useRouter();
@@ -72,12 +73,12 @@ const Auth = () => {
       </Helmet>
       <div className="bg-black w-full h-full lg:bg-opacity-50">
         <Link href={'/auth'} className='block px-12 py-5'>
-          <img className="bg-cover" src="/images/logo.png" alt="Logo" width={100} height={100} />
+          <TextLight />
         </Link>
         <div className="flex justify-center mt-20">
           <div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
             <h2 className="text-white text-4xl mb-8 font-semibold">
-              {variant === AUTHENTICATION.LOGIN ? 'Sign in' : 'Resgister'}
+              {variant === AUTHENTICATION.LOGIN ? 'Đăng nhập' : 'Đăng ký'}
             </h2>
             <div className="flex flex-col gap-4">
               {variant === AUTHENTICATION.REGISTER && (
@@ -112,13 +113,13 @@ const Auth = () => {
             </button>
             <p className="text-neutral-500 mt-12">
               {variant === AUTHENTICATION.LOGIN
-                ? 'First time using WebTruyen?'
-                : 'Already have an account?'}
+                ? 'Lần đầu bạn tới WebTruyen?'
+                : 'Đã có tài khoản rồi?'}
               <span
                 onClick={toggleVariant}
                 className="text-white ml-1 hover:underline cursor-pointer"
               >
-                {variant === AUTHENTICATION.LOGIN ? 'Create and account' : 'Login'}
+                {variant === AUTHENTICATION.LOGIN ? 'Tạo một tài khoản' : 'Đăng nhập'}
               </span>
             </p>
           </div>
