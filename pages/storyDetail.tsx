@@ -32,7 +32,8 @@ const StoryDetailScreen = () => {
   const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface>(
     storyData as StoriesInterface,
   );
-  const { data: storiesData = [] } = useStories();
+  const { data = [] } = useStories();
+  const storiesData = data.stories
   // const { addChapterFollow } = useAddChapterFollow();
   // const { getChapterFollow } = useGetChapterFollow();
   const [isLoadmore, setIsLoadmore] = useState<boolean>(false);

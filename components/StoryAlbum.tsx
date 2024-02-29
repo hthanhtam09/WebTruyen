@@ -5,66 +5,42 @@ import Loading from '@/pages/loading';
 import StoriesList from './StoriesList';
 import { useRouter } from 'next/router';
 import { StoriesInterface } from '@/types';
+import { convertToSnakeCase } from '@/utils/utils';
+import { EStoryType } from '@/enum';
 
 interface StoryAlbumProps {
   title: string;
   storiesData: StoriesInterface[];
   isLoading: boolean;
-  itemsPerPage?: number;
   isPagination?: boolean;
   isNavigate?: boolean;
+  totalPages?: number;
+  page?: number;
+  storyType?: EStoryType;
+  handlePaginationChange?: ((event: React.ChangeEvent<unknown>, page: number) => void) | undefined 
 }
 
 const StoryAlbum: React.FC<StoryAlbumProps> = ({
   title,
   storiesData,
   isLoading,
-  itemsPerPage = 24,
+  totalPages,
+  page = 1,
   isPagination = false,
   isNavigate = false,
+  storyType,
+  handlePaginationChange
 }) => {
   const router = useRouter();
   const classes = useStyles();
 
-  const [page, setPage] = useState(1);
-  const [itemOffset, setItemOffset] = useState(0);
-  const [currentStory, setCurrentStory] = useState<StoriesInterface[]>([]);
-
-  const pageCount =
-    storiesData != null && storiesData.length > 0 ? Math.ceil(storiesData.length / itemsPerPage) : 1;
-  const endOffset = itemOffset + itemsPerPage;
-
-  const handlePaginationChange = useCallback(
-    (_: React.ChangeEvent<unknown>, value: number) => {
-      const action = value > page ? 'next' : 'previous';
-      const newPage = action === 'next' ? page + 1 : page - 1;
-
-      setPage(newPage);
-      const newOffset = (newPage - 1) * itemsPerPage;
-      setItemOffset(newOffset);
-    },
-    [itemsPerPage, page],
-  );
-  
-  const redirectToStoriesListNameScreen = useCallback(
-    (currentStory: StoriesInterface[]) => {
-      const queryObject = {
-        stories: JSON.stringify(currentStory),
-      };
-      router.push({
-        pathname: `/${title}`,
-        query: queryObject,
-      });
-    },
-    [router, title],
-  );
-
-  useEffect(() => {
-    if (storiesData && storiesData.length > 0) {
-      const currentItems = storiesData.slice(itemOffset, endOffset);
-      setCurrentStory(currentItems);
-    }
-  }, [endOffset, itemOffset, storiesData, setCurrentStory]);
+  const redirectToStoriesListNameScreen = useCallback(() => {
+    const path = `/storiesViewAll/${convertToSnakeCase(title)}`
+    router.push({
+      pathname: path,
+      query: {title, storyType}
+    });
+  }, [router, title, storyType]);
 
   return (
     <div className="h-full relative px-4 md:px-16 pt-20 pb-10">
@@ -74,7 +50,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
         </p>
         {isNavigate && (
           <div
-            onClick={() => redirectToStoriesListNameScreen(storiesData)}
+            onClick={redirectToStoriesListNameScreen}
             className="flex dark:text-white text-themeDark items-center cursor-pointer transition duration-500"
           >
             Xem tất cả
@@ -84,13 +60,13 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
       </div>
 
       {!isLoading ? (
-        currentStory.length > 0 ? (
+        storiesData?.length > 0 ? (
           <>
-            <StoriesList data={currentStory} style="my-10" />
+            <StoriesList data={storiesData} style="my-10" />
             {isPagination && (
               <div className="w-full flex justify-center mb-32">
                 <Pagination
-                  count={pageCount}
+                  count={totalPages}
                   variant="outlined"
                   color="primary"
                   page={page}

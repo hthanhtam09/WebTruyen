@@ -1,8 +1,7 @@
 import { useCallback, useState } from 'react';
 import { BsSearch, BsFacebook, BsChevronDown } from 'react-icons/bs';
-import { TfiEmail, TfiHome } from 'react-icons/tfi';
+import { TfiEmail } from 'react-icons/tfi';
 import Link from 'next/link';
-import { Tooltip, Typography } from '@material-tailwind/react';
 
 import Search from './Search';
 import NavbarItem from './NavbarItem';
@@ -84,22 +83,6 @@ const Navbar: React.FC = () => {
                 <AccountMenu visible={showAccountUser} userData={userData} />
               </div>
             ) : null}
-            <Tooltip
-              className="border border-blue-gray-50 bg-white px-4 py-2 shadow-xl shadow-black/10 z-[99999]"
-              content={
-                <Typography color="black">
-                  Don&apos;t <span className="font-bold">touch</span> me !!!
-                </Typography>
-              }
-            >
-              <img
-                src={'/images/gif/cat1.gif'}
-                alt="GIF"
-                width={100}
-                height={100}
-                className="cursor-not-allowed"
-              />
-            </Tooltip>
           </div>
         </div>
       </div>

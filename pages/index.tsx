@@ -7,15 +7,16 @@ import Line from '@/components/Line';
 import useCountView from '@/hooks/useCountView';
 import { classifyStoriesByLabel } from '@/utils/utils';
 import Billboard from '@/components/Billboard';
+import { EStoryType } from '@/enum';
 
 
 const Home = () => {
-  const { data: storiesData = [], isLoading } = useStories();
+  const { data = [], isLoading } = useStories();
+  const storiesData = data.stories
   const { countView } = useCountView();
   const newStories = [...new Set(classifyStoriesByLabel(storiesData).new)]
   const hotStories = [...new Set(classifyStoriesByLabel(storiesData).hot)]
   const fullStories = [...new Set(classifyStoriesByLabel(storiesData).full)]
-
   const [hasScrolledHalfPage, setHasScrolledHalfPage] = useState(false);
   const [deviceName, setDeviceName] = useState('');
 
@@ -96,30 +97,30 @@ const Home = () => {
       <section className="h-[70vh]" id="moveStories">
         <StoryAlbum
           title={'Truyện mới cập nhật'}
-          storiesData={newStories}
+          storiesData={newStories.slice(0, 6)}
           isLoading={isLoading}
-          itemsPerPage={6}
           isNavigate
+          storyType={EStoryType.NEW}
         />
       </section>
       <Line />
       <section className="h-[70vh]">
         <StoryAlbum
           title={'Truyện full tập'}
-          storiesData={fullStories}
+          storiesData={fullStories.slice(0, 6)}
           isLoading={isLoading}
-          itemsPerPage={6}
           isNavigate
+          storyType={EStoryType.FULL}
         />
       </section>
       <Line />
       <section className="h-[80vh]">
         <StoryAlbum
           title={'Truyện hot'}
-          storiesData={hotStories}
+          storiesData={hotStories.slice(0, 6)}
           isLoading={isLoading}
-          itemsPerPage={6}
           isNavigate
+          storyType={EStoryType.HOT}
         />
       </section>
     </>

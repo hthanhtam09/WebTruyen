@@ -6,6 +6,11 @@ export enum EGenreType {
 export enum AUTHENTICATION {
     LOGIN = 'login',
     REGISTER = 'register',
-  }
+}
   
+export enum EStoryType {
+    NEW = 'new',
+    HOT = 'hot',
+    FULL = 'full'
+}
   

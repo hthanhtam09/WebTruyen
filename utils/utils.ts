@@ -17,6 +17,15 @@ export function convertToTitleCaseForPath(str: string) {
   return convertedParts.join('');
 }
 
+export function convertToSnakeCase(inputString: string) {
+  return inputString
+    .toLowerCase()
+    .normalize("NFD") 
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\w\s]/gi, '') 
+    .replace(/\s+/g, '_')
+}
+
 function calculateTimeElapsed(commentTime: any) {
   const currentTime = new Date();
   const timeDifference = currentTime.getTime() - new Date(commentTime).getTime();
@@ -101,7 +110,7 @@ export function classifyStoriesByLabel(stories: StoriesInterface[]) {
     full: [] as StoriesInterface[],
   };
 
-  stories.forEach((story) => {
+  stories && stories.length && stories.forEach((story) => {
     story.statusLabels.forEach((label) => {
       switch (label) {
         case 'label-new':
