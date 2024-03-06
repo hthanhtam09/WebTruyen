@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import Loading from '@/pages/loading';
@@ -17,7 +17,7 @@ interface StoryAlbumProps {
   totalPages?: number;
   page?: number;
   storyType?: EStoryType;
-  handlePaginationChange?: ((event: React.ChangeEvent<unknown>, page: number) => void) | undefined 
+  handlePaginationChange?: ((event: React.ChangeEvent<unknown>, page: number) => void) | undefined;
 }
 
 const StoryAlbum: React.FC<StoryAlbumProps> = ({
@@ -29,16 +29,16 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
   isPagination = false,
   isNavigate = false,
   storyType,
-  handlePaginationChange
+  handlePaginationChange,
 }) => {
   const router = useRouter();
   const classes = useStyles();
 
   const redirectToStoriesListNameScreen = useCallback(() => {
-    const path = `/storiesViewAll/${convertToSnakeCase(title)}`
+    const path = `/storiesViewAll/${convertToSnakeCase(title)}`;
     router.push({
       pathname: path,
-      query: {title, storyType}
+      query: { title, storyType },
     });
   }, [router, title, storyType]);
 
@@ -65,15 +65,17 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
             <StoriesList data={storiesData} style="my-10" />
             {isPagination && (
               <div className="w-full flex justify-center mb-32">
-                <Pagination
-                  count={totalPages}
-                  variant="outlined"
-                  color="primary"
-                  page={page}
-                  size="large"
-                  onChange={handlePaginationChange}
-                  className={classes.paginationItem}
-                />
+                {totalPages === 1 ? null : (
+                  <Pagination
+                    count={totalPages}
+                    variant="outlined"
+                    color="primary"
+                    page={page}
+                    size="large"
+                    onChange={handlePaginationChange}
+                    className={classes.paginationItem}
+                  />
+                )}
               </div>
             )}
           </>

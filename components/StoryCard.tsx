@@ -34,17 +34,25 @@ const StoryCard: React.FC<StoryCardProps> = ({
   );
 
   const renderLabels = useMemo(() => {
-    return processLabels(data.statusLabels).map((label, index) => {
-      return (
-        <span key={index} className="w-14 h-14" style={getColor(label)}>
-          {IconLabels(label)}
-        </span>
-      );
-    });
+    return (
+      <div className="flex justify-center items-center border border-white rounded-md">
+        {processLabels(data.statusLabels).map((label, index) => {
+          return (
+            <span
+              key={index}
+              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
+              style={getColor(label)}
+            >
+              {IconLabels(label)}
+            </span>
+          );
+        })}
+      </div>
+    );
   }, []);
 
   return data ? (
-    <div className="relative mt-10 overflow-hidden">
+    <div className="relative mt-4 sm:mt-6 md:mt-8 overflow-hidden">
       <img
         onClick={() => redirectToStoryDetail(data)}
         src={data.imageUrl}
@@ -59,17 +67,13 @@ const StoryCard: React.FC<StoryCardProps> = ({
           rounded-md
           w-full
           h-[18vw]
+          sm:h-[16vw]
+          md:h-[14vw]
           hover:opacity-30
         "
       />
-      {data.statusLabels.length > 0 ? (
-        <div className="absolute right-0 top-[15vw] left-0">
-          <div className="bg-black bg-opacity-50 backdrop-blur-0 flex justify-center gap-4">
-            {renderLabels}
-          </div>
-        </div>
-      ) : null}
-      <p className="dark:text-white text-themeDark py-4 text-sm transition duration-500">
+      {data.statusLabels.length > 0 ? renderLabels : null}
+      <p className="dark:text-white text-themeDark py-2 sm:py-3 md:py-4 text-sm sm:text-base transition duration-500">
         {data.title}
       </p>
     </div>
