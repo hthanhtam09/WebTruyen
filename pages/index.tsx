@@ -14,9 +14,9 @@ const Home = () => {
   const { data = [], isLoading } = useStories();
   const storiesData = data.stories
   const { countView } = useCountView();
-  const newStories = [...new Set(classifyStoriesByLabel(storiesData).new)]
-  const hotStories = [...new Set(classifyStoriesByLabel(storiesData).hot)]
-  const fullStories = [...new Set(classifyStoriesByLabel(storiesData).full)]
+  // const newStories = [...new Set(classifyStoriesByLabel(storiesData).new)]
+  // const hotStories = [...new Set(classifyStoriesByLabel(storiesData).hot)]
+  // const fullStories = [...new Set(classifyStoriesByLabel(storiesData).full)]
   const [hasScrolledHalfPage, setHasScrolledHalfPage] = useState(false);
   const [deviceName, setDeviceName] = useState('');
 
@@ -71,7 +71,7 @@ const Home = () => {
   }, [hasScrolledHalfPage, deviceName]);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col justify-between">
       <Helmet prioritizeSeoTags>
         <title>Trang chủ</title>
         <meta name="description" content="Trang chủ WebTruyen" />
@@ -94,17 +94,16 @@ const Home = () => {
       </Helmet>
       <Billboard />
 
-      <section className="h-[70vh]" id="moveStories">
+      <section className="min-h-[80vh]" id="moveStories">
         <StoryAlbum
-          title={'Truyện mới cập nhật'}
-          storiesData={newStories.slice(0, 6)}
+          title={'Truyện cập nhật'}
+          storiesData={storiesData ? storiesData.slice(0, 6) : []}
           isLoading={isLoading}
           isNavigate
           storyType={EStoryType.NEW}
         />
       </section>
-      <Line />
-      <section className="h-[70vh]">
+      {/* <section className="h-[70vh]">
         <StoryAlbum
           title={'Truyện full tập'}
           storiesData={fullStories.slice(0, 6)}
@@ -122,8 +121,8 @@ const Home = () => {
           isNavigate
           storyType={EStoryType.HOT}
         />
-      </section>
-    </>
+      </section> */}
+    </div>
   );
 };
 

@@ -63,6 +63,7 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
       currentPage++;
     }
   }
+  await browser.close();
 
   return {
     chapterContents,
@@ -128,6 +129,8 @@ async function scrapePage(page: Page, browser: Browser) {
       createdAt,
     });
   }
+
+  await browser.close()
 }
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
@@ -140,7 +143,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 2;
+    let currentPage = 3;
     while (true) {
       await page.goto(`${uri}/trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
@@ -163,7 +166,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
       }
     }
 
-    await browser.close();
+    await browser.close()
     res.status(200).send({ message: 'Successfully' });
   } catch (error) {
     console.log(error);
