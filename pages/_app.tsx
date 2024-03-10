@@ -56,7 +56,8 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4979943891567316"
                     crossOrigin="anonymous"
                   ></script>
-                  <meta name="google-site-verification" content="9DKjgYzDLjd5Zi2VrG_REaHHRNf80q52oyzDojjrWMA" />
+                  <meta name="google-adsense-account" content="ca-pub-4979943891567316"></meta>
+                  
                 </>
               )}
             </Helmet>
