@@ -1,5 +1,5 @@
 import React from 'react';
-import TextLight from './TextLight';
+import Logo from './Logo';
 
 const imageArray = [
   '/images/cartoon1.png',
@@ -34,7 +34,7 @@ const Footer = () => {
       />
 
       <div className="w-[40%] h-[1px] dark:bg-white bg-black absolute left-0 top-[50%]" />
-      <TextLight />
+      <Logo />
       <div className="w-[40%] h-[1px] dark:bg-white bg-black absolute right-0 top-[50%]" />
     </footer>
   );
