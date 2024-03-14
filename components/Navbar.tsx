@@ -10,7 +10,7 @@ import AccountMenu from './AccountUser';
 import { convertToTitleCaseForDisplay, convertToTitleCaseForPath } from '@/utils/utils';
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Icon from './Icon';
-import TextLight from './TextLight';
+import Logo from './Logo';
 
 const navbarItemListData = ['Trang_chủ'];
 
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
     <nav className="w-full fixed z-40 top-0 ">
       <div className="h-[10vh] px-4 md:px-16 py-6 flex flex-row items-center bg-opacity-70 backdrop-blur-sm transition duration-500">
         <Link href={'/'}>
-          <TextLight />
+          <Logo />
         </Link>
         <div className="flex flex-row ml-auto gap-7 items-center justify-between w-[50%]">
           <div className="flex-row ml-8 gap-12 hidden lg:flex">

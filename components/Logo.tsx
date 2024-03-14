@@ -74,7 +74,7 @@ const StyledDiv = styled.div`
   }
 `;
 
-const TextLight = () => {
+const Logo = () => {
   return (
     <div className={fontBoneca.className}>
       <StyledDiv>
@@ -96,4 +96,4 @@ const TextLight = () => {
   );
 };
 
-export default TextLight;
+export default Logo;

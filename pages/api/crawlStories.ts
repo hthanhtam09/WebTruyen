@@ -2,18 +2,21 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { storiesClient, storiesDetailClient } from '@/lib/db';
 import * as cheerio from 'cheerio';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import EventEmitter from 'events';
+import pako from 'pako';
 
-EventEmitter.setMaxListeners(100);
-const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
+const browserPromise = puppeteer.launch({
+  headless: 'new',
+  args: ['--disable-features=site-per-process'],
+});
+
+// const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
+const uri = 'https://truyenfull.vn/danh-sach/truyen-full';
 
 async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCollection: any) {
-  const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--disable-features=site-per-process'],
-  });
+  const browser = await browserPromise;
+  const chapterPage = await browser.newPage();
   const chapterContents = [];
-  let description = '';
+  let description: string = '';
   const genres: (string | undefined)[] = [];
   let imageUrl: string = '';
   let currentPage = 1;
@@ -37,7 +40,6 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
 
     for (const element of $('.list-chapter li a').toArray()) {
       const chapterUrl = $(element).attr('href') as string;
-      const chapterPage = await browser.newPage();
       await chapterPage.goto(chapterUrl, { waitUntil: 'domcontentloaded', timeout: 0 });
       const $details = cheerio.load(await chapterPage.content());
 
@@ -45,13 +47,13 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
       const existingChapter = await storiesDetailCollection.findOne({
         chapterContents: paragraphs,
       });
+
       if (existingChapter) {
         console.log('Chapter already exists:', chapterUrl);
       } else {
         console.log('New chapter:', chapterUrl);
         chapterContents.push(paragraphs);
       }
-      await chapterPage.close();
     }
 
     const hasNextPage = $('.pagination li.active + li:not(.active)').length > 0;
@@ -63,7 +65,8 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
       currentPage++;
     }
   }
-  await browser.close();
+
+  await chapterPage.close();
 
   return {
     chapterContents,
@@ -83,7 +86,6 @@ async function scrapePage(page: Page, browser: Browser) {
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
-    const chapterPage = await browser.newPage();
     const author = $(element).find('.author').text();
     $(element)
       .find('.label-title')
@@ -99,12 +101,16 @@ async function scrapePage(page: Page, browser: Browser) {
     const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
     const createdAt = new Date();
     const chapterStory = $(element).find('.text-info a').text();
+    const chapterPage = await browser.newPage();
     const { chapterContents, description, genres, imageUrl, status } = await processChapterURL(
       chapterPage,
       detailsUrl,
       storiesDetailCollection,
     );
 
+    // compress data chapter contents
+    const compressedChapterContents = pako.gzip(JSON.stringify(chapterContents), { level: 5 });
+    const base64CompressedData = Buffer.from(compressedChapterContents).toString('base64');
     await chapterPage.close();
 
     storiesCollection.insertOne({
@@ -121,7 +127,7 @@ async function scrapePage(page: Page, browser: Browser) {
       title,
       author,
       imageUrl,
-      chapterContents,
+      chapterContents: base64CompressedData,
       description,
       genres,
       storySlug,
@@ -130,20 +136,17 @@ async function scrapePage(page: Page, browser: Browser) {
     });
   }
 
-  await browser.close()
+  await browser.close();
 }
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--disable-features=site-per-process'],
-    });
+    const browser = await browserPromise;
     const page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 3;
+    let currentPage = 1;
     while (true) {
       await page.goto(`${uri}/trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
@@ -166,7 +169,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
       }
     }
 
-    await browser.close()
+    await browser.close();
     res.status(200).send({ message: 'Successfully' });
   } catch (error) {
     console.log(error);

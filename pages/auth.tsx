@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import Input from '../components/Input';
 import { AUTHENTICATION } from '../enum/';
 import Link from 'next/link';
-import TextLight from '@/components/TextLight';
+import Logo from '@/components/Logo';
 
 const Auth = () => {
   const router = useRouter();
@@ -73,7 +73,7 @@ const Auth = () => {
       </Helmet>
       <div className="bg-black w-full h-full lg:bg-opacity-50">
         <Link href={'/auth'} className='block px-12 py-5'>
-          <TextLight />
+          <Logo />
         </Link>
         <div className="flex justify-center mt-20">
           <div className="bg-black bg-opacity-70 px-16 py-16 self-center mt-2 lg:w-2/5 lg:max-w-md rounded-md w-full">
