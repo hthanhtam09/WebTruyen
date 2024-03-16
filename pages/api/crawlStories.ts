@@ -4,7 +4,6 @@ import * as cheerio from 'cheerio';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import pako from 'pako';
 
-
 const imageArray = [
   '/images/ImageStories/image_1.jpg',
   '/images/ImageStories/image_2.jpg',
@@ -45,12 +44,25 @@ const imageArray = [
   '/images/ImageStories/image_37.jpg',
   '/images/ImageStories/image_38.jpg',
   '/images/ImageStories/image_39.jpg',
-  '/images/ImageStories/image_40.jpg',
+  '/images/ImageStories/image_40.jpeg',
 ];
 
 const browserPromise = puppeteer.launch({
   headless: 'new',
-  args: ['--disable-features=site-per-process'],
+  ignoreHTTPSErrors: true,
+  defaultViewport: null,
+  ignoreDefaultArgs: ['--enable-automation'],
+  args: [
+    '--disable-infobars',
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--disable-gpu=False',
+    '--enable-webgl',
+    '--window-size=1600,900',
+    '--start-maximized',
+  ],
+  timeout: 10_000, // 10 seconds
+  protocolTimeout: 20_000, // 20 seconds
 });
 
 // const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
@@ -58,6 +70,9 @@ const uri = 'https://truyenfull.vn/danh-sach/truyen-full';
 
 async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCollection: any) {
   const browser = await browserPromise;
+  await new Promise((resolve) => {
+    setTimeout(resolve, 1000);
+  });
   const chapterPage = await browser.newPage();
   const chapterContents = [];
   let description: string = '';
@@ -75,7 +90,7 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
     description = $('.desc-text').text();
     const randomImage = Math.ceil(Math.random() * imageArray.length - 1);
     const imageUrlRandom = imageArray[randomImage];
-    imageUrl = imageUrlRandom
+    imageUrl = imageUrlRandom;
     status = $('.info').find('div:last-child .text-success').text();
     $('.info')
       .find('a')
@@ -188,11 +203,14 @@ async function scrapePage(page: Page, browser: Browser) {
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
     const browser = await browserPromise;
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000);
+    });
     const page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 1;
+    let currentPage = 2;
     while (true) {
       await page.goto(`${uri}/trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
