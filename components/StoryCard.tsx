@@ -1,8 +1,6 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { StoriesInterface } from '@/types';
-import { getColor, processLabels } from '@/utils/utils';
-import { IconLabels } from './IconLabels';
 
 interface StoryCardProps {
   data: StoriesInterface;
