@@ -4,6 +4,50 @@ import * as cheerio from 'cheerio';
 import puppeteer, { Browser, Page } from 'puppeteer';
 import pako from 'pako';
 
+
+const imageArray = [
+  '/images/ImageStories/image_1.jpg',
+  '/images/ImageStories/image_2.jpg',
+  '/images/ImageStories/image_3.jpg',
+  '/images/ImageStories/image_4.jpg',
+  '/images/ImageStories/image_5.jpg',
+  '/images/ImageStories/image_6.jpg',
+  '/images/ImageStories/image_7.jpg',
+  '/images/ImageStories/image_8.jpg',
+  '/images/ImageStories/image_9.jpg',
+  '/images/ImageStories/image_10.jpg',
+  '/images/ImageStories/image_11.jpg',
+  '/images/ImageStories/image_12.jpg',
+  '/images/ImageStories/image_13.jpg',
+  '/images/ImageStories/image_14.jpg',
+  '/images/ImageStories/image_15.jpg',
+  '/images/ImageStories/image_16.jpg',
+  '/images/ImageStories/image_17.jpg',
+  '/images/ImageStories/image_18.jpg',
+  '/images/ImageStories/image_19.jpg',
+  '/images/ImageStories/image_20.jpg',
+  '/images/ImageStories/image_21.jpg',
+  '/images/ImageStories/image_22.jpg',
+  '/images/ImageStories/image_23.jpg',
+  '/images/ImageStories/image_24.jpg',
+  '/images/ImageStories/image_25.jpg',
+  '/images/ImageStories/image_26.jpg',
+  '/images/ImageStories/image_27.jpg',
+  '/images/ImageStories/image_28.jpg',
+  '/images/ImageStories/image_29.jpg',
+  '/images/ImageStories/image_30.jpg',
+  '/images/ImageStories/image_31.jpg',
+  '/images/ImageStories/image_32.jpg',
+  '/images/ImageStories/image_33.jpg',
+  '/images/ImageStories/image_34.jpg',
+  '/images/ImageStories/image_35.jpg',
+  '/images/ImageStories/image_36.jpg',
+  '/images/ImageStories/image_37.jpg',
+  '/images/ImageStories/image_38.jpg',
+  '/images/ImageStories/image_39.jpg',
+  '/images/ImageStories/image_40.jpg',
+];
+
 const browserPromise = puppeteer.launch({
   headless: 'new',
   args: ['--disable-features=site-per-process'],
@@ -29,7 +73,9 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
     });
     const $ = cheerio.load(await page.content());
     description = $('.desc-text').text();
-    imageUrl = $('.book').find('img').attr('src') as string;
+    const randomImage = Math.ceil(Math.random() * imageArray.length - 1);
+    const imageUrlRandom = imageArray[randomImage];
+    imageUrl = imageUrlRandom
     status = $('.info').find('div:last-child .text-success').text();
     $('.info')
       .find('a')
