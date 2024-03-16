@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import StoryAlbum from '@/components/StoryAlbum';
@@ -11,14 +11,21 @@ import { EStoryType } from '@/enum';
 
 
 const Home = () => {
-  const { data = [], isLoading } = useStories();
+  const { data = [], isLoading, fetchData } = useStories();
   const storiesData = data.stories
   const { countView } = useCountView();
-  // const newStories = [...new Set(classifyStoriesByLabel(storiesData).new)]
-  // const hotStories = [...new Set(classifyStoriesByLabel(storiesData).hot)]
-  // const fullStories = [...new Set(classifyStoriesByLabel(storiesData).full)]
   const [hasScrolledHalfPage, setHasScrolledHalfPage] = useState(false);
   const [deviceName, setDeviceName] = useState('');
+  const [page, setPage] = useState(1);
+  const totalPages = data.totalPages
+
+  const handlePaginationChange = useCallback(
+    (_: React.ChangeEvent<unknown>, value: number) => {
+      setPage(value);
+      fetchData(value - 1) // because db return 0 so - 1 to exactly result
+    },
+    [page],
+  );
 
   useEffect(() => {
     const userAgent = navigator.userAgent;
@@ -95,13 +102,22 @@ const Home = () => {
       <Billboard />
 
       <section className="min-h-[80vh]" id="moveStories">
-        <StoryAlbum
+        {/* <StoryAlbum
           title={'Truyện cập nhật'}
           storiesData={storiesData ? storiesData.slice(0, 6) : []}
           isLoading={isLoading}
           isNavigate
           storyType={EStoryType.NEW}
-        />
+        /> */}
+          <StoryAlbum
+        title={'Truyện full tập'}
+        storiesData={storiesData}
+        isLoading={isLoading}
+        isPagination
+        totalPages={totalPages}
+        handlePaginationChange={handlePaginationChange}
+        page={page}
+      />
       </section>
       {/* <section className="h-[70vh]">
         <StoryAlbum

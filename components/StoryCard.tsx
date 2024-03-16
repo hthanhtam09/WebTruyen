@@ -33,24 +33,6 @@ const StoryCard: React.FC<StoryCardProps> = ({
     [router],
   );
 
-  const renderLabels = useMemo(() => {
-    return (
-      <div className="flex justify-center items-center border border-white rounded-md">
-        {processLabels(data.statusLabels).map((label, index) => {
-          return (
-            <span
-              key={index}
-              className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12"
-              style={getColor(label)}
-            >
-              {IconLabels(label)}
-            </span>
-          );
-        })}
-      </div>
-    );
-  }, []);
-
   return data ? (
     <div className="relative mt-4 sm:mt-6 md:mt-8 overflow-hidden">
       <img
@@ -72,7 +54,6 @@ const StoryCard: React.FC<StoryCardProps> = ({
           hover:opacity-30
         "
       />
-      {data.statusLabels.length > 0 ? renderLabels : null}
       <p className="dark:text-white text-themeDark py-2 sm:py-3 md:py-4 text-sm sm:text-base transition duration-500">
         {data.title}
       </p>

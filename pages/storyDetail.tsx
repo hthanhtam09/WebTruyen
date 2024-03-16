@@ -26,9 +26,10 @@ import { IconLabels } from '@/components/IconLabels';
 
 const StoryDetailScreen = () => {
   const router = useRouter();
-  const { data: storyData, fetchMoreData } = useStoryDetail(
+  const { data: storyData, isLoading, fetchMoreData } = useStoryDetail(
     Object.keys(router.query) as any as string,
   );
+
   const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface>(
     storyData as StoriesInterface,
   );
@@ -36,14 +37,12 @@ const StoryDetailScreen = () => {
   const storiesData = data.stories
   // const { addChapterFollow } = useAddChapterFollow();
   // const { getChapterFollow } = useGetChapterFollow();
-  const [isLoadmore, setIsLoadmore] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const uniqueGenresArray = [...new Set(storyData?.genres)];
   const uniqueMergeStoryData = [...new Set(mergeStoryData?.chapterContents)];
-
   const totalChapter = useMemo(
     () =>
-      storiesData
+    storiesData && storiesData
         .filter((story: StoriesInterface) => story.title === storyData?.title)[0]
         ?.chapterStory.replace('Chương', '')
         .trim(),
@@ -52,7 +51,7 @@ const StoryDetailScreen = () => {
 
   const statusChapter = useMemo(
     () =>
-      storiesData.filter((story: StoriesInterface) => story.title === storyData?.title)[0]
+    storiesData && storiesData.filter((story: StoriesInterface) => story.title === storyData?.title)[0]
         ?.statusLabels,
     [storiesData, storyData],
   );
@@ -60,10 +59,7 @@ const StoryDetailScreen = () => {
   const statusLabels = [...new Set(statusChapter)] as string[];
 
   const handleLoadMore = useCallback(async () => {
-    setIsLoadmore(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
     fetchMoreData(Object.keys(router.query) as any as string, page);
-    setIsLoadmore(false);
     setPage((prev) => prev + 1);
   }, [Object.keys(router.query)]);
 
@@ -87,7 +83,7 @@ const StoryDetailScreen = () => {
         </span>
       );
     });
-  }, []);
+  }, [statusLabels]);
 
   useEffect(() => {
     if (storyData) {
@@ -96,8 +92,9 @@ const StoryDetailScreen = () => {
         chapterContents: [...(prev?.chapterContents || []), ...(storyData.chapterContents || [])],
       }));
     }
-  }, [storyData]);
 
+   
+  }, [storyData]);
   // const lastClickedChapter = localStorage.getItem('lastClickedChapter');
 
   // const handleAddChapterFollow = useCallback(async () => {
@@ -255,10 +252,10 @@ const StoryDetailScreen = () => {
               <button
                 onClick={handleLoadMore}
                 className={`${
-                  isLoadmore ? '' : 'border rounded-lg hover:opacity-70'
+                  isLoading ? '' : 'border rounded-lg hover:opacity-70'
                 } dark:text-white text-themeDark inline-block p-4 dark:border-white border-black`}
               >
-                {isLoadmore ? (
+                {isLoading ? (
                   <div className="flex items-center">
                     <FiCommand className="loading-icon mr-2 dark:text-white text-themeDark" />
                     <p>Đang tải...</p>
@@ -287,7 +284,7 @@ const StoryDetailScreen = () => {
           <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">
             Truyện khác:
           </p>
-          {storiesData.length > 0 ? (
+          {storiesData && storiesData.length > 0 ? (
             <SwiperContainer
               loop
               autoplay={{ delay: 3000 }}
