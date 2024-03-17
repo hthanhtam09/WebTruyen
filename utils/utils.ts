@@ -130,3 +130,10 @@ export function classifyStoriesByLabel(stories: StoriesInterface[]) {
 
   return storiesByLabel;
 }
+
+export const checkStoryOverLimit = (chapterString: string, limit: number = 1000) => {
+  const chapterNumber: number | null = parseInt(chapterString.match(/\d+/)?.[0] || '');
+  const compareLimit = chapterNumber < limit
+
+  return compareLimit
+}

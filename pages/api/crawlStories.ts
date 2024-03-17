@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { storiesClient, storiesDetailClient } from '@/lib/db';
 import * as cheerio from 'cheerio';
-import puppeteer, { Browser, Page } from 'puppeteer';
+import puppeteer, { Page } from 'puppeteer';
 import pako from 'pako';
+import { checkStoryOverLimit } from '@/utils/utils';
 
 const imageArray = [
   '/images/ImageStories/image_1.jpg',
@@ -47,31 +48,23 @@ const imageArray = [
   '/images/ImageStories/image_40.jpeg',
 ];
 
-const browserPromise = puppeteer.launch({
-  headless: 'new',
-  ignoreHTTPSErrors: true,
-  defaultViewport: null,
-  ignoreDefaultArgs: ['--enable-automation'],
-  args: [
-    '--disable-infobars',
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-gpu=False',
-    '--enable-webgl',
-    '--window-size=1600,900',
-    '--start-maximized',
-  ],
-  timeout: 10_000, // 10 seconds
-  protocolTimeout: 20_000, // 20 seconds
-});
-
 // const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
 const uri = 'https://truyenfull.vn/danh-sach/truyen-full';
 
-async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCollection: any) {
-  const browser = await browserPromise;
-  await new Promise((resolve) => {
-    setTimeout(resolve, 1000);
+async function processChapterURL(page: Page, detailsUrl: string) {
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: [
+      '--disable-infobars',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-gpu=False',
+      '--enable-webgl',
+      '--window-size=1600,900',
+      '--start-maximized',
+    ],
+    timeout: 30_000, // 10 seconds
+    protocolTimeout: 20_000, // 20 seconds
   });
   const chapterPage = await browser.newPage();
   const chapterContents = [];
@@ -105,16 +98,9 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
       const $details = cheerio.load(await chapterPage.content());
 
       const paragraphs = $details('.chapter-c').contents().text();
-      const existingChapter = await storiesDetailCollection.findOne({
-        chapterContents: paragraphs,
-      });
 
-      if (existingChapter) {
-        console.log('Chapter already exists:', chapterUrl);
-      } else {
-        console.log('New chapter:', chapterUrl);
-        chapterContents.push(paragraphs);
-      }
+      console.log('New chapter:', chapterUrl);
+      chapterContents.push(paragraphs);
     }
 
     const hasNextPage = $('.pagination li.active + li:not(.active)').length > 0;
@@ -138,7 +124,7 @@ async function processChapterURL(page: Page, detailsUrl: string, storiesDetailCo
   };
 }
 
-async function scrapePage(page: Page, browser: Browser) {
+async function scrapePage(page: Page) {
   const $ = cheerio.load(await page.content());
   const statusLabels: string[] = [];
 
@@ -147,70 +133,106 @@ async function scrapePage(page: Page, browser: Browser) {
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
-    const author = $(element).find('.author').text();
-    $(element)
-      .find('.label-title')
-      .each((_, element) => {
-        const classes = $(element).attr('class');
-        if (classes) {
-          const classList = classes.split(' ').filter((className) => className !== 'label-title');
-          statusLabels.push(...classList);
-        }
-      });
-
-    const detailsUrl = $(element).find('a').attr('href') as string;
-    const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
-    const createdAt = new Date();
-    const chapterStory = $(element).find('.text-info a').text();
-    const chapterPage = await browser.newPage();
-    const { chapterContents, description, genres, imageUrl, status } = await processChapterURL(
-      chapterPage,
-      detailsUrl,
-      storiesDetailCollection,
-    );
-
-    // compress data chapter contents
-    const compressedChapterContents = pako.gzip(JSON.stringify(chapterContents), { level: 5 });
-    const base64CompressedData = Buffer.from(compressedChapterContents).toString('base64');
-    await chapterPage.close();
-
-    storiesCollection.insertOne({
+    const existingStories = await storiesCollection.findOne({
       title,
-      author,
-      imageUrl,
-      storySlug,
-      createdAt,
-      chapterStory,
-      statusLabels,
     });
+    if (existingStories == null) {
+      const chapterStory = $(element).find('.text-info a').text();
+      const checkStoryLimit = checkStoryOverLimit(chapterStory);
+      if (checkStoryLimit) {
+        const author = $(element).find('.author').text();
+        $(element)
+          .find('.label-title')
+          .each((_, element) => {
+            const classes = $(element).attr('class');
+            if (classes) {
+              const classList = classes
+                .split(' ')
+                .filter((className) => className !== 'label-title');
+              statusLabels.push(...classList);
+            }
+          });
 
-    storiesDetailCollection.insertOne({
-      title,
-      author,
-      imageUrl,
-      chapterContents: base64CompressedData,
-      description,
-      genres,
-      storySlug,
-      status,
-      createdAt,
-    });
+        const detailsUrl = $(element).find('a').attr('href') as string;
+        const storySlug = new URL(detailsUrl, uri).pathname.split('/')[1];
+        const createdAt = new Date();
+        const chapterBrowser = await puppeteer.launch({
+          headless: 'new',
+          args: [
+            '--disable-infobars',
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-gpu=False',
+            '--enable-webgl',
+            '--window-size=1600,900',
+            '--start-maximized',
+          ],
+          timeout: 30_000, // 10 seconds
+          protocolTimeout: 20_000, // 20 seconds
+        });
+        const chapterPage = await chapterBrowser.newPage();
+        const { chapterContents, description, genres, imageUrl, status } = await processChapterURL(
+          chapterPage,
+          detailsUrl,
+        );
+
+        // compress data chapter contents
+        const compressedChapterContents = pako.gzip(JSON.stringify(chapterContents), { level: 5 });
+        const base64CompressedData = Buffer.from(compressedChapterContents).toString('base64');
+
+        storiesCollection.insertOne({
+          title,
+          author,
+          imageUrl,
+          storySlug,
+          createdAt,
+          chapterStory,
+          statusLabels,
+        });
+
+        storiesDetailCollection.insertOne({
+          title,
+          author,
+          imageUrl,
+          chapterContents: base64CompressedData,
+          description,
+          genres,
+          storySlug,
+          status,
+          createdAt,
+        });
+
+        await chapterBrowser.close();
+      } else {
+        console.log('Story is over limit 1000!!!', title);
+      }
+    } else {
+      console.log('Story is existing!!!', title);
+    }
   }
-
-  await browser.close();
 }
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
   try {
-    const browser = await browserPromise;
-    await new Promise((resolve) => {
-      setTimeout(resolve, 1000);
+    const browser = await puppeteer.launch({
+      headless: 'new',
+      args: [
+        '--disable-infobars',
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-gpu=False',
+        '--enable-webgl',
+        '--window-size=1600,900',
+        '--start-maximized',
+      ],
+      timeout: 30_000, // 10 seconds
+      protocolTimeout: 20_000, // 20 seconds
     });
     const page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    let currentPage = 2;
+    let currentPage = 1;
     while (true) {
       await page.goto(`${uri}/trang-${currentPage}`, {
         waitUntil: 'domcontentloaded',
@@ -218,7 +240,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
       });
       const $ = cheerio.load(await page.content());
 
-      await scrapePage(page, browser);
+      await scrapePage(page);
 
       // Check if there is a next page
       const hasNextPage = $('.pagination li.active + li:not(.active)').length > 0;

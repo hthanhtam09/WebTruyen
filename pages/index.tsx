@@ -3,12 +3,8 @@ import { Helmet } from 'react-helmet-async';
 
 import StoryAlbum from '@/components/StoryAlbum';
 import useStories from '@/hooks/useStories';
-import Line from '@/components/Line';
 import useCountView from '@/hooks/useCountView';
-import { classifyStoriesByLabel } from '@/utils/utils';
 import Billboard from '@/components/Billboard';
-import { EStoryType } from '@/enum';
-
 
 const Home = () => {
   const { data = [], isLoading, fetchData } = useStories();
@@ -110,14 +106,14 @@ const Home = () => {
           storyType={EStoryType.NEW}
         /> */}
           <StoryAlbum
-        title={'Truyện full tập'}
-        storiesData={storiesData}
-        isLoading={isLoading}
-        isPagination
-        totalPages={totalPages}
-        handlePaginationChange={handlePaginationChange}
-        page={page}
-      />
+            title={'Truyện full tập'}
+            storiesData={storiesData}
+            isLoading={isLoading}
+            isPagination
+            totalPages={totalPages}
+            handlePaginationChange={handlePaginationChange}
+            page={page}
+          />
       </section>
       {/* <section className="h-[70vh]">
         <StoryAlbum
