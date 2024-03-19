@@ -62,6 +62,7 @@ async function processChapterURL(page: Page, detailsUrl: string) {
       '--enable-webgl',
       '--window-size=1600,900',
       '--start-maximized',
+      '--disable-features=site-per-process'
     ],
     timeout: 30_000, // 10 seconds
     protocolTimeout: 20_000, // 20 seconds
@@ -166,6 +167,7 @@ async function scrapePage(page: Page) {
             '--enable-webgl',
             '--window-size=1600,900',
             '--start-maximized',
+            '--disable-features=site-per-process'
           ],
           timeout: 30_000, // 10 seconds
           protocolTimeout: 20_000, // 20 seconds
@@ -224,6 +226,7 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
         '--enable-webgl',
         '--window-size=1600,900',
         '--start-maximized',
+        '--disable-features=site-per-process'
       ],
       timeout: 30_000, // 10 seconds
       protocolTimeout: 20_000, // 20 seconds

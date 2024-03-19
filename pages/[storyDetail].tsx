@@ -26,23 +26,25 @@ import { IconLabels } from '@/components/IconLabels';
 
 const StoryDetailScreen = () => {
   const router = useRouter();
-  const { data: storyData, isLoading, fetchMoreData } = useStoryDetail(
-    Object.keys(router.query) as any as string,
-  );
+  const {
+    data: storyData,
+    isLoading,
+    fetchMoreData,
+  } = useStoryDetail(router.query.storyDetail as string);
+  const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface | null>(null);
 
-  const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface>(
-    storyData as StoriesInterface,
-  );
   const { data = [] } = useStories();
-  const storiesData = data.stories
+  const storiesData = data.stories;
   // const { addChapterFollow } = useAddChapterFollow();
   // const { getChapterFollow } = useGetChapterFollow();
   const [page, setPage] = useState<number>(1);
   const uniqueGenresArray = [...new Set(storyData?.genres)];
   const uniqueMergeStoryData = [...new Set(mergeStoryData?.chapterContents)];
+
   const totalChapter = useMemo(
     () =>
-    storiesData && storiesData
+      storiesData &&
+      storiesData
         .filter((story: StoriesInterface) => story.title === storyData?.title)[0]
         ?.chapterStory.replace('Chương', '')
         .trim(),
@@ -51,7 +53,8 @@ const StoryDetailScreen = () => {
 
   const statusChapter = useMemo(
     () =>
-    storiesData && storiesData.filter((story: StoriesInterface) => story.title === storyData?.title)[0]
+      storiesData &&
+      storiesData.filter((story: StoriesInterface) => story.title === storyData?.title)[0]
         ?.statusLabels,
     [storiesData, storyData],
   );
@@ -59,20 +62,27 @@ const StoryDetailScreen = () => {
   const statusLabels = [...new Set(statusChapter)] as string[];
 
   const handleLoadMore = useCallback(async () => {
-    fetchMoreData(Object.keys(router.query) as any as string, page);
+    fetchMoreData(router.query.storyDetail as string, page);
     setPage((prev) => prev + 1);
   }, [Object.keys(router.query)]);
 
   const redirectChapterDetail = useCallback(
-    (title: string, author: string, stories: string[], chapter: number) => {
-      // localStorage.setItem('lastClickedChapter', (chapter + 1).toString());
+    (stories: string[], chapter: number, totalChapter: number) => {
+      const lastClickedChapterData = { storyData, stories, chapter, totalChapter };
+      localStorage.setItem('lastClickedChapterData', JSON.stringify(lastClickedChapterData));
       router.push({
-        pathname: `/chapterDetail/${chapter}`,
-        query: { title, author, stories, chapter },
+        pathname: `/${router.query.storyDetail}/chapter-${chapter}`,
       });
+      setMergeStoryData(
+        (prev) =>
+          ({
+            ...prev,
+            chapterContents: [],
+          } as StoriesInterface),
+      );
       // handleAddChapterFollow();
     },
-    [],
+    [router.query.storyDetail, storyData],
   );
 
   const renderLabels = useMemo(() => {
@@ -87,13 +97,17 @@ const StoryDetailScreen = () => {
 
   useEffect(() => {
     if (storyData) {
-      setMergeStoryData((prev) => ({
-        ...prev,
-        chapterContents: [...(prev?.chapterContents || []), ...(storyData.chapterContents || [])],
-      }));
+      setMergeStoryData(
+        (prev) =>
+          ({
+            ...prev,
+            chapterContents: [
+              ...(prev?.chapterContents || []),
+              ...(storyData.chapterContents || []),
+            ],
+          } as StoriesInterface),
+      );
     }
-
-   
   }, [storyData]);
   // const lastClickedChapter = localStorage.getItem('lastClickedChapter');
 
@@ -109,16 +123,16 @@ const StoryDetailScreen = () => {
     <div className="flex flex-col justify-center mb-32">
       <Helmet>
         <title>{storyData?.title}</title>
-        <meta name="description" content={storyData?.description} />
+        <meta name="description" content={storyData?.title} />
         <meta name="keywords" content="" />
         <meta name="author" content={storyData?.author} />
         <meta property="og:title" content={storyData?.title} />
-        <meta property="og:description" content={storyData?.description} />
+        <meta property="og:description" content={storyData?.title} />
         <meta property="og:image" content={storyData?.imageUrl} />
-        <meta property="og:url" content="WebTruyen" />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:url" content="webtruyen.io.vn" />
+        <meta name="twitter:card" content={storyData?.title} />
         <meta name="twitter:title" content={storyData?.title} />
-        <meta name="twitter:description" content={storyData?.description} />
+        <meta name="twitter:description" content={storyData?.title} />
         <meta name="twitter:image" content={storyData?.imageUrl} />
       </Helmet>
       {/* <NextSeo
@@ -229,10 +243,9 @@ const StoryDetailScreen = () => {
                       key={index}
                       onClick={() =>
                         redirectChapterDetail(
-                          mergeStoryData.title,
-                          mergeStoryData.author,
-                          mergeStoryData.chapterContents,
-                          index,
+                          mergeStoryData ? mergeStoryData.chapterContents : [],
+                          index + 1,
+                          +totalChapter,
                         )
                       }
                     >
@@ -247,7 +260,7 @@ const StoryDetailScreen = () => {
               </div>
             )}
           </div>
-          {mergeStoryData && +totalChapter !== +mergeStoryData.chapterContents?.length ? (
+          {+totalChapter !== +uniqueMergeStoryData.length ? (
             <div className="mt-20 mb-10 text-center">
               <button
                 onClick={handleLoadMore}
