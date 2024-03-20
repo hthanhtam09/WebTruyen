@@ -32,7 +32,7 @@ const ChapterDetailScreen = () => {
         <meta name="twitter:description" content={data.storyData.title} />
         <meta name="twitter:image" content={data.storyData.title} />
       </Helmet>
-      <div className="mt-[150px] mb-40 px-16">
+      <div className="mt-[150px] mb-40 px-4 md:px-16">
         <div className="flex justify-center items-center">
           <h1 className="text-center font-bold text-[40px]">Chương: {Number(data.chapter)}</h1>
         </div>

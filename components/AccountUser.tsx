@@ -9,6 +9,7 @@ interface AccountMenuProps {
 
 const AccountMenu: React.FC<AccountMenuProps> = ({ userData, visible }) => {
   if (!visible) return null;
+
   return (
     <div className="dark:bg-black bg-themeLight w-56 absolute top-14 right-0 py-5 flex-col border-2 dark:border-gray-800 border-white flex">
       <div className="flex flex-col gap-3">

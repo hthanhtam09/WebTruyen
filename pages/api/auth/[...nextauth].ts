@@ -36,7 +36,7 @@ export const authOptions: AuthOptions = {
         if (!credentials?.email || !credentials?.password) {
           throw new Error('Email and password required');
         }
-        const usersCollection = (await userClient).collection('users');
+        const usersCollection = (await userClient).collection('user');
         const user = await usersCollection.findOne({ email: credentials.email });
 
         if (!user || !user.hashedPassword) {

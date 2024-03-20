@@ -10,7 +10,7 @@ const serverAuth = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session?.user?.email) {
     throw new Error('Not signed in');
   }
-  const usersCollection = (await userClient).collection('users');
+  const usersCollection = (await userClient).collection('user');
   const currentUser = await usersCollection.findOne({ email: session.user.email });
   if (!currentUser) {
     return {}
