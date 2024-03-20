@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTheme } from 'next-themes';
+
 import Loading from '@/pages/loading';
 import StoriesList from './StoriesList';
 import { useRouter } from 'next/router';
 import { StoriesInterface } from '@/types';
 import { convertToSnakeCase } from '@/utils/utils';
-import { EStoryType } from '@/enum';
+import { EStoryType, EThemes } from '@/enum';
 
 interface StoryAlbumProps {
   title: string;
@@ -33,6 +35,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
 }) => {
   const router = useRouter();
   const classes = useStyles();
+  const { theme } = useTheme();
 
   const redirectToStoriesListNameScreen = useCallback(() => {
     const path = `/storiesViewAll/${convertToSnakeCase(title)}`;
@@ -73,7 +76,9 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
                     page={page}
                     size="large"
                     onChange={handlePaginationChange}
-                    className={classes.paginationItem}
+                    className={
+                      theme === EThemes.DARK ? classes.paginationItem : classes.paginationItemLight
+                    }
                   />
                 )}
               </div>
@@ -91,8 +96,15 @@ export default StoryAlbum;
 
 const useStyles = makeStyles({
   paginationItem: {
-    '&.MuiPagination-root .MuiPagination-ul li > button': {
-      color: '#fff',
-    },
+    '&.MuiPagination-root .MuiPagination-ul li > button, &.MuiPagination-root .MuiPagination-ul li > div':
+      {
+        color: '#fff',
+      },
+  },
+  paginationItemLight: {
+    '&.MuiPagination-root .MuiPagination-ul li > button, &.MuiPagination-root .MuiPagination-ul li > div':
+      {
+        color: '#000',
+      },
   },
 });

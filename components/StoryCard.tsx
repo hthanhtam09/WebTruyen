@@ -24,8 +24,7 @@ const StoryCard: React.FC<StoryCardProps> = ({
         setPage(1);
       }
       router.push({
-        pathname: `/storyDetail`,
-        query: data.storySlug,
+        pathname: `/${data.storySlug}`,
       });
     },
     [router],

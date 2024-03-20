@@ -12,15 +12,15 @@ interface Props {
 
 const useStoryDetail = (storySlug: string): Props => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const {data, mutate} = useSWR(`/api/storyDetail/${storySlug[0]}?page=${0}`, fetcher, {
-        revalidateIfStale: false,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
+    const {data, mutate} = useSWR(`/api/storyDetail/${storySlug}?page=${0}`, fetcher, {
+        revalidateIfStale: true,
+        revalidateOnFocus: true,
+        revalidateOnReconnect: true,
     });
 
     const fetchMoreData = async (storySlug: string, page: number) => {
         setIsLoading(true)
-        const newUrl = `/api/storyDetail/${storySlug[0]}?page=${page}`;
+        const newUrl = `/api/storyDetail/${storySlug}?page=${page}`;
         const newData = await fetcher(newUrl);
         if (newData) {
             setIsLoading(false)

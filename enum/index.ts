@@ -14,3 +14,7 @@ export enum EStoryType {
     FULL = 'full'
 }
   
+export enum EThemes {
+    DARK = 'dark',
+    LIGHT = 'light',
+}

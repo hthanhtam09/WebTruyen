@@ -23,7 +23,7 @@ const StoriesList: React.FC<StoriesListProps> = ({ data, title, style }) => {
           {title}
         </p>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-6 ">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-x-6 ">
         {data.map((story: any, index: number) => (
           <StoryCard key={index} data={story} />
         ))}

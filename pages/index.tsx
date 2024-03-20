@@ -3,12 +3,8 @@ import { Helmet } from 'react-helmet-async';
 
 import StoryAlbum from '@/components/StoryAlbum';
 import useStories from '@/hooks/useStories';
-import Line from '@/components/Line';
 import useCountView from '@/hooks/useCountView';
-import { classifyStoriesByLabel } from '@/utils/utils';
 import Billboard from '@/components/Billboard';
-import { EStoryType } from '@/enum';
-
 
 const Home = () => {
   const { data = [], isLoading, fetchData } = useStories();
@@ -99,45 +95,21 @@ const Home = () => {
         />
         <meta name="twitter:image" content="WebTruyen" />
       </Helmet>
-      <Billboard />
+      <section className='hidden sm:block'>
+        <Billboard />
+      </section>
 
       <section className="min-h-[80vh]" id="moveStories">
-        {/* <StoryAlbum
-          title={'Truyện cập nhật'}
-          storiesData={storiesData ? storiesData.slice(0, 6) : []}
-          isLoading={isLoading}
-          isNavigate
-          storyType={EStoryType.NEW}
-        /> */}
           <StoryAlbum
-        title={'Truyện full tập'}
-        storiesData={storiesData}
-        isLoading={isLoading}
-        isPagination
-        totalPages={totalPages}
-        handlePaginationChange={handlePaginationChange}
-        page={page}
-      />
+            title={'Truyện full tập'}
+            storiesData={storiesData}
+            isLoading={isLoading}
+            isPagination
+            totalPages={totalPages}
+            handlePaginationChange={handlePaginationChange}
+            page={page}
+          />
       </section>
-      {/* <section className="h-[70vh]">
-        <StoryAlbum
-          title={'Truyện full tập'}
-          storiesData={fullStories.slice(0, 6)}
-          isLoading={isLoading}
-          isNavigate
-          storyType={EStoryType.FULL}
-        />
-      </section>
-      <Line />
-      <section className="h-[80vh]">
-        <StoryAlbum
-          title={'Truyện hot'}
-          storiesData={hotStories.slice(0, 6)}
-          isLoading={isLoading}
-          isNavigate
-          storyType={EStoryType.HOT}
-        />
-      </section> */}
     </div>
   );
 };
