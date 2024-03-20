@@ -16,7 +16,6 @@ const navbarItemListData = ['Trang_chủ'];
 
 const Navbar: React.FC = () => {
   const { data: userData } = useCurrentUser();
-
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
   const [showAccountUser, setShowAccountUser] = useState(false);
 

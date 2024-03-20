@@ -36,12 +36,12 @@ const Auth = () => {
       await signIn('credentials', {
         email,
         password,
-        callbackUrl: `${router.query.redirect ? router.query.redirect : '/'}`,
+        callbackUrl: `${router.query.redirect ? `/${(router.query.redirect as string).split("?")[1]}` : '/'}`,
       });
     } catch (error) {
       console.log(error);
     }
-  }, [inputValue]);
+  }, [inputValue, router.query]);
 
   const register = useCallback(async () => {
     try {

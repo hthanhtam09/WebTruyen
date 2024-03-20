@@ -4,7 +4,7 @@ import { Autoplay, EffectFade } from 'swiper/modules';
 import { SwiperSlide, Swiper as SwiperContainer } from 'swiper/react';
 import { Helmet } from 'react-helmet-async';
 import { FiCommand } from 'react-icons/fi';
-// import { NextSeo } from 'next-seo';
+import { isMobile } from 'react-device-detect';
 
 import WatchButton from '@/components/WatchButton';
 import Line from '@/components/Line';
@@ -14,13 +14,12 @@ import Loading from '@/pages/loading';
 import SkeletonLoading from '@/components/Skeleton';
 import useStories from '@/hooks/useStories';
 import { StoriesInterface } from '@/types';
-
+import { getColor, processLabels } from '@/utils/utils';
+import { IconLabels } from '@/components/IconLabels';
 import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { getColor, processLabels } from '@/utils/utils';
-import { IconLabels } from '@/components/IconLabels';
 // import useAddChapterFollow from '@/hooks/useAddChapterFollow';
 // import useGetChapterFollow from '@/hooks/useGetChapterFollow';
 
@@ -135,13 +134,8 @@ const StoryDetailScreen = () => {
         <meta name="twitter:description" content={storyData?.title} />
         <meta name="twitter:image" content={storyData?.imageUrl} />
       </Helmet>
-      {/* <NextSeo
-        title={storyData?.title}
-        description={storyData?.description}
-        canonical={`webtruyen.io.vn/storyDetail/${storyData?.title}`}
-      /> */}
       <Suspense fallback={<Loading />}>
-        <section className="relative flex-col pt-32 px-4 md:px-16 py-6 flex items-start dark:bg-themeDark bg-themeLight bg-opacity-90 transition duration-500">
+        <section className="relative flex-col pt-20 md:pt-32 px-4 md:px-16 py-6 flex items-start dark:bg-themeDark bg-themeLight bg-opacity-90 transition duration-500">
           {storyData ? (
             <div
               style={{
@@ -150,13 +144,20 @@ const StoryDetailScreen = () => {
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
               }}
-              className="absolute z-9 w-[45%] h-[80%] top-30 right-0 bg-cover bg-center shadow-[inset_-2px_-2px_15px_20px_#18181b] object-contain max-w-full max-h-full pointer-events-none"
-            />
+              className="absolute z-9 w-[45%] h-[80%] top-30 right-0 bg-cover bg-center shadow-[inset_-2px_-2px_15px_20px_#18181b] object-contain max-w-full max-h-full pointer-events-none hidden md:block"
+            >
+              <span
+                className="absolute top-[40%] left-1/2 opacity-30 pointer-events-none text-[8px] sm:text-base md:text-base lg:text-xl"
+                style={{ transform: 'translate(-50%, -50%)', rotate: '-45deg' }}
+              >
+                webtruyen.io.vn
+              </span>
+            </div>
           ) : (
             <SkeletonLoading width="42%" height="115%" style="absolute -top-14 right-10" />
           )}
 
-          <div className="w-[50%] z-10">
+          <div className="w-full md:w-[50%] z-10">
             {storyData ? (
               <p className="dark:text-white text-themeDark font-bold text-4xl transition duration-500">
                 {storyData.title}
@@ -173,15 +174,15 @@ const StoryDetailScreen = () => {
                 <SkeletonLoading width={'20%'} height={40} />
               )}
             </p>
-            <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex transition duration-500">
+            <p className="dark:text-white text-themeDark font-normal text-lg py-2 md:flex transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Mô tả: </span>
-              <span className="inline-block w-[600px]">
+              <span className="inline-block w-[300px] md:w-[600px]">
                 {storyData ? storyData.description : <SkeletonLoading width={'100%'} height={40} />}
               </span>
             </p>
 
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex items-center transition duration-500">
-              <span className="text-gray-400 inline-block w-[150px]">Tác giả: </span>
+              <span className="text-gray-400 inline-block w-[100px] md:w-[150px]">Tác giả: </span>
               {storyData ? (
                 <span>{storyData.author}</span>
               ) : (
@@ -191,7 +192,7 @@ const StoryDetailScreen = () => {
 
             <p className="dark:text-white text-themeDark font-normal text-lg py-2 flex transition duration-500">
               <span className="text-gray-400 inline-block w-[150px]">Thể loại: </span>
-              <span className="inline-block w-[600px]">
+              <span className="inline-block w-[300px] md:w-[600px]">
                 {storyData ? (
                   uniqueGenresArray.map((item: any, index: number) => (
                     <Fragment key={index}>
@@ -217,8 +218,13 @@ const StoryDetailScreen = () => {
           {storyData ? (
             <div className="flex mt-6">
               <WatchButton
-                path={`/chapterDetail/0`}
-                query={{ stories: storyData.chapterContents, chapter: 0 }}
+                redirectChapterDetail={() =>
+                  redirectChapterDetail(
+                    mergeStoryData ? mergeStoryData.chapterContents : [],
+                    1,
+                    +totalChapter,
+                  )
+                }
                 text="Đọc ngay"
               />
             </div>
@@ -231,15 +237,15 @@ const StoryDetailScreen = () => {
           </div>
         </section> */}
         <Line style="top-10" />
-        <section className="w-full mt-10 px-16 pb-10">
+        <section className="w-full mt-10 px-4 md:px-16 pb-10">
           <p className="mt-12 text-2xl font-bold">Danh sách chương: </p>
-          <div className="w-full gap-16 grid grid-cols-8 grid-flow-row-dense mt-10">
+          <div className="w-full gap-5 md:gap-16 grid grid-cols-4 md:grid-cols-5 lg:grid-cols-8 grid-flow-row-dense mt-10">
             {uniqueMergeStoryData ? (
               <>
                 {uniqueMergeStoryData?.map((_, index) => {
                   return (
                     <p
-                      className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4`}
+                      className={`w-16 md:w-32 text-[14px] md:text-base cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-1 md:p-4 text-center`}
                       key={index}
                       onClick={() =>
                         redirectChapterDetail(
@@ -293,7 +299,7 @@ const StoryDetailScreen = () => {
       </Suspense>
       <Line />
       <Suspense fallback={<Loading />}>
-        <section className="w-full h-[40vh] mt-20 gap-16 px-16 mb-20">
+        <section className="w-full h-[20vh] lg:h-[40vh] mt-20 gap-16 px-4 md:px-16 mb-20">
           <p className="dark:text-white text-themeDark text-2xl font-bold transition duration-500">
             Truyện khác:
           </p>
@@ -301,7 +307,7 @@ const StoryDetailScreen = () => {
             <SwiperContainer
               loop
               autoplay={{ delay: 3000 }}
-              slidesPerView={5}
+              slidesPerView={isMobile ? 2 : 5}
               spaceBetween={30}
               modules={[Autoplay, EffectFade]}
               touchEventsTarget="wrapper"

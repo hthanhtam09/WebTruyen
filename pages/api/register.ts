@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const { email, name, password } = req.body;
-    const usersCollection = (await userClient).collection('users')
+    const usersCollection = (await userClient).collection('user')
 
     const existingUser = await usersCollection.findOne({ email });
 

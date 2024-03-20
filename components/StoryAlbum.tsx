@@ -2,10 +2,11 @@ import React, { useCallback } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from 'next-themes';
+import { isMobile } from 'react-device-detect';
+import { useRouter } from 'next/router';
 
 import Loading from '@/pages/loading';
 import StoriesList from './StoriesList';
-import { useRouter } from 'next/router';
 import { StoriesInterface } from '@/types';
 import { convertToSnakeCase } from '@/utils/utils';
 import { EStoryType, EThemes } from '@/enum';
@@ -74,7 +75,7 @@ const StoryAlbum: React.FC<StoryAlbumProps> = ({
                     variant="outlined"
                     color="primary"
                     page={page}
-                    size="large"
+                    size={`${isMobile ? 'medium' : 'large'}`}
                     onChange={handlePaginationChange}
                     className={
                       theme === EThemes.DARK ? classes.paginationItem : classes.paginationItemLight

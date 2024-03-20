@@ -13,7 +13,7 @@ type SidebarProps = {
   storySlug: string;
   totalChapter: number;
   showSidebar: boolean;
-  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>
+  setShowSidebar: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Sidebar = ({ storySlug, totalChapter, showSidebar, setShowSidebar }: SidebarProps) => {
@@ -43,6 +43,10 @@ const Sidebar = ({ storySlug, totalChapter, showSidebar, setShowSidebar }: Sideb
     },
     [router.query.storyDetail, storyData],
   );
+
+  const handleShowSidebar = useCallback(() => {
+    setShowSidebar((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     if (storyData) {
@@ -74,26 +78,24 @@ const Sidebar = ({ storySlug, totalChapter, showSidebar, setShowSidebar }: Sideb
     <div ref={sidebarRef} className="fixed right-10 bottom-24">
       {!showSidebar ? (
         <Button className="bg-transparent border border-white z-30">
-          <Bars4Icon
-            onClick={() => setShowSidebar(!showSidebar)}
-            className="text-white"
-            width="40"
-            height="40"
-          />
+          <Bars4Icon onClick={handleShowSidebar} className="text-white" width="40" height="40" />
         </Button>
       ) : null}
       <div
-        className={`top-0 right-0 w-[50vw] bg-opacity-70 backdrop-blur-sm transition p-10 pl-20 text-white fixed h-full z-30 ease-in-out duration-500 overflow-auto ${
-          showSidebar ? 'translate-x-0 ' : 'translate-x-full'
+        className={`bottom-0 left-0 right-0 w-screen md:w-[100vw] h-[50vh] bg-opacity-70 backdrop-blur-sm transition md:p-10 md:pl-20 text-white fixed z-30 ease-in-out duration-500 overflow-auto ${
+          showSidebar ? 'translate-y-0 ' : 'translate-y-full'
         }`}
       >
-        <h3 className="my-10 text-4xl font-semibold text-white text-center">Danh sách chương</h3>
+        <h3 className="mt-32 mb-10 text-2xl md:text-4xl font-semibold text-white text-center">
+          Danh sách chương
+        </h3>
+
         {uniqueMergeStoryData ? (
           <div className="flex justify-center items-center flex-wrap gap-4">
             {uniqueMergeStoryData?.map((item, index) => {
               return (
                 <p
-                  className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-4 w-32`}
+                  className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-1 md:p-4 w-20 md:w-32 text-center`}
                   key={index}
                   onClick={() =>
                     redirectChapterDetail(mergeStoryData.chapterContents, index + 1, +totalChapter)

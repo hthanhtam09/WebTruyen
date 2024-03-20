@@ -3,27 +3,24 @@ import { BookOpenIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/router';
 
 interface WatchButtonProps {
-  path: string;
+  redirectChapterDetail: () => void;
   text?: string;
-  query?: any;
-  style?: string;
 }
 
-const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) => {
+const WatchButton: React.FC<WatchButtonProps> = ({ redirectChapterDetail, text }) => {
   const router = useRouter();
   return (
     <button
-      onClick={() => {
-        router.push({ pathname: `${path}`, query });
-        localStorage.setItem('lastClickedChapter', '1');
-      }}
+      onClick={redirectChapterDetail}
       className={` 
-      dark:bg-white
-      bg-themeLight-secondary
+      border
+      dark:border-white
+      border-black
       rounded-md 
-      py-1 md:py-2 
-      px-2 md:px-4
-      w-auto 
+      w-40
+      h-12
+      p-4
+      gap-2
       text-xs lg:text-lg 
       font-semibold
       flex
@@ -32,11 +29,10 @@ const WatchButton: React.FC<WatchButtonProps> = ({ path, text, query, style }) =
       hover:opacity-70
       transition
       duration-500
-      ${style}
       `}
     >
-      <BookOpenIcon className="w-4 md:w-7 text-black mr-1" />
-      {text ? <span className="text-black">{text}</span> : null}
+      <BookOpenIcon className="w-4 md:w-7 dark:text-white text-black mr-1" />
+      {text ? <span className="dark:text-white text-black text-lg">{text}</span> : null}
     </button>
   );
 };

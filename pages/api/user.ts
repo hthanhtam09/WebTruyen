@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const usersCollection = (await userClient).collection('users');
+    const usersCollection = (await userClient).collection('user');
     const users = await usersCollection.find({}).toArray();
 
     return res.status(200).json(users);
