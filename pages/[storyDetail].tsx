@@ -154,7 +154,7 @@ const StoryDetailScreen = () => {
               </span>
             </div>
           ) : (
-            <SkeletonLoading width="42%" height="115%" style="absolute -top-14 right-10" />
+            !isMobile ? <SkeletonLoading width="42%" height="115%" style="absolute -top-14 right-10" /> : null
           )}
 
           <div className="w-full md:w-[50%] z-10">

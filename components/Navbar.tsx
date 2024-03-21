@@ -165,29 +165,29 @@ const Navbar: React.FC = () => {
               <XMarkIcon className="text-white" width="40" height="40" />
             </button>
           )}
-          <div
-            className={`top-16 left-0 right-0 w-screen md:w-[100vw] h-[50vh] transition md:p-10 md:pl-20 text-white fixed z-30 ease-in-out duration-500 overflow-auto ${
-              showNavbarMobile ? 'translate-y-0' : '-translate-y-[120%]'
-            }`}
-          >
-            <div className="text-center mt-12">
-              {navbarItemListData.map((item) => (
-                <NavbarItem
-                  label={convertToTitleCaseForDisplay(item)}
-                  path={convertToTitleCaseForPath(item)}
-                  key={item}
-                />
-              ))}
-              <hr className="bg-gray-600 border-0 h-px my-4" />
-              <div className="flex justify-center items-center gap-8 mt-6">
-                <Icon onClick={isOpenFacebook}>
-                  <BsFacebook />
-                </Icon>
-                <Icon onClick={isOpenEmail}>
-                  <TfiEmail />
-                </Icon>
-              </div>
-            </div>
+        </div>
+      </div>
+      <div
+        className={`top-16 left-0 right-0 h-[50vh] bg-opacity-70 backdrop-blur-sm transition md:p-10 md:pl-20 fixed z-30 ease-in-out duration-500 overflow-auto ${
+          showNavbarMobile ? 'translate-y-0' : '-translate-y-[120%]'
+        }`}
+      >
+        <div className="text-center mt-12">
+          {navbarItemListData.map((item) => (
+            <NavbarItem
+              label={convertToTitleCaseForDisplay(item)}
+              path={convertToTitleCaseForPath(item)}
+              key={item}
+            />
+          ))}
+          <hr className="bg-gray-600 border-0 h-px my-4" />
+          <div className="flex justify-center items-center gap-8 mt-6">
+            <Icon onClick={isOpenFacebook}>
+              <BsFacebook />
+            </Icon>
+            <Icon onClick={isOpenEmail}>
+              <TfiEmail />
+            </Icon>
           </div>
         </div>
       </div>
