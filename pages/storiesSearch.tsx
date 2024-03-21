@@ -20,7 +20,7 @@ const StoriesSearch = () => {
   const handlePaginationChange = useCallback(
     (_: React.ChangeEvent<unknown>, value: number) => {
       setPage(value);
-      fetchData(value - 1); // because db return 0 so - 1 to exactly result
+      fetchData(value - 1, keyWordSearch); // because db return 0 so - 1 to exactly result
     },
     [page],
   );
@@ -34,7 +34,7 @@ const StoriesSearch = () => {
   }, [router]);
 
   return (
-    <main className='min-h-screen flex flex-col justify-between'>
+    <main className='min-h-screen flex flex-col justify-between '>
       <Helmet prioritizeSeoTags>
         <title>Tìm kiếm</title>
         <meta name="description" content="Tìm kiếm WebTruyen" />
@@ -55,7 +55,7 @@ const StoriesSearch = () => {
         />
         <meta name="twitter:image" content="WebTruyen" />
       </Helmet>
-      <div className="dark:bg-black bg-themeLight min-h-[80vh] flex flex-col">
+      <div className="min-h-[80vh] flex flex-col mt-10">
         {!isLoading ? (
           storiesData.stories.length > 0 ? (
               <StoryAlbum
@@ -68,7 +68,7 @@ const StoriesSearch = () => {
                 page={page}
               />
           ) : (
-            <div className="absolute top-[45%] md:top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-white dark:bg-black shadow-xl border rounded-xl p-8 w-[80vw] md:max-w-sm mx-auto">
+            <div className="absolute top-[45%] md:top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl border rounded-xl p-8 w-[80vw] md:max-w-sm mx-auto">
               <>
                 <p className="dark:text-white text-themeDark text-2xl font-bold text-center transition duration-500">
                   Không tìm thấy kết quả cho: {keyWordSearch}
