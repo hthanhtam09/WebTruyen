@@ -3,8 +3,8 @@ import fetcher from '@/lib/fetcher';
 
 const useSearchStories = (keyword: string) => {
   const formattedKeyword = keyword.replace(/\s/g, '-');
-  const { data, error, isLoading, mutate } = useSWR(
-    `/api/searchStories?page=0&keyword=${encodeURIComponent(formattedKeyword)}`,
+  const { data, error, isLoading } = useSWR(
+    `/api/searchStories?keyword=${encodeURIComponent(formattedKeyword)}`,
     fetcher,
     {
       revalidateIfStale: true,
@@ -13,21 +13,10 @@ const useSearchStories = (keyword: string) => {
     },
   );
 
-  const fetchData = async (page: number, keyword: string) => {
-    const formattedKeyword = keyword.replace(/\s/g, '-');
-    let newUrl = `/api/searchStories?page=${page}`;
-    if (keyword) {
-      newUrl += `&keyword=${encodeURIComponent(formattedKeyword)}`;
-    }
-    const newData = await fetcher(newUrl);
-    mutate(newData, false);
-  };
-
   return {
     data,
     error,
     isLoading,
-    fetchData,
   };
 };
 

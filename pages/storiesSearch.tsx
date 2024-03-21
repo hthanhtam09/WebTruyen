@@ -11,19 +11,9 @@ import StoryAlbum from '@/components/StoryAlbum';
 const StoriesSearch = () => {
   const router = useRouter();
   const keyWordSearch = router.query.keyword ? router.query.keyword.toString() : '';
-  const { data: storiesData = [], isLoading, fetchData } = useSearchStories(keyWordSearch);
-  const totalPages = storiesData.totalPages;
+  const { data: storiesData = [], isLoading } = useSearchStories(keyWordSearch);
 
-  const [page, setPage] = useState(1);
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
-
-  const handlePaginationChange = useCallback(
-    (_: React.ChangeEvent<unknown>, value: number) => {
-      setPage(value);
-      fetchData(value - 1, keyWordSearch); // because db return 0 so - 1 to exactly result
-    },
-    [page],
-  );
 
   const isOpenSearch = useCallback(() => {
     setIsShowSearch((prev) => !prev);
@@ -55,17 +45,14 @@ const StoriesSearch = () => {
         />
         <meta name="twitter:image" content="WebTruyen" />
       </Helmet>
-      <div className="min-h-[80vh] flex flex-col mt-10">
+      <div className="min-h-[80vh] flex flex-col my-10">
         {!isLoading ? (
           storiesData.stories.length > 0 ? (
               <StoryAlbum
-                title={'Danh sách tìm kiếm'}
-                storiesData={storiesData.stories}
+                title={`Danh sách tìm kiếm theo từ khoá: ${keyWordSearch}`}
+                storiesData={storiesData.stories.slice(0, 24)}
                 isLoading={isLoading}
-                isPagination
-                totalPages={totalPages}
-                handlePaginationChange={handlePaginationChange}
-                page={page}
+                isPagination={false}
               />
           ) : (
             <div className="absolute top-[45%] md:top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] shadow-xl border rounded-xl p-8 w-[80vw] md:max-w-sm mx-auto">
