@@ -74,7 +74,7 @@ const Home = () => {
   }, [hasScrolledHalfPage, deviceName]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between">
+    <main className="min-h-screen flex flex-col justify-between">
       <Helmet prioritizeSeoTags>
         <title>Trang chủ</title>
         <meta name="description" content="Trang chủ WebTruyen" />
@@ -87,7 +87,7 @@ const Home = () => {
         />
         <meta property="og:image" content="WebTruyen" />
         <meta property="og:url" content="WebTruyen" />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="WebTruyen" />
         <meta name="twitter:title" content="WebTruyen" />
         <meta
           name="twitter:description"
@@ -110,7 +110,7 @@ const Home = () => {
             page={page}
           />
       </section>
-    </div>
+    </main>
   );
 };
 

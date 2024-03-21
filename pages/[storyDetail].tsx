@@ -119,7 +119,7 @@ const StoryDetailScreen = () => {
   // }, []);
 
   return (
-    <div className="flex flex-col justify-center mb-32">
+    <main className="flex flex-col justify-center mb-32">
       <Helmet>
         <title>{storyData?.title}</title>
         <meta name="description" content={storyData?.title} />
@@ -331,7 +331,7 @@ const StoryDetailScreen = () => {
           )}
         </section>
       </Suspense>
-    </div>
+    </main>
   );
 };
 
