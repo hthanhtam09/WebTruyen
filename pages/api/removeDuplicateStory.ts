@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { storiesClient } from '@/lib/db';
+import { storiesClient, storiesDetailClient } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -8,8 +8,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const storiesCollection = (await storiesClient).collection('stories');
+    const storiesDetailCollection = (await storiesDetailClient).collection('storiesDetail');
+
     const distinctTitles = await storiesCollection.distinct('title');
+    const distinctTitlesDetail = await storiesCollection.distinct('title');
     const deletedTitles = [];
+    const deletedTitlesDetail = [];
 
     for (const title of distinctTitles) {
       const duplicateStories = await storiesCollection.find({ title }).toArray();
@@ -18,7 +22,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         deletedTitles.push(title);
       }
     }
-    return res.status(200).json({ deletedTitles });
+
+    for (const title of distinctTitlesDetail) {
+      const duplicateStoriesDetail = await storiesDetailCollection.find({ title }).toArray();
+      for (let i = 1; i < duplicateStoriesDetail.length; i++) {
+        await storiesDetailCollection.deleteOne({ _id: duplicateStoriesDetail[i]._id });
+        deletedTitlesDetail.push(title);
+      }
+    }
+
+    return res.status(200).json({ deletedTitles, deletedTitlesDetail });
   } catch (error) {
     console.log(error);
     return res.status(500).end();

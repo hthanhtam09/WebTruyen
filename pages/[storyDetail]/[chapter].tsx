@@ -17,7 +17,7 @@ const ChapterDetailScreen = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between" id="scroll-to-top">
+    <main className="min-h-screen flex flex-col justify-between" id="scroll-to-top">
       <Helmet>
         <title>{`${data.storyData.title} - Chương ${data.chapter}`}</title>
         <meta name="description" content={data.storyData.title} />
@@ -67,7 +67,7 @@ const ChapterDetailScreen = () => {
           />
         </Button>
       )}
-    </div>
+    </main>
   );
 };
 

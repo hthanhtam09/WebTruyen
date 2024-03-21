@@ -46,6 +46,16 @@ const imageArray = [
   '/images/ImageStories/image_38.jpg',
   '/images/ImageStories/image_39.jpg',
   '/images/ImageStories/image_40.jpeg',
+  '/images/ImageStories/image_41.jpg',
+  '/images/ImageStories/image_42.jpg',
+  '/images/ImageStories/image_43.jpg',
+  '/images/ImageStories/image_44.jpg',
+  '/images/ImageStories/image_45.jpg',
+  '/images/ImageStories/image_46.jpg',
+  '/images/ImageStories/image_47.jpg',
+  '/images/ImageStories/image_48.jpg',
+  '/images/ImageStories/image_49.jpg',
+  '/images/ImageStories/image_50.jpg',
 ];
 
 // const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
@@ -215,6 +225,8 @@ async function scrapePage(page: Page) {
 }
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
+  _req.setMaxListeners(15);
+  res.setMaxListeners(15);
   try {
     const browser = await puppeteer.launch({
       headless: 'new',
