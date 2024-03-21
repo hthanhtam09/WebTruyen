@@ -1,6 +1,5 @@
 import React from 'react';
 import { signOut } from 'next-auth/react';
-import useCurrentUser from '@/hooks/useCurrentUser';
 
 interface AccountMenuProps {
   userData: any;
@@ -16,7 +15,6 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ userData, visible }) => {
         <div className="px-3 group/item flex flex-row gap-3 items-center w-full">
           <img
             className="w-8 rounded-md"
-            
             src={`${userData?.image ? userData?.image : '/images/user.png'}`}
             alt="Image_user"
           />

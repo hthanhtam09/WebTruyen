@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import localFont from '@next/font/local';
+import { isMobile } from 'react-device-detect';
 
 const fontBoneca = localFont({ src: '../public/fonts/Boneca_De_Panoo.ttf' });
 
@@ -15,8 +16,8 @@ const upperAnimation = keyframes`
   }
 `;
 
-const StyledDiv = styled.div`
-  font-size: 35px;
+const StyledDiv = styled.div<{isMobile: boolean}>`
+  font-size: ${props => props.isMobile ? '20px' : '35px'};
   text-align: center;
   text-transform: uppercase;
   text-shadow: 0 0 80px red, 0 0 30px FireBrick, 0 0 6px DarkRed;
@@ -77,7 +78,7 @@ const StyledDiv = styled.div`
 const Logo = () => {
   return (
     <div className={fontBoneca.className}>
-      <StyledDiv>
+      <StyledDiv isMobile={isMobile}>
         <p id="textLightOne">
           <span>W</span>
           <span>e</span>
