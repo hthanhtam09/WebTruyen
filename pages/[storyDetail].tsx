@@ -29,7 +29,7 @@ const StoryDetailScreen = () => {
     data: storyData,
     isLoading,
     fetchMoreData,
-  } = useStoryDetail(router.query.storyDetail as string);
+  } = useStoryDetail(router.query.storyDetail as string ?? '');
   const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface | null>(null);
 
   const { data = [] } = useStories();
@@ -221,7 +221,7 @@ const StoryDetailScreen = () => {
                 redirectChapterDetail={() =>
                   redirectChapterDetail(
                     mergeStoryData ? mergeStoryData.chapterContents : [],
-                    1,
+                    0,
                     +totalChapter,
                   )
                 }
@@ -250,7 +250,7 @@ const StoryDetailScreen = () => {
                       onClick={() =>
                         redirectChapterDetail(
                           mergeStoryData ? mergeStoryData.chapterContents : [],
-                          index + 1,
+                          index,
                           +totalChapter,
                         )
                       }

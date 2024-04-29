@@ -75,9 +75,9 @@ const Sidebar = ({ storySlug, totalChapter, showSidebar, setShowSidebar }: Sideb
   }, [sidebarRef]);
 
   return (
-    <div ref={sidebarRef} className="fixed right-10 bottom-24">
+    <div ref={sidebarRef} className="fixed right-10 bottom-24 z-50">
       {!showSidebar ? (
-        <Button className="bg-transparent border border-white z-30">
+        <Button className="bg-transparent border border-white">
           <Bars4Icon onClick={handleShowSidebar} className="text-white" width="40" height="40" />
         </Button>
       ) : null}
@@ -92,17 +92,17 @@ const Sidebar = ({ storySlug, totalChapter, showSidebar, setShowSidebar }: Sideb
 
         {uniqueMergeStoryData ? (
           <div className="flex justify-center items-center flex-wrap gap-4">
-            {uniqueMergeStoryData?.map((item, index) => {
+            {uniqueMergeStoryData?.map((_, index) => {
               return (
-                <p
-                  className={`cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-1 md:p-4 w-20 md:w-32 text-center`}
+                <button
+                  className='cursor-pointer hover:opacity-70 border rounded-lg dark:border-white border-black p-1 md:p-4 w-20 md:w-32 text-center'
                   key={index}
                   onClick={() =>
-                    redirectChapterDetail(mergeStoryData.chapterContents, index + 1, +totalChapter)
+                    redirectChapterDetail(mergeStoryData.chapterContents, index, +totalChapter)
                   }
                 >
                   Chương {index + 1}
-                </p>
+                </button>
               );
             })}
           </div>

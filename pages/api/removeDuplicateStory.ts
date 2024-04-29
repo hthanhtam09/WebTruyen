@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { storiesClient, storiesDetailClient } from '@/lib/db';
+import { storiesClient } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const storiesCollection = (await storiesClient).collection('stories');
-    const storiesDetailCollection = (await storiesDetailClient).collection('storiesDetail');
+    const storiesDetailCollection = (await storiesClient).collection('storiesDetail');
 
     const distinctTitles = await storiesCollection.distinct('title');
     const distinctTitlesDetail = await storiesCollection.distinct('title');

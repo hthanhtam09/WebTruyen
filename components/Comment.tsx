@@ -87,7 +87,7 @@ const Comment = ({ storyId, storySlug }: CommentProps) => {
         getAllComments();
       }
     },
-    [deleteComment, comments, userData._id, getAllComments, toast]
+    [deleteComment, comments, userData?._id, getAllComments, toast]
   );
 
   const onChangeComment = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {

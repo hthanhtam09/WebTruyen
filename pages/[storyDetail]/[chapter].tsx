@@ -19,7 +19,7 @@ const ChapterDetailScreen = () => {
   return (
     <main className="min-h-screen flex flex-col justify-between" id="scroll-to-top">
       <Helmet>
-        <title>{`${data.storyData.title} - Chương ${data.chapter}`}</title>
+        <title>{`${data.storyData.title} - Chương ${data.chapter + 1}`}</title>
         <meta name="description" content={data.storyData.title} />
         <meta name="keywords" content="" />
         <meta name="author" content={data.storyData.author} />
@@ -34,7 +34,7 @@ const ChapterDetailScreen = () => {
       </Helmet>
       <div className="mt-[150px] mb-40 px-4 md:px-16">
         <div className="flex justify-center items-center">
-          <h1 className="text-center font-bold text-[40px]">Chương: {Number(data.chapter)}</h1>
+          <h1 className="text-center font-bold text-[40px]">Chương: {Number(data.chapter + 1)}</h1>
         </div>
         <div className="my-8">
           <Line />

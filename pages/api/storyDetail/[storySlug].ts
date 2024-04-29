@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { storiesDetailClient } from '@/lib/db';
+import { storiesClient } from '@/lib/db';
 import { INIT_CHAPTER } from '@/constants';
 import pako from 'pako';
 
@@ -10,7 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const { storySlug, page } = req.query;
-    const storiesCollection = (await storiesDetailClient).collection('storiesDetail');
+    const storiesCollection = (await storiesClient).collection('storiesDetail');
     const skip = page ? +page * INIT_CHAPTER : 0;
     const story = await storiesCollection.aggregate([{ $match: { storySlug } }]).toArray();
 

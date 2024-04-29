@@ -1,7 +1,7 @@
+import { useState } from "react";
 import useSWR from "swr";
 import fetcher from "@/lib/fetcher";
 import { StoriesInterface } from '@/types';
-import { useState } from "react";
 
 interface Props {
     data: StoriesInterface | undefined;
@@ -12,7 +12,7 @@ interface Props {
 
 const useStoryDetail = (storySlug: string): Props => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const {data, mutate} = useSWR(`/api/storyDetail/${storySlug}?page=${0}`, fetcher, {
+    const {data, mutate} = useSWR(`/api/storyDetail/${storySlug}?page=0`, fetcher, {
         revalidateIfStale: true,
         revalidateOnFocus: true,
         revalidateOnReconnect: true,

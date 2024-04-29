@@ -23,8 +23,8 @@ const Navbar: React.FC = () => {
   const { theme } = useTheme();
 
   const [isShowSearch, setIsShowSearch] = useState<boolean>(false);
-  const [showAccountUser, setShowAccountUser] = useState(false);
-  const [showNavbarMobile, setShowNavbarMobile] = useState(false);
+  const [showAccountUser, setShowAccountUser] = useState<boolean>(false);
+  const [showNavbarMobile, setShowNavbarMobile] = useState<boolean>(false);
   const showNavbarMobileRef = useRef<HTMLDivElement>(null);
   const showAccountUserRef = useRef<HTMLDivElement>(null);
 
