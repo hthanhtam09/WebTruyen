@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsSearch, BsFacebook, BsChevronDown } from 'react-icons/bs';
 import { TfiEmail } from 'react-icons/tfi';
@@ -13,7 +15,6 @@ import { convertToTitleCaseForDisplay, convertToTitleCaseForPath } from '@/utils
 import useCurrentUser from '@/hooks/useCurrentUser';
 import Icon from './Icon';
 import Logo from './Logo';
-import { Button } from './ui/button';
 import { Bars4Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const navbarItemListData = ['Trang_chủ'];
