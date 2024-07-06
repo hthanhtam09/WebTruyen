@@ -89,13 +89,13 @@ const Navbar: React.FC = () => {
           </div>
           <div className="flex items-center ml-8 gap-8 lg:flex">
             <Icon onClick={isOpenFacebook}>
-              <BsFacebook />
+              <BsFacebook className="dark:text-white text-themeDark" />
             </Icon>
             <Icon onClick={isOpenEmail}>
-              <TfiEmail />
+              <TfiEmail className="dark:text-white text-themeDark" />
             </Icon>
             <Icon onClick={isOpenSearch}>
-              <BsSearch />
+              <BsSearch className="dark:text-white text-themeDark" />
             </Icon>
             <Icon>
               <IconTheme />

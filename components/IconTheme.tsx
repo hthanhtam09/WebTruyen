@@ -33,7 +33,7 @@ const IconTheme = () => {
             </Typography>
           }
         >
-          <SunIcon className="w-[20px]" onClick={() => setTheme(EThemes.DARK)} />
+          <SunIcon className="w-[20px] dark:text-white text-themeDark" onClick={() => setTheme(EThemes.DARK)} />
         </Tooltip>
       )}
     </>
