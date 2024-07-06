@@ -11,6 +11,9 @@
     "lint": "next lint",
     "serve": "serve"
   },
+  "resolutions": {
+    "next/@swc/helpers": "0.4.36"
+  },
   "dependencies": {
     "@auth/mongodb-adapter": "^2.0.13",
     "@heroicons/react": "^2.0.18",
