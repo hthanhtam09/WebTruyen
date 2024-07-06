@@ -10,7 +10,6 @@ import Footer from '@/components/Footer';
 import ClientOnly from './ClientOnly.mjs';
 
 import '../styles/globals.css';
-import { useEffect } from 'react';
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const router = useRouter();

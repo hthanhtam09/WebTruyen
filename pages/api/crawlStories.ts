@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { storiesClient } from '@/lib/db';
+import { storiesClient, storiesDetailClient } from '@/lib/db';
 import * as cheerio from 'cheerio';
 import puppeteer, { Page } from 'puppeteer';
 import pako from 'pako';
@@ -58,7 +58,8 @@ const imageArray = [
   '/images/ImageStories/image_50.jpg',
 ];
 
-const uri = 'https://truyenfull.vn/danh-sach/truyen-hot';
+// const uri = 'https://truyenfull.vn/danh-sach/truyen-moi';
+const uri = 'https://truyenfull.vn/danh-sach/truyen-full';
 
 async function processChapterURL(page: Page, detailsUrl: string) {
   const browser = await puppeteer.launch({
@@ -111,7 +112,6 @@ async function processChapterURL(page: Page, detailsUrl: string) {
 
       console.log('New chapter:', chapterUrl);
       chapterContents.push(paragraphs);
-      await new Promise(resolve => setTimeout(resolve, 500));
     }
 
     const hasNextPage = $('.pagination li.active + li:not(.active)').length > 0;
@@ -140,7 +140,7 @@ async function scrapePage(page: Page) {
   const statusLabels: string[] = [];
 
   const storiesCollection = (await storiesClient).collection('stories');
-  const storiesDetailCollection = (await storiesClient).collection('storiesDetail');
+  const storiesDetailCollection = (await storiesDetailClient).collection('storiesDetail');
 
   for (const element of $('.list-truyen .row').toArray()) {
     const title = $(element).find('.truyen-title a').text();
@@ -149,8 +149,8 @@ async function scrapePage(page: Page) {
     });
     if (existingStories == null) {
       const chapterStory = $(element).find('.text-info a').text();
-      // const checkStoryLimit = checkStoryOverLimit(chapterStory);
-      // if (checkStoryLimit) {
+      const checkStoryLimit = checkStoryOverLimit(chapterStory);
+      if (checkStoryLimit) {
         const author = $(element).find('.author').text();
         $(element)
           .find('.label-title')
@@ -218,16 +218,15 @@ async function scrapePage(page: Page) {
       } else {
         console.log('Story is over limit 1000!!!', title);
       }
-    } 
-  //   else {
-  //     console.log('Story is existing!!!', title);
-  //   }
-  // }
+    } else {
+      console.log('Story is existing!!!', title);
+    }
+  }
 }
 
 export default async function handler(_req: NextApiRequest, res: NextApiResponse) {
-  _req.setMaxListeners(100);
-  res.setMaxListeners(100);
+  _req.setMaxListeners(15);
+  res.setMaxListeners(15);
   try {
     const browser = await puppeteer.launch({
       headless: 'new',
@@ -244,12 +243,10 @@ export default async function handler(_req: NextApiRequest, res: NextApiResponse
       timeout: 30_000, // 10 seconds
       protocolTimeout: 20_000, // 20 seconds
     });
- 
     const page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36',
     );
-    
     let currentPage = 1;
     while (true) {
       await page.goto(`${uri}/trang-${currentPage}`, {
