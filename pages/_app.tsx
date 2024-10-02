@@ -1,24 +1,19 @@
 import type { AppProps } from 'next/app';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider } from 'next-themes';
-import { useRouter } from 'next/router';
 
 import { Toaster } from '@/components/ui/toaster';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import ClientOnly from './ClientOnly.mjs';
 
 import '../styles/globals.css';
+import { AnimatePresence } from 'framer-motion';
+import { FirstMountProvider } from './provider';
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const router = useRouter();
-
   return (
-    <ClientOnly>
-      <HelmetProvider>
-        <SessionProvider session={session}>
-          <ThemeProvider attribute="class" defaultTheme="dark">
+    <HelmetProvider>
+      <SessionProvider session={session}>
+        <AnimatePresence mode="wait">
+          <FirstMountProvider>
             <Helmet defaultTitle="WebTruyen">
               <meta
                 name="description"
@@ -26,14 +21,12 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               />
               <link rel="shortcut icon" href="/images/favicon.ico" />
             </Helmet>
-            {router.pathname !== '/auth' && <Navbar />}
             <Component {...pageProps} />
-            {router.pathname !== '/auth' && <Footer />}
             <Toaster />
-          </ThemeProvider>
-        </SessionProvider>
-      </HelmetProvider>
-    </ClientOnly>
+          </FirstMountProvider>
+        </AnimatePresence>
+      </SessionProvider>
+    </HelmetProvider>
   );
 }
 

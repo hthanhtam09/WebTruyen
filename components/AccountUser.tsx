@@ -23,12 +23,12 @@ const AccountMenu: React.FC<AccountMenuProps> = ({ userData, visible }) => {
           </p>
         </div>
         <hr className="bg-gray-600 border-0 h-px my-4" />
-        <div
+        <button
           onClick={() => signOut()}
           className="px-3 text-center dark:text-white text-themeDark text-sm hover:underline"
         >
-          Sign out
-        </div>
+          Đăng xuất
+        </button>
       </div>
     </div>
   );

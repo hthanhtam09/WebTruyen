@@ -3,8 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsSearch, BsFacebook, BsChevronDown } from 'react-icons/bs';
 import { TfiEmail } from 'react-icons/tfi';
-import Link from 'next/link';
 import { useTheme } from 'next-themes';
+import { isMobile } from 'react-device-detect';
 
 import { EThemes } from '@/enum';
 import Search from './Search';
@@ -16,6 +16,7 @@ import useCurrentUser from '@/hooks/useCurrentUser';
 import Icon from './Icon';
 import Logo from './Logo';
 import { Bars4Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 const navbarItemListData = ['Trang_chủ'];
 
@@ -34,11 +35,11 @@ const Navbar: React.FC = () => {
   }, []);
 
   const isOpenFacebook = useCallback(() => {
-    window.location.href = 'https://www.facebook.com/hth9199';
+    window.location.href = 'https://www.facebook.com/example';
   }, []);
 
   const isOpenEmail = useCallback(() => {
-    window.location.href = 'mailto:hthanhtam0901@gmail.com';
+    window.location.href = 'mailto:example@gmail.com';
   }, []);
 
   const toggleAccountUser = useCallback(() => {
@@ -52,7 +53,8 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        ((showNavbarMobileRef.current &&
+        ((isMobile &&
+          showNavbarMobileRef.current &&
           !showNavbarMobileRef.current.contains(event.target as Node)) ||
           (showAccountUserRef.current &&
             !showAccountUserRef.current.contains(event.target as Node))) &&
@@ -67,7 +69,7 @@ const Navbar: React.FC = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showNavbarMobileRef, showAccountUserRef]);
+  }, [showNavbarMobileRef, showAccountUserRef, isMobile]);
 
   return (
     <nav className="w-full fixed z-40 top-0 ">
@@ -77,7 +79,10 @@ const Navbar: React.FC = () => {
         </Link>
 
         {/* PC, Tablet */}
-        <div className="hidden md:flex flex-row ml-auto gap-7 items-center justify-between w-[50%]">
+        <div
+          ref={showAccountUserRef}
+          className="hidden md:flex flex-row ml-auto gap-7 items-center justify-between w-[50%]"
+        >
           <div className="flex-row ml-8 gap-12 hidden lg:flex">
             {navbarItemListData.map((item) => (
               <NavbarItem

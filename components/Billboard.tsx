@@ -1,8 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import ReactPlayer from 'react-player';
-
+import { motion } from 'framer-motion';
 import video from '@/video.json';
+import { fadeIn, textVariant } from '@/lib/motion';
 
 const Content = styled.div`
   backdrop-filter: blur(2px);
@@ -61,19 +62,26 @@ const Billboard: React.FC = () => {
       <div className="relative top-0 h-screen w-screen dark:bg-black bg-themeLight transition duration-500">
         {VideoBackground}
       </div>
-      <div className="absolute inset-0 flex justify-center items-center">
+      <motion.div
+        variants={fadeIn('left', 'spring', 5, 0.75)}
+        className="absolute inset-0 flex justify-center items-center"
+      >
         <Content>
           <Title>Chào mừng bạn đến với WebTruyen!!!</Title>
           <p className="text-xl mb-1 font-thin text-white mt-4">
-            Với kho truyện hay và hấp dẫn. Đưa người đọc tới những thế giới mới mẻ đầy thú vị. Khám phá và chia sẻ niềm đam mê của bạn ngay hôm nay.
+            Với kho truyện hay và hấp dẫn. Đưa người đọc tới những thế giới mới mẻ đầy thú vị. Khám
+            phá và chia sẻ niềm đam mê của bạn ngay hôm nay.
           </p>
           <div className="mt-12">
-            <Button className="text-white capitalize" onClick={handleMoveListStories}>
+            <Button
+              className="text-white capitalize cursor-pointer hover:opacity-80 transition duration-500"
+              onClick={handleMoveListStories}
+            >
               Đọc ngay
             </Button>
           </div>
         </Content>
-      </div>
+      </motion.div>
     </>
   );
 };

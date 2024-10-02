@@ -36,7 +36,9 @@ const Auth = () => {
       await signIn('credentials', {
         email,
         password,
-        callbackUrl: `${router.query.redirect ? `/${(router.query.redirect as string).split("?")[1]}` : '/'}`,
+        callbackUrl: `${
+          router.query.redirect ? `/${(router.query.redirect as string).split('?')[1]}` : '/'
+        }`,
       });
     } catch (error) {
       console.log(error);
@@ -56,23 +58,29 @@ const Auth = () => {
     <main className="relative h-screen w-full">
       <Helmet>
         <title>Login</title>
-        <meta name="description" content='Đăng nhập WebTruyen' />
+        <meta name="description" content="Đăng nhập WebTruyen" />
         {/* Các thẻ khác liên quan đến SEO */}
         <meta name="keywords" content="WebTruyen, Login" />
         <meta name="author" content="WebTruyen" />
         {/* Các thẻ Open Graph */}
-        <meta property="og:title" content='WebTruyen' />
-        <meta property="og:description" content='Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều.' />
-        <meta property="og:image" content='WebTruyen' />
-        <meta property="og:url" content='WebTruyen' />
+        <meta property="og:title" content="WebTruyen" />
+        <meta
+          property="og:description"
+          content="Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều."
+        />
+        <meta property="og:image" content="WebTruyen" />
+        <meta property="og:url" content="WebTruyen" />
         {/* Các thẻ Twitter Card */}
         <meta name="twitter:card" content="WebTruyen" />
-        <meta name="twitter:title" content='WebTruyen' />
-        <meta name="twitter:description" content='Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều.' />
-        <meta name="twitter:image" content='WebTruyen' />
+        <meta name="twitter:title" content="WebTruyen" />
+        <meta
+          name="twitter:description"
+          content="Khám phá thế giới truyện tuyệt vời tại WebTruyen - Nơi quy tụ hàng nghìn bộ truyện đa dạng và độc đáo. Tận hưởng trải nghiệm xem truyện tuyệt vời nhờ vào thư viện đa dạng của chúng tôi, nơi mỗi bộ truyện là một hành trình đặc sắc đầy ấn tượng. Hãy thưởng thức niềm đam mê điện ảnh tại WebTruyen, nơi mang đến cho bạn trải nghiệm xem truyện đỉnh cao và đa chiều."
+        />
+        <meta name="twitter:image" content="WebTruyen" />
       </Helmet>
       <div className="bg-black w-full h-full lg:bg-opacity-50">
-        <Link href={'/auth'} className='block px-12 py-5'>
+        <Link href={'/auth'} className="block px-12 py-5">
           <Logo />
         </Link>
         <div className="flex justify-center mt-20">
@@ -109,7 +117,7 @@ const Auth = () => {
               onClick={variant === AUTHENTICATION.LOGIN ? login : register}
               className="bg-red-600 py-3 text-white rounded-md w-full mt-10 hover:bg-red-700 transition"
             >
-              {variant === AUTHENTICATION.LOGIN ? 'Login' : 'Sign up'}
+              {variant === AUTHENTICATION.LOGIN ? 'Đăng nhập' : 'Đăng ký'}
             </button>
             <p className="text-neutral-500 mt-12">
               {variant === AUTHENTICATION.LOGIN

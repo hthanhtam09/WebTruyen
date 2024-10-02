@@ -1,9 +1,14 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import localFont from '@next/font/local';
+import { Gloria_Hallelujah } from '@next/font/google';
 import { isMobile } from 'react-device-detect';
+import { motion } from 'framer-motion';
+import { textVariant } from '@/lib/motion';
 
-const fontBoneca = localFont({ src: '../public/fonts/Boneca_De_Panoo.ttf' });
+const mloria_Hallelujah = Gloria_Hallelujah({
+  subsets: ['latin'],
+  weight: '400',
+});
 
 const upperAnimation = keyframes`
   0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
@@ -16,17 +21,16 @@ const upperAnimation = keyframes`
   }
 `;
 
-const StyledDiv = styled.div<{isMobile: boolean}>`
-  font-size: ${props => props.isMobile ? '20px' : '35px'};
+const StyledDiv = styled.div<{ isMobile: boolean }>`
+  font-size: ${(props) => (props.isMobile ? '20px' : '35px')};
   text-align: center;
-  text-transform: uppercase;
+  text-transform: capitalize;
   text-shadow: 0 0 80px red, 0 0 30px FireBrick, 0 0 6px DarkRed;
   color: #3984f3;
   display: flex;
 
   & p {
     margin: 0;
-    font-family: 'Boneca de Pano', sans-serif;
   }
 
   #textLightOne {
@@ -77,7 +81,7 @@ const StyledDiv = styled.div<{isMobile: boolean}>`
 
 const Logo = () => {
   return (
-    <div className={fontBoneca.className}>
+    <div className={mloria_Hallelujah.className}>
       <StyledDiv isMobile={isMobile}>
         <p id="textLightOne">
           <span>W</span>

@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import { useTheme } from 'next-themes';
-import { isMobile } from 'react-device-detect';
 import { useRouter } from 'next/router';
+import { isMobile } from 'react-device-detect';
 
 import Loading from '@/pages/loading';
 import StoriesList from './StoriesList';

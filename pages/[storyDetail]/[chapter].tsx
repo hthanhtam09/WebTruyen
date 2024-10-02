@@ -3,6 +3,7 @@ import Line from '@/components/Line';
 import { Helmet } from 'react-helmet-async';
 import Sidebar from '@/components/Sidebar';
 import { Button } from '@/components/ui/button';
+import HomeButton from '@/components/HomeButton';
 
 const formatContent = (content: string) => {
   return content && content.replace(/\./g, '.<br /><br />');
@@ -33,6 +34,7 @@ const ChapterDetailScreen = () => {
         <meta name="twitter:image" content={data.storyData.title} />
       </Helmet>
       <div className="mt-[150px] mb-40 px-4 md:px-16">
+        <HomeButton title="Home Chapter" navigate={data.storyData.storySlug} />
         <div className="flex justify-center items-center">
           <h1 className="text-center font-bold text-[40px]">Chương: {Number(data.chapter + 1)}</h1>
         </div>

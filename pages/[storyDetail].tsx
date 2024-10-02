@@ -20,8 +20,7 @@ import Comment from '@/components/Comment';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
-// import useAddChapterFollow from '@/hooks/useAddChapterFollow';
-// import useGetChapterFollow from '@/hooks/useGetChapterFollow';
+import HomeButton from '@/components/HomeButton';
 
 const StoryDetailScreen = () => {
   const router = useRouter();
@@ -29,13 +28,12 @@ const StoryDetailScreen = () => {
     data: storyData,
     isLoading,
     fetchMoreData,
-  } = useStoryDetail(router.query.storyDetail as string ?? '');
+  } = useStoryDetail((router.query.storyDetail as string) ?? '');
+
   const [mergeStoryData, setMergeStoryData] = useState<StoriesInterface | null>(null);
 
   const { data = [] } = useStories();
   const storiesData = data.stories;
-  // const { addChapterFollow } = useAddChapterFollow();
-  // const { getChapterFollow } = useGetChapterFollow();
   const [page, setPage] = useState<number>(1);
   const uniqueGenresArray = [...new Set(storyData?.genres)];
   const uniqueMergeStoryData = [...new Set(mergeStoryData?.chapterContents)];
@@ -79,7 +77,6 @@ const StoryDetailScreen = () => {
             chapterContents: [],
           } as StoriesInterface),
       );
-      // handleAddChapterFollow();
     },
     [router.query.storyDetail, storyData],
   );
@@ -108,15 +105,6 @@ const StoryDetailScreen = () => {
       );
     }
   }, [storyData]);
-  // const lastClickedChapter = localStorage.getItem('lastClickedChapter');
-
-  // const handleAddChapterFollow = useCallback(async () => {
-  //   if (!storyData) return;
-  //   await addChapterFollow({
-  //     storyId: storyData._id,
-  //     chapter: lastClickedChapter,
-  //   });
-  // }, []);
 
   return (
     <main className="flex flex-col justify-center mb-32">
@@ -136,6 +124,7 @@ const StoryDetailScreen = () => {
       </Helmet>
       <Suspense fallback={<Loading />}>
         <section className="relative flex-col pt-20 md:pt-32 px-4 md:px-16 py-6 flex items-start dark:bg-themeDark bg-themeLight bg-opacity-90 transition duration-500">
+          <HomeButton title="Home" navigate="home" />
           {storyData ? (
             <div
               style={{
@@ -153,9 +142,9 @@ const StoryDetailScreen = () => {
                 webtruyen.io.vn
               </span>
             </div>
-          ) : (
-            !isMobile ? <SkeletonLoading width="42%" height="115%" style="absolute -top-14 right-10" /> : null
-          )}
+          ) : !isMobile ? (
+            <SkeletonLoading width="42%" height="115%" style="absolute -top-14 right-10" />
+          ) : null}
 
           <div className="w-full md:w-[50%] z-10">
             {storyData ? (
