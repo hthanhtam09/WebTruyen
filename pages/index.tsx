@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import useStories from '@/hooks/useStories';
 import useCountView from '@/hooks/useCountView';
-import { useFirstMount } from './provider';
+import { useFirstMount } from './mountProviders';
 import InitialTransition from '@/components/PageTransition/InitialTransition';
 import { fadeIn } from '@/lib/motion';
 import dynamic from 'next/dynamic';

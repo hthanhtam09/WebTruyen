@@ -6,7 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 
 import '../styles/globals.css';
 import { AnimatePresence } from 'framer-motion';
-import { FirstMountProvider } from './provider';
+import FirstMountProvider from './mountProviders';
 
 function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (

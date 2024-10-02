@@ -18,7 +18,7 @@ export const useFirstMount = () => {
   return { ...context };
 };
 
-export function FirstMountProvider({
+export default function FirstMountProvider({
   children,
 }: Readonly<{
   children: React.ReactNode;

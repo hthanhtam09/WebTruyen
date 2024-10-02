@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Line from '@/components/Line';
 import { Helmet } from 'react-helmet-async';
 import Sidebar from '@/components/Sidebar';
@@ -11,11 +11,18 @@ const formatContent = (content: string) => {
 
 const ChapterDetailScreen = () => {
   const [showSidebar, setShowSidebar] = useState(false);
-  const data = JSON.parse(localStorage.getItem('lastClickedChapterData') as string);
+  const [data, setData] = useState<any>(null);
+
+  useEffect(() => {
+    const localData = JSON.parse(localStorage.getItem('lastClickedChapterData') as string);
+    setData(localData ?? null);
+  }, []);
 
   const handleMoveTopPage = useCallback(() => {
     document.getElementById('scroll-to-top')?.scrollIntoView({ behavior: 'smooth' });
   }, []);
+
+  if (!data) return null;
 
   return (
     <main className="min-h-screen flex flex-col justify-between" id="scroll-to-top">
